@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 /*
- * NOTE: This code is a demo
- * Need to wait until actual card class is done
+ * Version: 1.0
+ * The kinda rough but yeah
  */
 
 
