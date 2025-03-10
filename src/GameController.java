@@ -76,8 +76,9 @@ public class GameController {
     }
 
     public void startGame() {
+        // Use an infinite loop and break out when the last round cycle is complete.
         while (true) {
-            clearScreen(); // Clear the screen before each player's turn
+            clearScreen(); // Clear the screen at the beginning of each turn.
 
             Player currentPlayer = turnManager.getCurrentPlayer();
             System.out.println("\n=======================================");
@@ -92,7 +93,10 @@ public class GameController {
                 System.out.println(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
             }
 
-            // When not in last round, check for end game conditions.
+            // After completing the turn, prompt the player before moving on.
+            promptForNextTurn(currentPlayer);
+
+            // Advance turn according to round rules.
             if (!isLastRound) {
                 checkGameEndConditions();
                 turnManager.nextPlayer();
@@ -178,7 +182,8 @@ public class GameController {
             } else {
                 System.out.println("Deck is empty, no card drawn.");
             }
-            currentPlayer.discardHandToSize(7);
+            System.out.println(
+                    "\n" + currentPlayer.getPlayerName() + "'s Current Hand: " + handToString(currentPlayer.getHand()));
         } else {
             System.out.println(currentPlayer.getPlayerName() + " does not draw a card in last round.");
         }
@@ -188,8 +193,8 @@ public class GameController {
 
     private void endGame() {
         System.out.println("\nGame Over!");
-
         System.out.println("\n--- Discarding 2 Hand Cards for Scoring ---");
+
         for (Player player : players) {
             // Clear the screen before each player's discard phase.
             clearScreen();
@@ -202,15 +207,32 @@ public class GameController {
 
             // Prompt the player to discard until only 2 cards remain in their hand.
             interactiveDiscardTwoCards(player);
-
             System.out.println(player.getPlayerName() + " discards hand to: " + handToString(player.getHand()));
-
-            // After discarding, print the player's updated collection.
-            System.out.println(player.getPlayerName() + "'s Collection After Discarding:");
-            printPlayerCollections(player);
 
             // Add remaining hand cards to the collection for scoring.
             player.addHandToCollection();
+
+            // Print the updated game state for the player.
+            System.out.println("\nUpdated Game State for " + player.getPlayerName() + ":");
+            printPlayerCollections(player);
+
+            // Prompt the player to move on.
+            System.out.print("\nPress 'y' to continue: ");
+            String input = scanner.nextLine();
+            while (!input.equalsIgnoreCase("y")) {
+                System.out.print("Please type 'y' to continue: ");
+                input = scanner.nextLine();
+            }
+
+            // Countdown for 2 seconds before proceeding.
+            try {
+                for (int i = 2; i > 0; i--) {
+                    System.out.println("Next player in " + i + " second" + (i > 1 ? "s" : "") + "...");
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                // If sleep is interrupted, ignore and continue.
+            }
         }
 
         // After all players have discarded, show all players' collections before
@@ -230,6 +252,28 @@ public class GameController {
         for (Player player : players) {
             int score = scoreCalculator.calculatePlayerFinalScore(player, suitMajorities);
             System.out.println(player.getPlayerName() + " final score: " + score);
+        }
+    }
+
+    private void promptForNextTurn(Player player) {
+        // Print updated game state for the player
+
+        // Prompt the player to continue
+        System.out.print("\nPress 'y' to continue: ");
+        String input = scanner.nextLine();
+        while (!input.equalsIgnoreCase("y")) {
+            System.out.print("Please type 'y' to continue: ");
+            input = scanner.nextLine();
+        }
+
+        // Countdown of 2 seconds before next turn
+        try {
+            for (int i = 2; i > 0; i--) {
+                System.out.println("Next turn in " + i + " second" + (i > 1 ? "s" : "") + "...");
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            // Interrupted? Just continue.
         }
     }
 
