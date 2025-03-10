@@ -1,23 +1,35 @@
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class Deck {
-    //variables
-    private ArrayList<Card> deck;
-    private static final String[] COLORS = {"Red", "Blue", "Purple", "Green", "Grey", "Orange"};
-    private static final int[] VALUES = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    //constructor
+    private List<Card> cards;
+
     public Deck() {
-        this.deck = new ArrayList<Card>();
-        for (String color:COLORS) {
-            for (int value:VALUES) {
-                deck.add(new Card(color, value));
+        cards = new ArrayList<>();
+        Suit[] suits = Suit.values();
+        for (Suit suit : suits) {
+            for (int value = 0; value <= 10; value++) {
+                cards.add(new Card(suit, value));
             }
         }
-        Collections.shuffle(deck);
+        shuffle();
     }
-    //methods
-    public Card getTopCard() {
-        return deck.remove(0);
+
+    public void shuffle() {
+        Collections.shuffle(cards);
+    }
+
+    public Card drawCard() {
+        if (cards.isEmpty()) {
+            return null;
+        }
+        return cards.remove(0);
+    }
+
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
+    public int getCardCount() {
+        return cards.size();
     }
 }

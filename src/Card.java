@@ -1,23 +1,23 @@
 public class Card {
-    //variables
-    private String color;
+    private Suit suit;
     private int value;
-    
-    //constructor
-    public Card(String color, int value) {
-        this.color = color;
+
+    public Card(Suit suit, int value) {
+        this.suit = suit;
         this.value = value;
     }
-    
-    //methods
-    public String getColor() {
-        return color;
+
+    public Suit getSuit() {
+        return suit;
     }
+
     public int getValue() {
         return value;
     }
+
     @Override
     public String toString() {
-        return color + " " + value;
+        return suit.toString().charAt(0) + suit.toString().substring(1).toLowerCase() + " " + value;
     }
+
 }
