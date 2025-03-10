@@ -21,7 +21,7 @@ public class GameController {
     private void interactiveDiscardTwoCards(Player player) {
         while (player.getHand().size() > 2) {
             System.out.println("\n" + player.getPlayerName() + ", choose a card to discard from hand: "
-                    + handToString(player.getHand()));
+                    + GameUtils.handToString(player.getHand()));
             int index = -1;
             while (true) {
                 System.out.print("Enter the index of the card you want to discard: ");
@@ -170,7 +170,8 @@ public class GameController {
 
         if (!cardsToRemove.isEmpty()) {
             System.out.println(
-                    currentPlayer.getPlayerName() + " takes " + cardsToString(cardsToRemove) + " from the parade.");
+                    currentPlayer.getPlayerName() + " takes " + GameUtils.cardsToString(cardsToRemove)
+                            + " from the parade.");
             paradeLine.removeCards(cardsToRemove);
             currentPlayer.addCollectedCards(cardsToRemove);
         } else {
@@ -186,7 +187,8 @@ public class GameController {
                 System.out.println("Deck is empty, no card drawn.");
             }
             System.out.println(
-                    "\n" + currentPlayer.getPlayerName() + "'s Current Hand: " + handToString(currentPlayer.getHand()));
+                    "\n" + currentPlayer.getPlayerName() + "'s Current Hand: "
+                            + GameUtils.handToString(currentPlayer.getHand()));
         } else {
             System.out.println(currentPlayer.getPlayerName() + " does not draw a card in last round.");
         }
@@ -214,7 +216,7 @@ public class GameController {
                     if (!cards.isEmpty()) {
                         System.out.println("  " + suit.toString().charAt(0)
                                 + suit.toString().substring(1).toLowerCase() + ": "
-                                + cardsToString(cards));
+                                + GameUtils.cardsToString(cards));
                     }
                 }
                 System.out.println(); // extra space between players.
@@ -238,7 +240,8 @@ public class GameController {
 
             // Prompt the player to discard until only 2 cards remain in their hand.
             interactiveDiscardTwoCards(player);
-            System.out.println(player.getPlayerName() + " discards hand to: " + handToString(player.getHand()));
+            System.out
+                    .println(player.getPlayerName() + " discards hand to: " + GameUtils.handToString(player.getHand()));
 
             // Add remaining hand cards to the collection for scoring.
             player.addHandToCollection();
@@ -344,7 +347,7 @@ public class GameController {
 
     private Card getPlayerCardChoice(Player currentPlayer) {
         while (true) {
-            System.out.println("\nYour hand: " + handToString(currentPlayer.getHand()));
+            System.out.println("\nYour hand: " + GameUtils.handToString(currentPlayer.getHand()));
             System.out.print("Enter the index of the card you want to play (0 to "
                     + (currentPlayer.getHand().size() - 1) + "): ");
             if (scanner.hasNextInt()) {
@@ -363,7 +366,7 @@ public class GameController {
     }
 
     private Card getPlayerRemovalChoice(Player currentPlayer, List<Card> candidates, String type) {
-        System.out.println("\nEligible cards to take (" + type + "): " + handToString(candidates));
+        System.out.println("\nEligible cards to take (" + type + "): " + GameUtils.handToString(candidates));
         if (candidates.isEmpty()) {
             return null;
         }
@@ -387,38 +390,12 @@ public class GameController {
         }
     }
 
-    private String handToString(List<Card> hand) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (int i = 0; i < hand.size(); i++) {
-            sb.append(i).append(":").append(hand.get(i).toString());
-            if (i < hand.size() - 1) {
-                sb.append(", ");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private String cardsToString(List<Card> cards) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (Card card : cards) {
-            sb.append(card.toString()).append(", ");
-        }
-        if (cards.size() > 0) {
-            sb.setLength(sb.length() - 2);
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
     private void printGameState() {
         if (isLastRound) {
             System.out.println("**** LAST ROUND ****");
         }
         System.out.println("\n--- Game State ---");
-        System.out.println("Parade Line: " + cardsToString(paradeLine.getParadeLineCards()));
+        System.out.println("Parade Line: " + GameUtils.cardsToString(paradeLine.getParadeLineCards()));
         System.out.println("Cards in Deck: " + deck.getCardCount());
     }
 
@@ -435,7 +412,7 @@ public class GameController {
             List<Card> cards = collectionsBySuit.get(suit);
             if (!cards.isEmpty()) {
                 System.out.println(suit.toString().charAt(0) + suit.toString().substring(1).toLowerCase() + ": "
-                        + cardsToString(cards));
+                        + GameUtils.cardsToString(cards));
             }
         }
         if (player.getCollectedCards().isEmpty()) {
