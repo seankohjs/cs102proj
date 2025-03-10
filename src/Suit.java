@@ -1,3 +1,3 @@
 public enum Suit {
-    RED, BLUE, GREEN, YELLOW, PURPLE, GREY
+    RED, BLUE, GREEN, ORANGE, PURPLE, GREY
 }

@@ -16,6 +16,32 @@ public class GameController {
     private boolean isLastRound;
     private boolean deckExhaustedLastRound;
     private Scanner scanner;
+    private int extraTurnCount = 0;
+
+    private void interactiveDiscardTwoCards(Player player) {
+        while (player.getHand().size() > 2) {
+            System.out.println("\n" + player.getPlayerName() + ", choose a card to discard from hand: "
+                    + handToString(player.getHand()));
+            int index = -1;
+            while (true) {
+                System.out.print("Enter the index of the card you want to discard: ");
+                if (scanner.hasNextInt()) {
+                    index = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+                    if (index >= 0 && index < player.getHand().size()) {
+                        break;
+                    } else {
+                        System.out.println("Invalid index, try again.");
+                    }
+                } else {
+                    System.out.println("Invalid input, please enter a number.");
+                    scanner.nextLine();
+                }
+            }
+            Card discarded = player.getHand().remove(index);
+            System.out.println("Discarded: " + discarded);
+        }
+    }
 
     public GameController(List<String> playerNames) {
         this.deck = new Deck();
@@ -57,7 +83,9 @@ public class GameController {
     }
 
     public void startGame() {
-        while (!isGameOver()) {
+        while (true) {
+            clearScreen(); // Clear the screen before each player's turn
+
             Player currentPlayer = turnManager.getCurrentPlayer();
             System.out.println("\n=======================================");
             System.out.println("It's " + currentPlayer.getPlayerName() + "'s turn!");
@@ -71,19 +99,17 @@ public class GameController {
                 System.out.println(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
             }
 
+            // When not in last round, check for end game conditions.
             if (!isLastRound) {
                 checkGameEndConditions();
-            }
-
-            if (isLastRound) {
                 turnManager.nextPlayer();
-                if (turnManager.getCurrentPlayerIndex() == 0) {
-                    break; // End game after a full cycle in the last round
-                }
             } else {
                 turnManager.nextPlayer();
+                extraTurnCount++;
+                if (extraTurnCount >= players.size()) {
+                    break; // End game after every player has played one extra turn.
+                }
             }
-
         }
         endGame();
         scanner.close();
@@ -176,12 +202,13 @@ public class GameController {
         if (!deckExhaustedLastRound) {
             System.out.println("\n--- Discarding 2 Hand Cards for Scoring ---");
             for (Player player : players) {
-                System.out.println("\n" + player.getPlayerName() + ", choose 2 cards to discard from hand: "
-                        + handToString(player.getHand()));
-                player.discardTwoHandCards();
+                System.out.println("\n" + player.getPlayerName()
+                        + ", it's time to discard until only 2 cards remain in your hand.");
+                interactiveDiscardTwoCards(player); // Now interactive
                 System.out.println(player.getPlayerName() + " discards hand to: " + handToString(player.getHand()));
                 player.addHandToCollection();
             }
+
         } else {
             System.out.println("\n--- Hand cards are NOT discarded because game ended due to deck exhaustion ---");
             for (Player player : players) {
@@ -201,6 +228,11 @@ public class GameController {
         }
     }
 
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     private void determineWinner() {
         Player winner = scoreCalculator.determineWinner(players);
         Map<Suit, Player> suitMajorities = scoreCalculator.determineSuitMajorities(players);
@@ -210,13 +242,13 @@ public class GameController {
 
     private void startLastRound(boolean sixColors) {
         isLastRound = true;
+        extraTurnCount = 0; // Reset the counter for extra turns.
         System.out.println("\n--- Last Round Started! ---");
         if (sixColors) {
             System.out.println("Triggered by a player collecting 6 colors.");
         } else {
             System.out.println("Triggered by deck exhaustion.");
         }
-        // Optionally, adjust turn order here if needed.
     }
 
     private Card getPlayerCardChoice(Player currentPlayer) {
