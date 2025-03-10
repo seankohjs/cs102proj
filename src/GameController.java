@@ -84,7 +84,11 @@ public class GameController {
             System.out.println("\n=======================================");
             System.out.println("It's " + currentPlayer.getPlayerName() + "'s turn!");
             printGameState();
+
+            // Print current player's collection (already nicely formatted).
             printPlayerCollections(currentPlayer);
+            // Print a separate section for the other players' collections.
+            printOtherPlayersCollections(currentPlayer);
 
             if (!currentPlayer.getHand().isEmpty()) {
                 Card cardToPlay = getPlayerCardChoice(currentPlayer);
@@ -93,10 +97,9 @@ public class GameController {
                 System.out.println(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
             }
 
-            // After completing the turn, prompt the player before moving on.
+            // After turn logic (prompting, advancing turn, etc.) goes here...
             promptForNextTurn(currentPlayer);
 
-            // Advance turn according to round rules.
             if (!isLastRound) {
                 checkGameEndConditions();
                 turnManager.nextPlayer();
@@ -189,6 +192,34 @@ public class GameController {
         }
 
         printPlayerCollections(currentPlayer);
+    }
+
+    private void printOtherPlayersCollections(Player currentPlayer) {
+        System.out.println("\n--- Other Players' Collections ---");
+        for (Player player : players) {
+            // Skip printing for the current player.
+            if (player != currentPlayer) {
+                System.out.println(player.getPlayerName() + "'s Collected Cards:");
+                // Use a local copy of the logic from printPlayerCollections,
+                // but without an extra header.
+                Map<Suit, List<Card>> collectionsBySuit = new HashMap<>();
+                for (Suit suit : Suit.values()) {
+                    collectionsBySuit.put(suit, new ArrayList<>());
+                }
+                for (Card card : player.getCollectedCards()) {
+                    collectionsBySuit.get(card.getSuit()).add(card);
+                }
+                for (Suit suit : Suit.values()) {
+                    List<Card> cards = collectionsBySuit.get(suit);
+                    if (!cards.isEmpty()) {
+                        System.out.println("  " + suit.toString().charAt(0)
+                                + suit.toString().substring(1).toLowerCase() + ": "
+                                + cardsToString(cards));
+                    }
+                }
+                System.out.println(); // extra space between players.
+            }
+        }
     }
 
     private void endGame() {
