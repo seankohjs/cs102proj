@@ -75,13 +75,6 @@ public class GameController {
         }
     }
 
-    private boolean isGameOver() {
-        if (isLastRound) {
-            return turnManager.getCurrentPlayerIndex() == 0;
-        }
-        return false;
-    }
-
     public void startGame() {
         while (true) {
             clearScreen(); // Clear the screen before each player's turn
@@ -229,8 +222,19 @@ public class GameController {
     }
 
     private void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        try {
+            if (System.getProperty("os.name").startsWith("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // For Unix/Linux/Mac OS
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            // Fallback: print several new lines if the above doesn't work.
+            for (int i = 0; i < 50; i++) {
+                System.out.println();
+            }
+        }
     }
 
     private void determineWinner() {
@@ -323,6 +327,9 @@ public class GameController {
     }
 
     private void printGameState() {
+        if (isLastRound) {
+            System.out.println("**** LAST ROUND ****");
+        }
         System.out.println("\n--- Game State ---");
         System.out.println("Parade Line: " + cardsToString(paradeLine.getParadeLineCards()));
         System.out.println("Cards in Deck: " + deck.getCardCount());
