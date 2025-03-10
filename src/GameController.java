@@ -188,26 +188,38 @@ public class GameController {
 
     private void endGame() {
         System.out.println("\nGame Over!");
-        System.out.println("\n--- Player Collections Before Scoring ---");
+
+        System.out.println("\n--- Discarding 2 Hand Cards for Scoring ---");
+        for (Player player : players) {
+            // Clear the screen before each player's discard phase.
+            clearScreen();
+
+            System.out.println("\n" + player.getPlayerName() + ", it's time to discard 2 cards from your hand.");
+
+            // Print the player's current collection for reference.
+            System.out.println(player.getPlayerName() + "'s Current Collection:");
+            printPlayerCollections(player);
+
+            // Prompt the player to discard until only 2 cards remain in their hand.
+            interactiveDiscardTwoCards(player);
+
+            System.out.println(player.getPlayerName() + " discards hand to: " + handToString(player.getHand()));
+
+            // After discarding, print the player's updated collection.
+            System.out.println(player.getPlayerName() + "'s Collection After Discarding:");
+            printPlayerCollections(player);
+
+            // Add remaining hand cards to the collection for scoring.
+            player.addHandToCollection();
+        }
+
+        // After all players have discarded, show all players' collections before
+        // scoring.
+        System.out.println("\n--- Final Player Collections Before Scoring ---");
         for (Player player : players) {
             printPlayerCollections(player);
         }
-        if (!deckExhaustedLastRound) {
-            System.out.println("\n--- Discarding 2 Hand Cards for Scoring ---");
-            for (Player player : players) {
-                System.out.println("\n" + player.getPlayerName()
-                        + ", it's time to discard until only 2 cards remain in your hand.");
-                interactiveDiscardTwoCards(player); // Now interactive
-                System.out.println(player.getPlayerName() + " discards hand to: " + handToString(player.getHand()));
-                player.addHandToCollection();
-            }
 
-        } else {
-            System.out.println("\n--- Hand cards are NOT discarded because game ended due to deck exhaustion ---");
-            for (Player player : players) {
-                player.addHandToCollection();
-            }
-        }
         calculateFinalScores();
         determineWinner();
     }
