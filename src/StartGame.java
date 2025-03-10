@@ -15,7 +15,7 @@ public class StartGame {
             playerNames.add(scanner.nextLine());
         }
 
-        GameController game = new GameController(playerNames);
+        GameController game = new GameController(playerNames, scanner);
         game.startGame();
         scanner.close();
     }
