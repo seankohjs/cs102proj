@@ -142,6 +142,11 @@ public class GameView {
 
     // Prompts the player for a card choice from their hand.
     public Card getPlayerCardChoice(Player currentPlayer) {
+        if(currentPlayer instanceof Bot) {
+            Bot e = (Bot)currentPlayer;
+            return e.discard();
+        }
+
         while (true) {
             System.out.println("\nYour hand: " + GameUtils.handToString(currentPlayer.getHand()));
             System.out.print("Enter the index of the card you want to play (0 to "
