@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class EasyBot extends Bot {
 
     public EasyBot(String botName) {
@@ -9,4 +11,7 @@ public class EasyBot extends Bot {
         return super.getHand().removeLast();
     }
 
+    public Card takeCard(List<Card> candidates) {
+        return candidates.removeLast();
+    }
 }

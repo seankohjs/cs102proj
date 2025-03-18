@@ -172,6 +172,11 @@ public class GameView {
         if (candidates.isEmpty()) {
             return null;
         }
+        if (currentPlayer instanceof Bot) {
+            Bot currentBot = (Bot)currentPlayer;
+            currentBot.takeCard(candidates);
+        }
+
         while (true) {
             System.out.print("Enter the index of the card you want to take (0 to " + (candidates.size() - 1)
                     + "), or -1 to take none: ");
