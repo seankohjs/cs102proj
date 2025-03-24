@@ -15,14 +15,30 @@ Setup:
  5. The remaining cards form the draw pile.
 
 Sequence of Play:
- - On your turn, select one card from your hand and play it at the end of the parade.
- - After playing a card, if the number of cards in the parade exceeds the value of the card played,
-   a "removal phase" is triggered. In this phase, a group of cards (the "removal mode") is identified.
- - From these cards, any card that has the same color as the played card or any card with a value
-   less than or equal to the played card is eligible to be removed and added to your collection.
- - If no card qualifies for removal, nothing is collected.
- - If it is not the final round, after your turn you draw one card from the draw pile,
-   and your hand is adjusted (discarding excess cards if needed).
+
+- Play a Card:
+    On your turn, select any card from your hand and play it at the end of the parade.
+
+- Counting Phase:
+    Immediately after playing your card, count backwards from the end of the parade using the number printed on the card you played.
+
+-Determine Removal Eligibility:
+
+  -If the count reaches the beginning of the parade (i.e., all cards are counted), no cards are eligible for removal and your turn ends.
+
+  -Otherwise, the cards that were not counted become eligible for removal.
+
+-Removal Phase:
+  -You may remove up to two cards from the eligible group:
+
+  -The first removal is any card that has a number less than the number on the card you played.
+
+  -The second removal is any card that is of the same suit as the card you played.
+
+  -Removed cards are added to your collection.
+
+Draw Phase:
+-If it is not the final round, after your turn you draw one card from the draw pile, and your hand is adjusted according to the game’s rules.
 
 Ending the Game:
  - The game enters the final round when either:
@@ -35,7 +51,8 @@ Scoring:
  - Each player’s score is calculated color by color.
    For each color:
      - If a player has the majority of cards in that color, each card counts as 1 point.
-     - Otherwise, the face values on the cards of that color are summed.
+     - In two-player games, a majority is defined as having at least 2 more cards than the opponent. 
+     - Otherwise, the cards are scored by summing their face values.
  - The overall score is the sum of all color scores.
  - The player with the lowest total score wins.
  - In case of a tie, the player with the fewest collected cards wins.
