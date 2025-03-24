@@ -13,10 +13,6 @@ public class TurnManager {
         return players.get(currentPlayerIndex);
     }
 
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
-    }
-
     public void nextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }

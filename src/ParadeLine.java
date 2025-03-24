@@ -11,17 +11,6 @@ class ParadeLine {
         cardsInLine.add(card);
     }
 
-    public int getLineSize() {
-        return cardsInLine.size();
-    }
-
-    public Card getCardAt(int index) {
-        if (index >= 0 && index < cardsInLine.size()) {
-            return cardsInLine.get(index);
-        }
-        return null;
-    }
-
     public void removeCards(List<Card> cardsToRemove) {
         cardsInLine.removeAll(cardsToRemove);
     }
@@ -30,7 +19,4 @@ class ParadeLine {
         return new ArrayList<>(cardsInLine);
     }
 
-    public void clearLine() {
-        cardsInLine.clear();
-    }
 }
