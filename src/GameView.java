@@ -37,8 +37,8 @@ public class GameView {
         if (isLastRound) {
             System.out.println("**** LAST ROUND ****");
         }
-        System.out.println(GameUtils.BOLD + "\n----- GAME STATE -----" + GameUtils.RESET);
-        System.out.println(GameUtils.BOLD + "Parade Line:");
+        System.out.println(Print.BOLD + "\n----- GAME STATE -----" + Print.RESET);
+        System.out.println(Print.BOLD + "Parade Line:" + Print.RESET);
         System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
         System.out.println("Cards in Deck: " + deck.getCardCount());
     }

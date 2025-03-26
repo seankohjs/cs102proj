@@ -15,11 +15,19 @@ public class GameMenu {
 
     public void display() {
         view.clearScreen();
-        System.out.println("\n===== MENU =====");
+        System.out.print(Print.BOLD);
+        System.out.println();
+        for (int i = 0; i < 5; i++) System.out.print("\u2550");
+        System.out.print(" MENU ");
+        for (int i = 0; i < 5; i++) System.out.print("\u2550");
+        System.out.println();
+        System.out.println();
         System.out.println("1. Play Game");
         System.out.println("2. View Game Rules");
         System.out.println("3. Quit Application");
-        System.out.print("Please enter your choice: ");
+        System.out.println();
+        System.out.print("PLEASE ENTER YOUR CHOICE: ");
+        System.out.print(Print.RESET);
     }
 
     public void readOption() {
@@ -30,7 +38,7 @@ public class GameMenu {
                 choice = scanner.nextInt();
                 scanner.nextLine(); // consume newline
             } else {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("INVALID INPUT! Please enter a number .");
                 scanner.nextLine();
                 continue;
             }

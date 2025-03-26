@@ -5,14 +5,6 @@ import java.util.HashMap;
 
 public class GameUtils {
 
-    public enum Color {
-        RED, BLUE, GREEN, ORANGE, PURPLE, GREY
-    }
-
-    public static final String BOLD = "\u001B[1m";
-    public static final String RESET = "\u001B[0m";
-
-
     // Converts a list of cards (hand) into a formatted string with indexes.
     public static String handToString(List<Card> hand) {
         if (hand.isEmpty()) return "[]";

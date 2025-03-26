@@ -1,7 +1,6 @@
 public class Card {
-    private Suit suit;
-    private int value;
 
+    // CARD BOX DRAWING
     public static final String HORIZONTAL = "\u2550"; // ═
     public static final String VERTICAL = "\u2551";   // ║
     public static final String TOP_LEFT = "\u2554";   // ╔
@@ -9,11 +8,10 @@ public class Card {
     public static final String BOTTOM_LEFT = "\u255A"; // ╚
     public static final String BOTTOM_RIGHT = "\u255D"; // ╝
 
-
+    // SEPARATOR BETWEEN SUIT AND VALUE
     public static final String SEPARATOR = "\u25A0";
-    
 
-
+    // COLORS
     public static final String RED = "\u001B[31m";
     public static final String BLUE = "\u001B[34m";
     public static final String GREEN = "\u001B[32m";
@@ -22,7 +20,8 @@ public class Card {
     public static final String GREY = "\u001B[37m";
     public static final String RESET = "\u001B[0m";
 
-
+    private Suit suit;
+    private int value;
 
     public Card(Suit suit, int value) {
         this.suit = suit;
@@ -36,7 +35,6 @@ public class Card {
     public int getValue() {
         return value;
     }
-
 
     @Override
     public String toString() {
