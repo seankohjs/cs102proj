@@ -83,7 +83,7 @@ public class GameController {
 
     private void playTurn(Card playedCard) {
         Player currentPlayer = turnManager.getCurrentPlayer();
-        view.displayMessage(currentPlayer.getPlayerName() + " plays " + playedCard);
+        view.displayMessage(currentPlayer.getPlayerName() + " Plays:\n" + playedCard);
         paradeLine.addCardToLine(playedCard);
 
         RemovalStrategy.RemovalChoice removalChoice = removalStrategy.determineRemovalChoice(playedCard,
@@ -111,8 +111,8 @@ public class GameController {
         }
 
         if (!cardsToRemove.isEmpty()) {
-            view.displayMessage(currentPlayer.getPlayerName() + " takes " + GameUtils.cardsToString(cardsToRemove)
-                    + " from the parade.");
+            view.displayMessage(currentPlayer.getPlayerName() + " takes the following card from the parade.");
+            System.out.println(GameUtils.cardsToString(cardsToRemove));
             paradeLine.removeCards(cardsToRemove);
             currentPlayer.addCollectedCards(cardsToRemove);
         } else {

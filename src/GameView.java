@@ -29,7 +29,7 @@ public class GameView {
     // Displays a header for the current turn.
     public void displayTurnHeader(Player currentPlayer) {
         System.out.println("\n=======================================");
-        System.out.println("It's " + currentPlayer.getPlayerName() + "'s turn!");
+        System.out.println("It's " + currentPlayer.getPlayerName() + "'s Turn!");
     }
 
     // Displays the current game state.
@@ -37,8 +37,9 @@ public class GameView {
         if (isLastRound) {
             System.out.println("**** LAST ROUND ****");
         }
-        System.out.println("\n--- Game State ---");
-        System.out.println("Parade Line: " + GameUtils.cardsToString(paradeLine.getParadeLineCards()));
+        System.out.println(GameUtils.BOLD + "\n----- GAME STATE -----" + GameUtils.RESET);
+        System.out.println(GameUtils.BOLD + "Parade Line:");
+        System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
         System.out.println("Cards in Deck: " + deck.getCardCount());
     }
 
@@ -60,9 +61,7 @@ public class GameView {
         for (Suit suit : Suit.values()) {
             List<Card> cards = collectionsBySuit.get(suit);
             if (!cards.isEmpty()) {
-                System.out.println(suit.toString().charAt(0)
-                        + suit.toString().substring(1).toLowerCase() + ": "
-                        + GameUtils.cardsToString(cards));
+                System.out.println(GameUtils.cardsToString(cards));
             }
         }
         if (player.getCollectedCards().isEmpty()) {
@@ -86,9 +85,7 @@ public class GameView {
                 for (Suit suit : Suit.values()) {
                     List<Card> cards = collectionsBySuit.get(suit);
                     if (!cards.isEmpty()) {
-                        System.out.println("  " + suit.toString().charAt(0)
-                                + suit.toString().substring(1).toLowerCase() + ": "
-                                + GameUtils.cardsToString(cards));
+                        System.out.println(GameUtils.cardsToString(cards));
                     }
                 }
                 System.out.println();
@@ -98,10 +95,10 @@ public class GameView {
 
     // Prompts the user to press 'y' to continue and shows a countdown.
     public void promptForNextTurn(Player player) {
-        System.out.print("\nPress 'y' to continue: ");
+        System.out.print("\nEnter 'Y' to Continue: ");
         String input = scanner.nextLine();
         while (!input.equalsIgnoreCase("y")) {
-            System.out.print("Please type 'y' to continue: ");
+            System.out.print("Please Enter 'Y' to Continue: ");
             input = scanner.nextLine();
         }
         try {
@@ -143,8 +140,10 @@ public class GameView {
     // Prompts the player for a card choice from their hand.
     public Card getPlayerCardChoice(Player currentPlayer) {
         while (true) {
-            System.out.println("\nYour hand: " + GameUtils.handToString(currentPlayer.getHand()));
-            System.out.print("Enter the index of the card you want to play (0 to "
+            System.out.println("\nYour Hand: ");
+            System.out.println(GameUtils.handToString(currentPlayer.getHand()));
+            System.out.println();
+            System.out.print("ENTER THE INDEX OF THE CARD YOU WANT TO PLAY (0 to "
                     + (currentPlayer.getHand().size() - 1) + "): ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
@@ -163,7 +162,8 @@ public class GameView {
 
     // Prompts the player to choose a card from a list of candidates.
     public Card getPlayerRemovalChoice(Player currentPlayer, List<Card> candidates, String type) {
-        System.out.println("\nEligible cards to take (" + type + "): " + GameUtils.handToString(candidates));
+        System.out.println("\nEligible cards to take (" + type + "):");
+        System.out.println(GameUtils.handToString(candidates));
         if (candidates.isEmpty()) {
             return null;
         }
