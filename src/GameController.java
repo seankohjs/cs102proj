@@ -10,7 +10,6 @@ public class GameController {
     private ParadeLine paradeLine;
     private List<Player> players;
     private TurnManager turnManager;
-    private RemovalStrategy removalStrategy;
     private ScoreCalculator scoreCalculator;
     private boolean isLastRound;
 
@@ -25,7 +24,6 @@ public class GameController {
             players.add(new Player(name));
         }
         this.turnManager = new TurnManager(players);
-        this.removalStrategy = new RemovalStrategy();
         this.scoreCalculator = new ScoreCalculator();
         this.isLastRound = false;
         // Instantiate the view and pass in the scanner
@@ -86,29 +84,8 @@ public class GameController {
         view.displayMessage(currentPlayer.getPlayerName() + " plays " + playedCard);
         paradeLine.addCardToLine(playedCard);
 
-        RemovalStrategy.RemovalChoice removalChoice = removalStrategy.determineRemovalChoice(playedCard,
+        List<Card> cardsToRemove = RemovalStrategy.determineRemovalChoice(playedCard,
                 paradeLine.getParadeLineCards());
-        List<Card> cardsToRemove = new ArrayList<>();
-
-        // Handle removal for same suit
-        if (!removalChoice.sameSuitCandidates.isEmpty()) {
-            Card choice = view.getPlayerRemovalChoice(currentPlayer, removalChoice.sameSuitCandidates, "same suit");
-            if (choice != null) {
-                cardsToRemove.add(choice);
-            }
-        }
-
-        // Handle removal for lower value (after excluding any already chosen)
-        if (!removalChoice.lowerValueCandidates.isEmpty()) {
-            List<Card> remainingCandidates = new ArrayList<>(removalChoice.lowerValueCandidates);
-            remainingCandidates.removeAll(cardsToRemove);
-            if (!remainingCandidates.isEmpty()) {
-                Card choice = view.getPlayerRemovalChoice(currentPlayer, remainingCandidates, "lower value");
-                if (choice != null) {
-                    cardsToRemove.add(choice);
-                }
-            }
-        }
 
         if (!cardsToRemove.isEmpty()) {
             view.displayMessage(currentPlayer.getPlayerName() + " takes " + GameUtils.cardsToString(cardsToRemove)
