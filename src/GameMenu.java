@@ -59,13 +59,35 @@ public class GameMenu {
     }
 
     private void startGame() {
+        boolean valid = false;
+        int numPlayers = 0;
+
         System.out.print("Enter the number of players (2-6): ");
-        int numPlayers = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        while (!valid) {
+            try {
+                numPlayers = Integer.parseInt(scanner.nextLine());
+                if (numPlayers < 2 || numPlayers > 6) {
+                    throw new NumberFormatException();
+                }
+                valid = true;
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter the number of players (2-6): ");
+            }
+        }
+
         List<String> playerNames = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
-            System.out.print("Enter name for Player " + (i + 1) + ": ");
-            playerNames.add(scanner.nextLine());
+            String name;
+            while (true) {
+                System.out.print("Enter name for Player " + (i + 1) + ": ");
+                name = scanner.nextLine();
+                if (!playerNames.contains(name)) {
+
+                    break;
+                }
+                System.out.println("Player already exists! Please enter a unique name.");
+            }
+            playerNames.add(name);
         }
         // Create the game controller and start the game.
         GameController game = new GameController(playerNames, scanner);
@@ -75,8 +97,7 @@ public class GameMenu {
     private void viewGameRules() {
         try {
             // Create a GameView instance to use its clearScreen method
-
-            String fullRules = new String(Files.readAllBytes(Paths.get("GameRules.txt")));
+            String fullRules = new String(Files.readAllBytes(Paths.get("src/GameRules.txt").toAbsolutePath()));
 
             // Split the rules into logical sections
             String[] sections = fullRules.split("\n\n");
@@ -131,6 +152,7 @@ public class GameMenu {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Error reading game rules: " + e.getMessage());
             System.out.print("\nPress Enter to return to the menu...");
             scanner.nextLine();

@@ -1,0 +1,1 @@
+javac -d out -cp src src/GameApp.java
