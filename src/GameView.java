@@ -28,16 +28,18 @@ public class GameView {
 
     // Displays a header for the current turn.
     public void displayTurnHeader(Player currentPlayer) {
-        System.out.println("\n=======================================");
+        System.out.println();
+        System.out.println("■■■■■");
         System.out.println("It's " + currentPlayer.getPlayerName() + "'s Turn!");
     }
 
     // Displays the current game state.
     public void displayGameState(Deck deck, ParadeLine paradeLine, boolean isLastRound) {
         if (isLastRound) {
-            System.out.println("**** LAST ROUND ****");
+            System.out.println("***** LAST ROUND *****");
         }
-        System.out.println(Print.BOLD + "\n----- GAME STATE -----" + Print.RESET);
+        System.out.println();
+        System.out.println(Print.BOLD + "■■■■■ GAME STATE ■■■■■" + Print.RESET);
         System.out.println(Print.BOLD + "Parade Line:" + Print.RESET);
         System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
         System.out.println("Cards in Deck: " + deck.getCardCount());
@@ -50,7 +52,8 @@ public class GameView {
 
     // Displays the current player's collection.
     public void displayPlayerCollections(Player player) {
-        System.out.println("\n--- " + player.getPlayerName() + "'s Collected Cards ---");
+        System.out.println();
+        System.out.println("■■■■■ " + player.getPlayerName() + "'s Collected Cards ■■■■■");
         Map<Suit, List<Card>> collectionsBySuit = new HashMap<>();
         for (Suit suit : Suit.values()) {
             collectionsBySuit.put(suit, new ArrayList<>());
@@ -65,13 +68,14 @@ public class GameView {
             }
         }
         if (player.getCollectedCards().isEmpty()) {
-            System.out.println("None collected yet.");
+            System.out.println("No Cards Collected Yet.");
         }
     }
 
     // Displays other players' collections.
     public void displayOtherPlayersCollections(List<Player> players, Player currentPlayer) {
-        System.out.println("\n--- Other Players' Collections ---");
+        System.out.println();
+        System.out.println("■■■■■ Other Players' Collections ■■■■■");
         for (Player player : players) {
             if (player != currentPlayer) {
                 System.out.println(player.getPlayerName() + "'s Collected Cards:");
@@ -95,15 +99,16 @@ public class GameView {
 
     // Prompts the user to press 'y' to continue and shows a countdown.
     public void promptForNextTurn(Player player) {
-        System.out.print("\nEnter 'Y' to Continue: ");
+        System.out.println();
+        System.out.print("Enter [Y] to Continue: ");
         String input = scanner.nextLine();
         while (!input.equalsIgnoreCase("y")) {
-            System.out.print("Please Enter 'Y' to Continue: ");
+            System.out.print("Please Enter [Y] to Continue: ");
             input = scanner.nextLine();
         }
         try {
             for (int i = 2; i > 0; i--) {
-                System.out.println("Next turn in " + i + " second" + (i > 1 ? "s" : "") + "...");
+                System.out.println("Next Turn In " + i + " Second" + (i > 1 ? "s" : "") + "...");
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
@@ -114,21 +119,21 @@ public class GameView {
     // Interactively prompts the user to discard cards until only 2 remain.
     public void interactiveDiscardTwoCards(Player player) {
         while (player.getHand().size() > 2) {
-            System.out.println("\n" + player.getPlayerName() + ", choose a card to discard from your hand: "
+            System.out.println("\n" + player.getPlayerName() + ", Choose a Card to" + Print.RED + " Discard " + Print.RESET + "from your Hand: "
                     + GameUtils.handToString(player.getHand()));
             int index = -1;
             while (true) {
-                System.out.print("Enter the index of the card you want to discard: ");
+                System.out.print("Enter the INDEX of the Card you Want to" + Print.RED + " Discard " + Print.RESET);
                 if (scanner.hasNextInt()) {
                     index = scanner.nextInt();
                     scanner.nextLine();
                     if (index >= 0 && index < player.getHand().size()) {
                         break;
                     } else {
-                        System.out.println("Invalid index, try again.");
+                        System.out.println("INVALID INDEX, Try Again.");
                     }
                 } else {
-                    System.out.println("Invalid input, please enter a number.");
+                    System.out.println("INVALID INPUT, Please Enter a Number.");
                     scanner.nextLine();
                 }
             }
@@ -143,7 +148,7 @@ public class GameView {
             System.out.println("\nYour Hand: ");
             System.out.println(GameUtils.handToString(currentPlayer.getHand()));
             System.out.println();
-            System.out.print("ENTER THE INDEX OF THE CARD YOU WANT TO PLAY (0 to "
+            System.out.print("Enter the Index of the Card You Want to Play (0 to "
                     + (currentPlayer.getHand().size() - 1) + "): ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
@@ -151,10 +156,10 @@ public class GameView {
                 if (index >= 0 && index < currentPlayer.getHand().size()) {
                     return currentPlayer.getHand().remove(index);
                 } else {
-                    System.out.println("Invalid card index. Please try again.");
+                    System.out.println("INVALID CARD INDEX. Please Try Again.");
                 }
             } else {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("INVALID INPUT. Please Enter a Number.");
                 scanner.nextLine();
             }
         }
@@ -162,14 +167,14 @@ public class GameView {
 
     // Prompts the player to choose a card from a list of candidates.
     public Card getPlayerRemovalChoice(Player currentPlayer, List<Card> candidates, String type) {
-        System.out.println("\nEligible cards to take (" + type + "):");
+        System.out.println("\nEligible Cards to Take (" + type + "):");
         System.out.println(GameUtils.handToString(candidates));
         if (candidates.isEmpty()) {
             return null;
         }
         while (true) {
-            System.out.print("Enter the index of the card you want to take (0 to " + (candidates.size() - 1)
-                    + "), or -1 to take none: ");
+            System.out.print("Enter the Index of the Card You Want to Take (0 to " + (candidates.size() - 1)
+                    + "), or -1 to Take NONE: ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
                 scanner.nextLine();
@@ -178,10 +183,10 @@ public class GameView {
                 } else if (index >= 0 && index < candidates.size()) {
                     return candidates.get(index);
                 } else {
-                    System.out.println("Invalid index. Try again.");
+                    System.out.println("INVALID INDEX. Try Again.");
                 }
             } else {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("INVALID INPUT. Please Enter a Number.");
                 scanner.nextLine();
             }
         }
