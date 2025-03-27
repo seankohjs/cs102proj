@@ -37,7 +37,7 @@ public class GameMenu {
                 choice = scanner.nextInt();
                 scanner.nextLine(); // consume newline
             } else {
-                System.out.println("INVALID INPUT! Please enter a number .");
+                System.out.println("INVALID INPUT! Please Enter a Number .");
                 scanner.nextLine();
                 continue;
             }
@@ -49,21 +49,21 @@ public class GameMenu {
                     viewGameRules();
                     break;
                 case 3:
-                    System.out.println("Exiting game. Goodbye!");
+                    System.out.println("Exiting Parade Game. Goodbye!");
                     break;
                 default:
-                    System.out.println("Enter a choice between 1 and 3.");
+                    System.out.println("Enter a Number Between 1 and 3.");
             }
         } while (choice != 3);
     }
 
     private void startGame() {
-        System.out.print("Enter the number of players (2 - 6): ");
+        System.out.print("Enter the Number of Players (2 - 6): ");
         int numPlayers = scanner.nextInt();
         scanner.nextLine(); // consume newline
         List<String> playerNames = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
-            System.out.print("Enter name for Player " + (i + 1) + ": ");
+            System.out.print("Enter Name for Player " + (i + 1) + ": ");
             playerNames.add(scanner.nextLine());
         }
         // Create the game controller and start the game.
