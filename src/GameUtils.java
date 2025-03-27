@@ -26,7 +26,7 @@ public class GameUtils {
             String[] cardLines = hand.get(i).toString().split("\n");
     
             for (int j = 0; j < maxLines; j++) {
-                lines[j].append(cardLines[j]).append(Card.RESET); // Ensure reset after each card
+                lines[j].append(cardLines[j]).append(Print.RESET); // Ensure reset after each card
     
                 if (i < hand.size() - 1) {
                     lines[j].append("  "); // Space between cards

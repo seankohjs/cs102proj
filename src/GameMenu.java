@@ -17,14 +17,13 @@ public class GameMenu {
         view.clearScreen();
         System.out.print(Print.BOLD);
         System.out.println();
-        for (int i = 0; i < 5; i++) System.out.print("\u2550");
-        System.out.print(" MENU ");
-        for (int i = 0; i < 5; i++) System.out.print("\u2550");
-        System.out.println();
+        //for (int i = 0; i < 5; i++) System.out.print(Print.SEPARATOR);
+        System.out.println("■■■■■ PARADE GAME MENU ■■■■■");
+        //for (int i = 0; i < 5; i++) System.out.print(Print.SEPARATOR);
         System.out.println();
         System.out.println("1. Play Game");
         System.out.println("2. View Game Rules");
-        System.out.println("3. Quit Application");
+        System.out.println("3. Quit Game");
         System.out.println();
         System.out.print("PLEASE ENTER YOUR CHOICE: ");
         System.out.print(Print.RESET);
@@ -59,7 +58,7 @@ public class GameMenu {
     }
 
     private void startGame() {
-        System.out.print("Enter the number of players (2-6): ");
+        System.out.print("Enter the number of players (2 - 6): ");
         int numPlayers = scanner.nextInt();
         scanner.nextLine(); // consume newline
         List<String> playerNames = new ArrayList<>();
@@ -74,12 +73,12 @@ public class GameMenu {
 
     private void viewGameRules() {
         try {
-            // Create a GameView instance to use its clearScreen method
 
+            // Create a GameView instance to use its clearScreen method
             String fullRules = new String(Files.readAllBytes(Paths.get("GameRules.txt")));
 
             // Split the rules into logical sections
-            String[] sections = fullRules.split("\n\n");
+            String[] sections = fullRules.split(Print.SEPARATOR);
 
             int currentSection = 0;
             boolean viewingRules = true;
@@ -88,17 +87,24 @@ public class GameMenu {
                 view.clearScreen(); // Use GameView's clearScreen method
 
                 // Display section header
-                System.out.println("\n===== GAME RULES =====");
+                System.out.println();
+                System.out.println(Print.BOLD + "■■■■■ PARADE GAME RULES ■■■■■" + Print.RESET);
+                System.out.println();
                 System.out.println("Section " + (currentSection + 1) + " of " + sections.length);
-                System.out.println("------------------\n");
+                System.out.println();
+                System.out.println("■■■■■");
 
                 // Display current section content
-                System.out.println(sections[currentSection]);
+                System.out.print(sections[currentSection]);
+                System.out.println();
 
                 // Navigation options
-                System.out.println("\n------------------");
-                System.out.println("Navigation: [N]ext section | [P]revious section | [Q]uit to menu");
-                System.out.print("Enter your choice: ");
+                System.out.println("■■■■■");
+                System.out.println();
+                System.out.println(Print.BOLD + "NAVIGATION: " + Print.RED + "[N]" + Print.RESET + "ext Section   ■   " + 
+                                                    Print.BOLD + Print.RED + "[P]" + Print.RESET + "revious Section   ■   " + 
+                                                    Print.BOLD + Print.RED + "[Q]" + Print.RESET + "uit to Menu");
+                System.out.print("Enter Your Choice: ");
 
                 String input = scanner.nextLine().trim().toUpperCase();
 
@@ -107,8 +113,9 @@ public class GameMenu {
                         if (currentSection < sections.length - 1) {
                             currentSection++;
                         } else {
-                            System.out.println("You've reached the end of the rules.");
-                            System.out.println("Press Enter to return to the menu...");
+                            System.out.println();
+                            System.out.println(Print.BOLD + "You Have Reached the End of the Game Rules.");
+                            System.out.print("Press" + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "to Return to the Game Menu... " + Print.RESET);
                             scanner.nextLine();
                             viewingRules = false;
                         }
@@ -117,8 +124,9 @@ public class GameMenu {
                         if (currentSection > 0) {
                             currentSection--;
                         } else {
-                            System.out.println("You're already at the beginning of the rules.");
-                            System.out.println("Press Enter to continue...");
+                            System.out.println();
+                            System.out.println("You Have Reached the Beginning of the Game Rules.");
+                            System.out.print("Press" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "to Continue... " + Print.RESET);
                             scanner.nextLine();
                         }
                         break;
@@ -126,13 +134,13 @@ public class GameMenu {
                         viewingRules = false;
                         break;
                     default:
-                        System.out.println("Invalid option. Press Enter to continue...");
+                        System.out.print("INVALID OPTION! " + "Press" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "to Continue... " + Print.RESET);
                         scanner.nextLine();
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error reading game rules: " + e.getMessage());
-            System.out.print("\nPress Enter to return to the menu...");
+            System.out.println("Error Reading GAME RULES: " + e.getMessage());
+            System.out.print("Press" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + "to Return to the MENU... ");
             scanner.nextLine();
         }
     }
