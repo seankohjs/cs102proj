@@ -1,0 +1,52 @@
+--- Game Rules ---
+
+Parade is a card game for 2 to 6 players where the goal is to score as few points as possible.
+
+Game Components:
+ - 66 cards in 6 colors (for example: Red, Blue, Green, Orange, Purple, and Grey).
+ - Each card has a value ranging from 0 to 10.
+ - A score pad for tracking points.
+
+Setup:
+ 1. The starting player is determined randomly.
+ 2. The deck is shuffled.
+ 3. Each player is dealt 5 cards.
+ 4. 6 cards are dealt face up in a row to form the initial "parade".
+ 5. The remaining cards form the draw pile.
+
+Sequence of Play:
+- Play a Card:
+    On your turn, select any card from your hand and play it at the end of the parade.
+- Counting Phase:
+    Immediately after playing your card, count backwards from the end of the parade using the number printed on the card you played.
+-Determine Removal Eligibility:
+  -If the count reaches the beginning of the parade (i.e., all cards are counted), no cards are eligible for removal and your turn ends.
+  -Otherwise, the cards that were not counted become eligible for removal.
+-Removal Phase:
+  -You remove all cards that are of equal value or less of your played card and
+
+Draw Phase:
+-If it is not the final round, after your turn you draw one card from the draw pile, and your hand is adjusted according to the game’s rules.
+
+Ending the Game:
+ - The game enters the final round when either:
+     a) A player collects cards of all 6 colors, OR
+     b) The draw pile is exhausted.
+ - In the final round, players do not draw any cards after playing.
+ - Once the final round is complete (every player gets one last turn), the game ends.
+
+Scoring:
+ - Each player’s score is calculated color by color.
+   For each color:
+     - If a player has the majority of cards in that color, each card counts as 1 point.
+     - In two-player games, a majority is defined as having at least 2 more cards than the opponent. 
+     - Otherwise, the cards are scored by summing their face values.
+ - The overall score is the sum of all color scores.
+ - The player with the lowest total score wins.
+ - In case of a tie, the player with the fewest collected cards wins.
+
+Additional Notes:
+ - During the game, after each turn, you will see your current collection and hand, as well as 
+   other players' collections, to help you plan your moves.
+ - A menu is provided at the start so you can choose to play the game, view these rules, or quit.
+>>>>>>> Stashed changes
