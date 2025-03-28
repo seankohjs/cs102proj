@@ -63,16 +63,16 @@ public class GameController {
             view.displayGameState(deck, paradeLine, isLastRound);
             view.displayPlayerCollections(currentPlayer);
             view.displayOtherPlayersCollections(players, currentPlayer);
-
+    
             if (!currentPlayer.getHand().isEmpty()) {
                 Card cardToPlay = view.getPlayerCardChoice(currentPlayer, paradeLine, players);
                 playTurn(cardToPlay);
             } else {
                 view.displayMessage(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
             }
-
-            // view.promptForNextTurn(currentPlayer);
-
+    
+            view.promptForNextTurn(currentPlayer);
+    
             if (!isLastRound) {
                 checkGameEndConditions();
                 turnManager.nextPlayer();
@@ -80,10 +80,13 @@ public class GameController {
                 turnManager.nextPlayer();
                 extraTurnCount++;
                 if (extraTurnCount >= players.size()) {
+                    // All players have had their final turn - end the game
                     break;
                 }
             }
         }
+        
+        // Call endGame() after exiting the main game loop
         endGame();
     }
 

@@ -1,5 +1,4 @@
 --- Game Rules ---
-
 Parade is a card game for 2 to 6 players where the goal is to score as few points as possible.
 
 Game Components:
@@ -51,4 +50,4 @@ Additional Notes:
  - During the game, after each turn, you will see your current collection and hand, as well as 
    other players' collections, to help you plan your moves.
  - A menu is provided at the start so you can choose to play the game, view these rules, or quit.
->>>>>>> Stashed changes
+

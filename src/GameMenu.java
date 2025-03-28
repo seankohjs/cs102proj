@@ -116,19 +116,47 @@ public class GameMenu {
 
     private void viewGameRules() {
         try {
-
-            // Create a GameView instance to use its clearScreen method
             String fullRules = new String(Files.readAllBytes(Paths.get("GameRules.txt")));
-
-            // Split the rules into logical sections
-            String[] sections = fullRules.split(Print.SEPARATOR);
-
+            
+            // Split the rules by empty lines (consecutive newlines)
+            String[] rawSections = fullRules.split("\n\\s*\n");
+            
+            // Clean up the sections
+            List<String> validSections = new ArrayList<>();
+            for (String section : rawSections) {
+                if (!section.trim().isEmpty()) {
+                    validSections.add(section.trim());
+                }
+            }
+            
+            String[] sections = validSections.toArray(new String[0]);
+            
+            // If no sections were found or very few, fall back to arbitrary chunking
+            if (sections.length <= 1) {
+                // Split into chunks of approximately 20 lines each
+                String[] lines = fullRules.split("\n");
+                int linesPerSection = 20;
+                int numSections = (int) Math.ceil((double) lines.length / linesPerSection);
+                
+                sections = new String[numSections];
+                for (int i = 0; i < numSections; i++) {
+                    StringBuilder sectionBuilder = new StringBuilder();
+                    int startLine = i * linesPerSection;
+                    int endLine = Math.min(startLine + linesPerSection, lines.length);
+                    
+                    for (int j = startLine; j < endLine; j++) {
+                        sectionBuilder.append(lines[j]).append("\n");
+                    }
+                    sections[i] = sectionBuilder.toString().trim();
+                }
+            }
+    
             int currentSection = 0;
             boolean viewingRules = true;
-
+    
             while (viewingRules && currentSection < sections.length) {
-                view.clearScreen(); // Use GameView's clearScreen method
-
+                view.clearScreen();
+    
                 // Display section header
                 System.out.println();
                 System.out.println(Print.BOLD + "■■■■■ PARADE GAME RULES ■■■■■" + Print.RESET);
@@ -136,21 +164,21 @@ public class GameMenu {
                 System.out.println("Section " + (currentSection + 1) + " of " + sections.length);
                 System.out.println();
                 System.out.println("■■■■■");
-
+    
                 // Display current section content
-                System.out.print(sections[currentSection]);
+                System.out.println(sections[currentSection]);
                 System.out.println();
-
+    
                 // Navigation options
                 System.out.println("■■■■■");
                 System.out.println();
                 System.out.println(Print.BOLD + "NAVIGATION: " + Print.RED + "[N]" + Print.RESET + "ext Section   ■   " + 
-                                                    Print.BOLD + Print.RED + "[P]" + Print.RESET + "revious Section   ■   " + 
-                                                    Print.BOLD + Print.RED + "[Q]" + Print.RESET + "uit to Menu");
+                                                Print.BOLD + Print.RED + "[P]" + Print.RESET + "revious Section   ■   " + 
+                                                Print.BOLD + Print.RED + "[Q]" + Print.RESET + "uit to Menu");
                 System.out.print("Enter Your Choice: ");
-
+    
                 String input = scanner.nextLine().trim().toUpperCase();
-
+    
                 switch (input) {
                     case "N":
                         if (currentSection < sections.length - 1) {
