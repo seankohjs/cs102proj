@@ -9,10 +9,7 @@ public class BotPlayer extends Player {
         super(playerName);
         this.difficulty = difficulty;
         this.random = new Random();
-    }
-
-    public boolean isBot() {
-        return true;
+        this.isBot=true;
     }
 
     public Card selectCard(ParadeLine paradeLine, List<Player> players) {
