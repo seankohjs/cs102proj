@@ -100,6 +100,19 @@ public class GameView {
     // Prompts the user to press 'y' to continue and shows a countdown.
     public void promptForNextTurn(Player player) {
         System.out.println();
+        
+        // If player is a bot, automatically continue after a short delay
+        if (player.isBot()) {
+            System.out.println("Bot player " + player.getPlayerName() + " is ready to continue...");
+            try {
+                Thread.sleep(2000); // 2 second delay so human players can read what happened
+            } catch (InterruptedException e) {
+                // Ignore interruption
+            }
+            return;
+        }
+        
+        // Original human player logic
         System.out.print("Enter [Y] to Continue: ");
         String input = scanner.nextLine();
         while (!input.equalsIgnoreCase("y")) {
@@ -118,6 +131,26 @@ public class GameView {
 
     // Interactively prompts the user to discard cards until only 2 remain.
     public void interactiveDiscardTwoCards(Player player) {
+        // Check if the player is a bot
+        if (player.isBot()) {
+            BotPlayer bot = (BotPlayer) player;
+            // Bot logic for discarding cards
+            while (player.getHand().size() > 2) {
+                System.out.println("\n" + player.getPlayerName() + " (Bot) is choosing a card to discard...");
+                
+                try {
+                    Thread.sleep(1000); // Simulate thinking
+                } catch (InterruptedException e) {
+                    // Ignore interruption
+                }
+                
+                // Use the bot's discard logic
+                Card discarded = bot.selectCardToDiscard();
+                player.getHand().remove(discarded);
+                System.out.println(player.getPlayerName() + " discarded: " + discarded);
+            }
+            return;
+        }
         while (player.getHand().size() > 2) {
             System.out.println("\n" + player.getPlayerName() + ", Choose a Card to" + Print.RED + " Discard " + Print.RESET + "from your Hand: "
                     + GameUtils.handToString(player.getHand()));
@@ -143,7 +176,29 @@ public class GameView {
     }
 
     // Prompts the player for a card choice from their hand.
-    public Card getPlayerCardChoice(Player currentPlayer) {
+    public Card getPlayerCardChoice(Player currentPlayer, ParadeLine paradeLine, List<Player> allPlayers) {
+        // If player is a bot, use the bot's card selection logic
+        if (currentPlayer.isBot()) {
+            // Cast is safe because we checked isBot()
+            BotPlayer bot = (BotPlayer) currentPlayer;
+            Card selectedCard = bot.selectCard(paradeLine, allPlayers);
+            
+            // Remove and return the selected card
+            currentPlayer.getHand().remove(selectedCard);
+            
+            // Show which card the bot selected
+            System.out.println("\n" + currentPlayer.getPlayerName() + " is thinking...");
+            try {
+                Thread.sleep(1500); // Add delay to simulate "thinking"
+            } catch (InterruptedException e) {
+                // Ignore interruption
+            }
+            System.out.println(currentPlayer.getPlayerName() + " plays card: " + selectedCard);
+            
+            return selectedCard;
+        }
+        
+        // Original human player logic
         while (true) {
             System.out.println("\nYour Hand: ");
             System.out.println(GameUtils.handToString(currentPlayer.getHand()));

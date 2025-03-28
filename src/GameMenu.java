@@ -58,17 +58,60 @@ public class GameMenu {
     }
 
     private void startGame() {
-        System.out.print("Enter the Number of Players (2 - 6): ");
-        int numPlayers = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        System.out.print("Enter the Number of Human Players (1 - 5): ");
+        int numHumans = getValidInput(1, 5);
+        
+        System.out.print("Enter the Number of Bot Players (0 - " + (6 - numHumans) + "): ");
+        int numBots = getValidInput(0, 6 - numHumans);
+        
         List<String> playerNames = new ArrayList<>();
-        for (int i = 0; i < numPlayers; i++) {
+        List<Boolean> isBot = new ArrayList<>();
+        List<Integer> botDifficulties = new ArrayList<>();
+        
+        // Get human player names
+        for (int i = 0; i < numHumans; i++) {
             System.out.print("Enter Name for Player " + (i + 1) + ": ");
             playerNames.add(scanner.nextLine());
+            isBot.add(false);
+            botDifficulties.add(0); // Not applicable for human
         }
-        // Create the game controller and start the game.
-        GameController game = new GameController(playerNames, scanner);
+        
+        // Get bot details
+        for (int i = 0; i < numBots; i++) {
+            System.out.print("Enter Name for Bot " + (i + 1) + " (or press Enter for automatic name): ");
+            String botName = scanner.nextLine();
+            if (botName.isEmpty()) {
+                botName = "Bot " + (i + 1);
+            }
+            playerNames.add(botName);
+            isBot.add(true);
+            
+            System.out.print("Select Difficulty for " + botName + " (1: Easy, 2: Medium, 3: Hard): ");
+            int difficulty = getValidInput(1, 3);
+            botDifficulties.add(difficulty);
+        }
+        
+        // Create the game controller with both human and bot players
+        GameController game = new GameController(playerNames, isBot, botDifficulties, scanner);
         game.startGame();
+    }
+
+    private int getValidInput(int min, int max) {
+        int value;
+        while (true) {
+            if (scanner.hasNextInt()) {
+                value = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+                if (value >= min && value <= max) {
+                    return value;
+                } else {
+                    System.out.print("Please enter a number between " + min + " and " + max + ": ");
+                }
+            } else {
+                System.out.print("Invalid input. Please enter a number: ");
+                scanner.nextLine();
+            }
+        }
     }
 
     private void viewGameRules() {

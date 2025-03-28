@@ -46,6 +46,8 @@ public class Player {
         collectedCards.addAll(hand);
         hand.clear(); // Hand is now empty after scoring
     }
-
+    public boolean isBot() {
+        return false; // Base Player is always human
+    }
 
 }

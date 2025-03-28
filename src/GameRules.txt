@@ -23,7 +23,9 @@ Sequence of Play:
   -If the count reaches the beginning of the parade (i.e., all cards are counted), no cards are eligible for removal and your turn ends.
   -Otherwise, the cards that were not counted become eligible for removal.
 -Removal Phase:
-  -You remove all cards that are of equal value or less of your played card and
+  -From the eligible cards, remove all cards that are either:
+    -Equal in value to the card you played, or
+    -Of the same suit as the card you played.
 
 Draw Phase:
 -If it is not the final round, after your turn you draw one card from the draw pile, and your hand is adjusted according to the game’s rules.

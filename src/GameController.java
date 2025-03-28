@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -16,17 +17,24 @@ public class GameController {
     private int extraTurnCount = 0;
     private GameView view;
 
-    public GameController(List<String> playerNames, Scanner scanner) {
+    public GameController(List<String> playerNames, List<Boolean> isBot,
+            List<Integer> botDifficulties, Scanner scanner) {
         this.deck = new Deck();
         this.paradeLine = new ParadeLine();
         this.players = new ArrayList<>();
-        for (String name : playerNames) {
-            players.add(new Player(name));
+
+        // Create the appropriate player types
+        for (int i = 0; i < playerNames.size(); i++) {
+            if (isBot.get(i)) {
+                players.add(new BotPlayer(playerNames.get(i), botDifficulties.get(i)));
+            } else {
+                players.add(new Player(playerNames.get(i)));
+            }
         }
+
         this.turnManager = new TurnManager(players);
         this.scoreCalculator = new ScoreCalculator();
         this.isLastRound = false;
-        // Instantiate the view and pass in the scanner
         this.view = new GameView(scanner);
 
         // Deal initial parade line (6 cards)
@@ -57,7 +65,7 @@ public class GameController {
             view.displayOtherPlayersCollections(players, currentPlayer);
 
             if (!currentPlayer.getHand().isEmpty()) {
-                Card cardToPlay = view.getPlayerCardChoice(currentPlayer);
+                Card cardToPlay = view.getPlayerCardChoice(currentPlayer, paradeLine, players);
                 playTurn(cardToPlay);
             } else {
                 view.displayMessage(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
@@ -113,6 +121,7 @@ public class GameController {
     }
 
     private void endGame() {
+        view.clearScreen();
         view.displayMessage("\nGame Over!");
         view.displayMessage("\n--- Discarding 2 Hand Cards for Scoring ---");
 
@@ -130,12 +139,90 @@ public class GameController {
             view.promptForNextTurn(player);
         }
 
-        view.displayMessage("\n--- Final Player Collections Before Scoring ---");
+        // Show the final scoreboard with clear formatting
+        displayFinalScoreboard();
+
+        // Wait for user acknowledgment before returning to menu
+        System.out
+                .println("\n" + Print.BOLD + "Game complete! Press [ENTER] to return to the main menu." + Print.RESET);
+        Scanner scanner = new Scanner(System.in); 
+        scanner.nextLine(); // Wait for user to press Enter
+    }
+
+    private void displayFinalScoreboard() {
+        view.clearScreen();
+
+        System.out.println("\n" + Print.BOLD + "■■■■■ FINAL RESULTS ■■■■■" + Print.RESET);
+        System.out.println("\n--- Final Player Collections ---");
+
         for (Player player : players) {
             view.displayPlayerCollections(player);
+            System.out.println(); // Add spacing between players
         }
-        calculateFinalScores();
-        determineWinner();
+
+        // Calculate and display all scores
+        Map<Suit, List<Player>> suitMajorities = scoreCalculator.determineSuitMajorities(players);
+
+        System.out.println(Print.BOLD + "■■■■■ FINAL SCORES ■■■■■" + Print.RESET);
+        System.out.println("\nPlayer               Score");
+        System.out.println("------------------------------");
+
+        // Store scores for determining winner
+        Map<Player, Integer> playerScores = new HashMap<>();
+
+        for (Player player : players) {
+            int score = scoreCalculator.calculatePlayerFinalScore(player, suitMajorities);
+            playerScores.put(player, score);
+
+            // Format the score line with proper spacing
+            String scoreLine = String.format("%-20s %d", player.getPlayerName(), score);
+            System.out.println(scoreLine);
+        }
+
+        // Determine and announce the winner
+        Player winner = scoreCalculator.determineWinner(players);
+        int winnerScore = playerScores.get(winner);
+
+        System.out.println("\n" + Print.BOLD + Print.GREEN + "WINNER: " +
+                winner.getPlayerName() + " with " + winnerScore + " points!" + Print.RESET);
+
+        // Display suit majorities
+        System.out.println("\n" + Print.BOLD + "■■■■■ SUIT MAJORITIES ■■■■■" + Print.RESET);
+        for (Suit suit : Suit.values()) {
+            List<Player> majorityPlayers = suitMajorities.get(suit);
+            if (majorityPlayers != null && !majorityPlayers.isEmpty()) {
+                System.out.print(getSuitColor(suit) + suit + Print.RESET + ": ");
+                for (int i = 0; i < majorityPlayers.size(); i++) {
+                    System.out.print(majorityPlayers.get(i).getPlayerName());
+                    if (i < majorityPlayers.size() - 1) {
+                        System.out.print(", ");
+                    }
+                }
+                System.out.println();
+            } else {
+                System.out.println(getSuitColor(suit) + suit + Print.RESET + ": No majority");
+            }
+        }
+    }
+
+    // Helper method to get color for suit display
+    private String getSuitColor(Suit suit) {
+        switch (suit) {
+            case RED:
+                return Print.RED;
+            case BLUE:
+                return Print.BLUE;
+            case GREEN:
+                return Print.GREEN;
+            case ORANGE:
+                return Print.ORANGE;
+            case PURPLE:
+                return Print.PURPLE;
+            case GREY:
+                return Print.GREY;
+            default:
+                return "";
+        }
     }
 
     private void calculateFinalScores() {
