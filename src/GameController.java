@@ -65,7 +65,7 @@ public class GameController {
                 view.displayMessage(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
             }
 
-            view.promptForNextTurn(currentPlayer);
+            // view.promptForNextTurn(currentPlayer);
 
             if (!isLastRound) {
                 checkGameEndConditions();
