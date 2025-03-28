@@ -1,7 +1,3 @@
-import java.util.List;
-
-import javax.smartcardio.Card;
-
 public class StoopidBot extends Bot{
     private List<Card> hand;
     private List<Card> collectedCards;
