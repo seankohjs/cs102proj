@@ -13,7 +13,7 @@ public class GameController {
     private TurnManager turnManager;
     private ScoreCalculator scoreCalculator;
     private boolean isLastRound;
-
+    private Scanner scanner;
     private int extraTurnCount = 0;
     private GameView view;
 
@@ -22,6 +22,7 @@ public class GameController {
         this.deck = new Deck();
         this.paradeLine = new ParadeLine();
         this.players = new ArrayList<>();
+        this.scanner = scanner;
 
         // Create the appropriate player types
         for (int i = 0; i < playerNames.size(); i++) {
@@ -63,16 +64,16 @@ public class GameController {
             view.displayGameState(deck, paradeLine, isLastRound);
             view.displayPlayerCollections(currentPlayer);
             view.displayOtherPlayersCollections(players, currentPlayer);
-    
+
             if (!currentPlayer.getHand().isEmpty()) {
                 Card cardToPlay = view.getPlayerCardChoice(currentPlayer, paradeLine, players);
                 playTurn(cardToPlay);
             } else {
                 view.displayMessage(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
             }
-    
+
             view.promptForNextTurn(currentPlayer);
-    
+
             if (!isLastRound) {
                 checkGameEndConditions();
                 turnManager.nextPlayer();
@@ -85,7 +86,7 @@ public class GameController {
                 }
             }
         }
-        
+
         // Call endGame() after exiting the main game loop
         endGame();
     }
@@ -148,7 +149,6 @@ public class GameController {
         // Wait for user acknowledgment before returning to menu
         System.out
                 .println("\n" + Print.BOLD + "Game complete! Press [ENTER] to return to the main menu." + Print.RESET);
-        Scanner scanner = new Scanner(System.in); 
         scanner.nextLine(); // Wait for user to press Enter
     }
 
@@ -226,22 +226,6 @@ public class GameController {
             default:
                 return "";
         }
-    }
-
-    private void calculateFinalScores() {
-        view.displayMessage("\n--- Scores ---");
-        Map<Suit, List<Player>> suitMajorities = scoreCalculator.determineSuitMajorities(players);
-        for (Player player : players) {
-            int score = scoreCalculator.calculatePlayerFinalScore(player, suitMajorities);
-            view.displayMessage(player.getPlayerName() + " final score: " + score);
-        }
-    }
-
-    private void determineWinner() {
-        Player winner = scoreCalculator.determineWinner(players);
-        Map<Suit, List<Player>> suitMajorities = scoreCalculator.determineSuitMajorities(players);
-        int winnerScore = scoreCalculator.calculatePlayerFinalScore(winner, suitMajorities);
-        view.displayMessage("\nWinner: " + winner.getPlayerName() + " with score " + winnerScore + "!");
     }
 
     private void checkGameEndConditions() {
