@@ -63,7 +63,7 @@ public class GameController {
                 view.displayMessage(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
             }
 
-            view.promptForNextTurn(currentPlayer);
+            // view.promptForNextTurn(currentPlayer);
 
             if (!isLastRound) {
                 checkGameEndConditions();
@@ -140,7 +140,7 @@ public class GameController {
 
     private void calculateFinalScores() {
         view.displayMessage("\n--- Scores ---");
-        Map<Suit, Player> suitMajorities = scoreCalculator.determineSuitMajorities(players);
+        Map<Suit, List<Player>> suitMajorities = scoreCalculator.determineSuitMajorities(players);
         for (Player player : players) {
             int score = scoreCalculator.calculatePlayerFinalScore(player, suitMajorities);
             view.displayMessage(player.getPlayerName() + " final score: " + score);
@@ -149,7 +149,7 @@ public class GameController {
 
     private void determineWinner() {
         Player winner = scoreCalculator.determineWinner(players);
-        Map<Suit, Player> suitMajorities = scoreCalculator.determineSuitMajorities(players);
+        Map<Suit, List<Player>> suitMajorities = scoreCalculator.determineSuitMajorities(players);
         int winnerScore = scoreCalculator.calculatePlayerFinalScore(winner, suitMajorities);
         view.displayMessage("\nWinner: " + winner.getPlayerName() + " with score " + winnerScore + "!");
     }

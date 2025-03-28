@@ -11,15 +11,6 @@ public class Card {
     // SEPARATOR BETWEEN SUIT AND VALUE
     public static final String SEPARATOR = "\u25A0";
 
-    // COLORS
-    public static final String RED = "\u001B[31m";
-    public static final String BLUE = "\u001B[34m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String ORANGE = "\u001B[33m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String GREY = "\u001B[37m";
-    public static final String RESET = "\u001B[0m";
-
     private Suit suit;
     private int value;
 
@@ -53,34 +44,34 @@ public class Card {
     for (int i = 0; i < width - 2; i++) {
         top.append(HORIZONTAL);
     }
-    top.append(TOP_RIGHT).append(RESET);
+    top.append(TOP_RIGHT).append(Print.RESET);
 
     // Build middle part: card suit letter and value
     middle.append(suitColor).append(VERTICAL)
           .append(" ").append(suit.toString().charAt(0)).append(" ")
           .append(SEPARATOR)
           .append(" ").append(value).append(" ")
-          .append(VERTICAL).append(RESET);
+          .append(VERTICAL).append(Print.RESET);
 
     // Build bottom border
     bottom.append(suitColor).append(BOTTOM_LEFT);
     for (int i = 0; i < width - 2; i++) {
         bottom.append(HORIZONTAL);
     }
-    bottom.append(BOTTOM_RIGHT).append(RESET);
+    bottom.append(BOTTOM_RIGHT).append(Print.RESET);
 
     return top.toString() + "\n" + middle.toString() + "\n" + bottom.toString();
     }
 
     private static String getColorForSuit(Suit suit) {
         switch (suit) {
-            case Suit.RED: return RED;
-            case Suit.BLUE: return BLUE;
-            case Suit.GREEN: return GREEN;
-            case Suit.ORANGE: return ORANGE;
-            case Suit.PURPLE: return PURPLE;
-            case Suit.GREY: return GREY;
-            default: return RESET;
+            case Suit.RED: return Print.RED;
+            case Suit.BLUE: return Print.BLUE;
+            case Suit.GREEN: return Print.GREEN;
+            case Suit.ORANGE: return Print.ORANGE;
+            case Suit.PURPLE: return Print.PURPLE;
+            case Suit.GREY: return Print.GREY;
+            default: return Print.RESET;
         }
     }
 }

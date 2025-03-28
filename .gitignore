@@ -1,1 +1,3 @@
 src/**/*.class
+out/**/*.class
+out/*.class
