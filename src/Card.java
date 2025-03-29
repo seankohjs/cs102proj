@@ -37,7 +37,7 @@ public class Card {
     String suitColor = getColorForSuit(suit);
 
     // Determine the width based on card value length (use 10 for 10, 9 for others)
-    int width = (value == 10) ? 10 : 9;
+    int width = (value == 10) ? 12 : 11;
 
     // Build top border with color
     top.append(suitColor).append(TOP_LEFT);
@@ -47,11 +47,19 @@ public class Card {
     top.append(TOP_RIGHT).append(Print.RESET);
 
     // Build middle part: card suit letter and value
-    middle.append(suitColor).append(VERTICAL)
-          .append(" ").append(suit.toString().charAt(0)).append(" ")
+    if (value == 10) {
+        middle.append(suitColor).append(VERTICAL)
+          .append(" ").append(suit.toString().substring(0, 2)).append(" ")
           .append(SEPARATOR)
           .append(" ").append(value).append(" ")
           .append(VERTICAL).append(Print.RESET);
+    } else {
+        middle.append(suitColor).append(VERTICAL)
+          .append(" ").append(suit.toString().substring(0, 2)).append(" ")
+          .append(SEPARATOR)
+          .append(" 0").append(value).append(" ")
+          .append(VERTICAL).append(Print.RESET);
+    }
 
     // Build bottom border
     bottom.append(suitColor).append(BOTTOM_LEFT);

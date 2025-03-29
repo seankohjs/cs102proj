@@ -103,9 +103,9 @@ public class GameView {
         
         // If player is a bot, automatically continue after a short delay
         if (player.isBot()) {
-            System.out.println("Bot player " + player.getPlayerName() + " is ready to continue...");
+            System.out.println("BOT Player " + player.getPlayerName() + " is Ready to Continue...");
             try {
-                Thread.sleep(2000); // 2 second delay so human players can read what happened
+                Thread.sleep(5000); // 2 second delay so human players can read what happened
             } catch (InterruptedException e) {
                 // Ignore interruption
             }
@@ -170,7 +170,7 @@ public class GameView {
                     scanner.nextLine();
                 }
             }
-            Card discarded = player.getHand().remove(index);
+            Card discarded = player.getHand().remove(index - 1);
             System.out.println("Discarded: " + discarded);
         }
     }
@@ -187,13 +187,17 @@ public class GameView {
             currentPlayer.getHand().remove(selectedCard);
             
             // Show which card the bot selected
-            System.out.println("\n" + currentPlayer.getPlayerName() + " is thinking...");
+            System.out.println();
+            System.out.println(currentPlayer.getPlayerName() + " IS THINKING...");
+            System.out.println();
             try {
-                Thread.sleep(1500); // Add delay to simulate "thinking"
+                Thread.sleep(5000); // Add delay to simulate "thinking"
             } catch (InterruptedException e) {
                 // Ignore interruption
             }
-            System.out.println(currentPlayer.getPlayerName() + " plays card: " + selectedCard);
+            System.out.println();
+            System.out.println(currentPlayer.getPlayerName() + " PLAYS CARD:\n" + selectedCard);
+            System.out.println();
             
             return selectedCard;
         }
@@ -203,13 +207,13 @@ public class GameView {
             System.out.println("\nYour Hand: ");
             System.out.println(GameUtils.handToString(currentPlayer.getHand()));
             System.out.println();
-            System.out.print("Enter the Index of the Card You Want to Play (0 to "
+            System.out.print("Enter the Index of the Card You Want to Play (1 to "
                     + (currentPlayer.getHand().size() - 1) + "): ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
                 scanner.nextLine();
                 if (index >= 0 && index < currentPlayer.getHand().size()) {
-                    return currentPlayer.getHand().remove(index);
+                    return currentPlayer.getHand().remove(index - 1);
                 } else {
                     System.out.println("INVALID CARD INDEX. Please Try Again.");
                 }
@@ -228,7 +232,7 @@ public class GameView {
             return null;
         }
         while (true) {
-            System.out.print("Enter the Index of the Card You Want to Take (0 to " + (candidates.size() - 1)
+            System.out.print("Enter the Index of the Card You Want to Take (1 to " + (candidates.size() - 1)
                     + "), or -1 to Take NONE: ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
@@ -236,7 +240,7 @@ public class GameView {
                 if (index == -1) {
                     return null;
                 } else if (index >= 0 && index < candidates.size()) {
-                    return candidates.get(index);
+                    return candidates.get(index - 1);
                 } else {
                     System.out.println("INVALID INDEX. Try Again.");
                 }
