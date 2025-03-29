@@ -170,7 +170,7 @@ public class GameView {
                     scanner.nextLine();
                 }
             }
-            Card discarded = player.getHand().remove(index - 1);
+            Card discarded = player.getHand().remove(index-1);
             System.out.println("Discarded: " + discarded);
         }
     }
@@ -213,7 +213,7 @@ public class GameView {
                 int index = scanner.nextInt();
                 scanner.nextLine();
                 if (index >= 0 && index < currentPlayer.getHand().size()) {
-                    return currentPlayer.getHand().remove(index - 1);
+                    return currentPlayer.getHand().remove(index-1);
                 } else {
                     System.out.println("INVALID CARD INDEX. Please Try Again.");
                 }
@@ -240,7 +240,7 @@ public class GameView {
                 if (index == -1) {
                     return null;
                 } else if (index >= 0 && index < candidates.size()) {
-                    return candidates.get(index - 1);
+                    return candidates.get(index-1);
                 } else {
                     System.out.println("INVALID INDEX. Try Again.");
                 }
