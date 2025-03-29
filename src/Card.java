@@ -38,8 +38,13 @@ public class Card {
 
     // Determine the width based on card value length (use 10 for 10, 9 for others)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     int width = 13;
     //int width = (value == 10) ? 12 : 11;
+=======
+    // int width = (value == 10) ? 12 : 11;
+    int width = 11;
+>>>>>>> Stashed changes
 =======
     // int width = (value == 10) ? 12 : 11;
     int width = 11;

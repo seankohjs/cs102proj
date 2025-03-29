@@ -29,8 +29,14 @@ public class GameUtils {
         Card card = hand.get(i);
         // Determine the card width: 10 if value==10, otherwise 9
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         int cardWidth = 11;
         
+=======
+        // int cardWidth = (card.getValue() == 10) ? 12 : 11;
+        int cardWidth = 11;
+
+>>>>>>> Stashed changes
 =======
         // int cardWidth = (card.getValue() == 10) ? 12 : 11;
         int cardWidth = 11;
@@ -47,7 +53,10 @@ public class GameUtils {
                  .append(Print.BOLD).append("[").append(indexStr).append("]").append(Print.RESET)
                  .append(" ".repeat(rightPadding - 1));
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         

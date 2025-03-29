@@ -213,7 +213,11 @@ public class GameView {
                 int index = scanner.nextInt();
                 scanner.nextLine();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 if (index >= 0 && index < currentPlayer.getHand().size()) {
+=======
+                if (index >= 0 && (index-1) < currentPlayer.getHand().size()) {
+>>>>>>> Stashed changes
 =======
                 if (index >= 0 && (index-1) < currentPlayer.getHand().size()) {
 >>>>>>> Stashed changes
@@ -244,7 +248,11 @@ public class GameView {
                 if (index == -1) {
                     return null;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 } else if (index >= 0 && index < candidates.size()) {
+=======
+                } else if (index >= 0 && (index-1) < candidates.size()) {
+>>>>>>> Stashed changes
 =======
                 } else if (index >= 0 && (index-1) < candidates.size()) {
 >>>>>>> Stashed changes
