@@ -208,11 +208,15 @@ public class GameView {
             System.out.println(GameUtils.handToString(currentPlayer.getHand()));
             System.out.println();
             System.out.print("Enter the Index of the Card You Want to Play (1 to "
-                    + (currentPlayer.getHand().size() - 1) + "): ");
+                    + (currentPlayer.getHand().size()) + "): ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
                 scanner.nextLine();
+<<<<<<< Updated upstream
                 if (index >= 0 && index < currentPlayer.getHand().size()) {
+=======
+                if (index >= 0 && (index-1) < currentPlayer.getHand().size()) {
+>>>>>>> Stashed changes
                     return currentPlayer.getHand().remove(index-1);
                 } else {
                     System.out.println("INVALID CARD INDEX. Please Try Again.");
@@ -232,14 +236,18 @@ public class GameView {
             return null;
         }
         while (true) {
-            System.out.print("Enter the Index of the Card You Want to Take (1 to " + (candidates.size() - 1)
+            System.out.print("Enter the Index of the Card You Want to Take (1 to " + (candidates.size())
                     + "), or -1 to Take NONE: ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
                 scanner.nextLine();
                 if (index == -1) {
                     return null;
+<<<<<<< Updated upstream
                 } else if (index >= 0 && index < candidates.size()) {
+=======
+                } else if (index >= 0 && (index-1) < candidates.size()) {
+>>>>>>> Stashed changes
                     return candidates.get(index-1);
                 } else {
                     System.out.println("INVALID INDEX. Try Again.");
