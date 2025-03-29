@@ -212,15 +212,7 @@ public class GameView {
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
                 scanner.nextLine();
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                if (index >= 0 && index < currentPlayer.getHand().size()) {
-=======
                 if (index >= 0 && (index-1) < currentPlayer.getHand().size()) {
->>>>>>> Stashed changes
-=======
-                if (index >= 0 && (index-1) < currentPlayer.getHand().size()) {
->>>>>>> Stashed changes
                     return currentPlayer.getHand().remove(index-1);
                 } else {
                     System.out.println("INVALID CARD INDEX. Please Try Again.");
@@ -247,15 +239,7 @@ public class GameView {
                 scanner.nextLine();
                 if (index == -1) {
                     return null;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                } else if (index >= 0 && index < candidates.size()) {
-=======
                 } else if (index >= 0 && (index-1) < candidates.size()) {
->>>>>>> Stashed changes
-=======
-                } else if (index >= 0 && (index-1) < candidates.size()) {
->>>>>>> Stashed changes
                     return candidates.get(index-1);
                 } else {
                     System.out.println("INVALID INDEX. Try Again.");
