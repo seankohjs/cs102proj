@@ -1,5 +1,3 @@
-package refactor;
-
 // Represents the 6 suits (colors) in the Parade deck.
 public enum Suit {
     RED, // Or Color1, Red, etc.

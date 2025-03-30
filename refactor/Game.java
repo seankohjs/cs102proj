@@ -1,5 +1,3 @@
-package refactor;
-
 import java.util.*; // Import necessary utilities
 import java.util.stream.Collectors;
 

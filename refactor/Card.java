@@ -1,5 +1,3 @@
-package refactor;
-
 import java.util.Objects;
 
 public final class Card {
