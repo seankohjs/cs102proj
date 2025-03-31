@@ -49,7 +49,7 @@ public class GameController {
 
     public void startGame() {
         while (true) {
-            //view.clearScreen();
+            view.clearScreen();
             Player currentPlayer = turnManager.getCurrentPlayer();
             view.displayTurnHeader(currentPlayer);
             view.displayGameState(deck, paradeLine, isLastRound);
@@ -115,12 +115,12 @@ public class GameController {
     }
 
     public void endGame() {
-        //view.clearScreen();
+        view.clearScreen();
         view.displayMessage(Print.BOLD + Print.RED + "\nGAME OVER" + Print.RESET);
         view.displayMessage(Print.BOLD + "\n■■■■■ *** SCORING STAGE -" + Print.RED + " DISCARD " + Print.GREY + "2 CARDS FROM HAND *** ■■■■■" + Print.RESET);
 
         for (Player player : players) {
-            //view.clearScreen();
+            view.clearScreen();
             view.displayMessage("\n" + player.getPlayerName() + ", IT'S TIME TO" + Print.RED + Print.BOLD + " DISCARD " + Print.GREY + "2 CARDS FROM YOUR HAND.." + Print.RESET);
             view.displayMessage(Print.BOLD + Print.GREEN + player.getPlayerName() + "'S " + Print.GREY + "CURRENT COLLECTION :: " + Print.RESET);
             view.displayPlayerCollections(player);
@@ -140,7 +140,7 @@ public class GameController {
     }
 
     private void displayFinalScoreboard() {
-        //view.clearScreen();
+        view.clearScreen();
 
         System.out.println(Print.BOLD + "\n■■■■■     FINAL RESULTS     ■■■■■");
         System.out.println("\n■■■■■ *** FINAL PLAYER COLLECTIONS *** ■■■■■" + Print.RESET);

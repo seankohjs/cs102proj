@@ -25,7 +25,7 @@ public class GameMenu {
     }
 
     public void readOption() {
-        //view.clearScreen();
+        view.clearScreen();
         display();
         int choice = 0;
         boolean valid = false;
@@ -154,7 +154,7 @@ public class GameMenu {
             boolean viewingRules = true;
     
             while (viewingRules && currentSection < sections.length) {
-                //view.clearScreen();
+                view.clearScreen();
     
                 // Display section header
                 System.out.println();
