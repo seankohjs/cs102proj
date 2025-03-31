@@ -40,9 +40,9 @@ public class GameView {
         }
         System.out.println();
         System.out.println(Print.BOLD + "■■■■■ GAME STATE ■■■■■" + Print.RESET);
-        System.out.println(Print.BOLD + "Parade Line:" + Print.RESET);
+        System.out.println(Print.BOLD + "PARADE LINE:" + Print.RESET);
         System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
-        System.out.println(Print.BOLD + "Cards in Deck: " + deck.getCardCount() + Print.RESET);
+        System.out.println(Print.BOLD + "CARDS IN DECK: " + deck.getCardCount() + Print.RESET);
     }
 
     // Displays a message (a simple wrapper).
@@ -53,7 +53,7 @@ public class GameView {
     // Displays the current player's collection.
     public void displayPlayerCollections(Player player) {
         System.out.println();
-        System.out.println(Print.BOLD + "■■■■■ " + player.getPlayerName() + "'S COLLECTED CARDS ■■■■■");
+        System.out.println(Print.BOLD + "■■■■■ " + player.getPlayerName() + "'S COLLECTED CARDS ■■■■■" + Print.RESET);
         Map<Color, List<Card>> collectionsByColor = new HashMap<>();
         for (Color color : Color.values()) {
             collectionsByColor.put(color, new ArrayList<>());
@@ -68,17 +68,17 @@ public class GameView {
             }
         }
         if (player.getCollectedCards().isEmpty()) {
-            System.out.println("No Cards Collected Yet.");
+            System.out.println(Print.BOLD + "NO CARDS COLLECTED YET.." + Print.RESET);
         }
     }
 
     // Displays other players' collections.
     public void displayOtherPlayersCollections(List<Player> players, Player currentPlayer) {
         System.out.println();
-        System.out.println("■■■■■ Other Players' Collections ■■■■■");
+        System.out.println(Print.BOLD + "■■■■■ OTHER PLAYERS' COLLECTIONS ■■■■■" + Print.RESET);
         for (Player player : players) {
             if (player != currentPlayer) {
-                System.out.println(player.getPlayerName() + "'s Collected Cards:");
+                System.out.println(Print.BOLD + player.getPlayerName() + "'S COLLECTED CARDS:" + Print.RESET);
                 Map<Color, List<Card>> collectionsByColor = new HashMap<>();
                 for (Color color : Color.values()) {
                     collectionsByColor.put(color, new ArrayList<>());
@@ -103,7 +103,7 @@ public class GameView {
         
         // If player is a bot, automatically continue after a short delay
         if (player.isBot()) {
-            System.out.println("BOT Player " + player.getPlayerName() + " is Ready to Continue...");
+            System.out.println(Print.BOLD + "BOT PLAYER " + player.getPlayerName() + " IS READY TO CONTINUE.." + Print.RESET);
             try {
                 Thread.sleep(1000); // 2 second delay so human players can read what happened
             } catch (InterruptedException e) {
@@ -113,15 +113,15 @@ public class GameView {
         }
         
         // Original human player logic
-        System.out.print("Enter [Y] to Continue: ");
+        System.out.print(Print.BOLD + "ENTER [Y] TO CONTINUE: " + Print.RESET);
         String input = scanner.nextLine();
         while (!input.equalsIgnoreCase("y")) {
-            System.out.print("Please Enter [Y] to Continue: ");
+            System.out.print(Print.BOLD + "PLEASE ENTER [Y] TO CONTINUE: " + Print.RESET);
             input = scanner.nextLine();
         }
         try {
             for (int i = 2; i > 0; i--) {
-                System.out.println("Next Turn In " + i + " Second" + (i > 1 ? "s" : "") + "...");
+                System.out.println(Print.BOLD + "NEXT TURN IN " + i + " SECOND" + (i > 1 ? "S" : "") + ".." + Print.RESET);
                 Thread.sleep(5);
             }
         } catch (InterruptedException e) {
@@ -136,7 +136,7 @@ public class GameView {
             BotPlayer bot = (BotPlayer) player;
             // Bot logic for discarding cards
             while (player.getHand().size() > 2) {
-                System.out.println("\n" + player.getPlayerName() + " (BOT) is Choosing a Card to Discard...");
+                System.out.println(Print.BOLD + "\n" + player.getPlayerName() + " (BOT) IS CHOOSING A CARD TO DISCARD.." + Print.RESET);
                 
                 try {
                     Thread.sleep(1000); // Simulate thinking
@@ -154,23 +154,23 @@ public class GameView {
         }
         while (player.getHand().size() > 2) {
             System.out.println();
-            System.out.println(player.getPlayerName() + ", Choose a Card to" + Print.RED + Print.BOLD + " DISCARD " + Print.RESET + "from your Hand: ");
+            System.out.println(Print.BOLD + player.getPlayerName() + ", CHOOSE A CARD TO" + Print.RED + " DISCARD " + Print.GREY + "FROM YOUR HAND :: " + Print.RESET);
             System.out.println();
             System.out.println(GameUtils.handToString(player.getHand()));
             System.out.println();
             int index = 0;
             while (true) {
-                System.out.print("Enter the INDEX of the Card you Want to" + Print.RED + Print.BOLD + " DISCARD: " + Print.RESET);
+                System.out.print(Print.BOLD + "ENTER THE INDEX OF THE CARD YOU WANT TO" + Print.RED + Print.BOLD + " DISCARD :: " + Print.RESET);
                 if (scanner.hasNextInt()) {
                     index = scanner.nextInt();
                     scanner.nextLine();
                     if (index >= 1 && index <= player.getHand().size()) {
                         break;
                     } else {
-                        System.out.println("INVALID INDEX, Please Try Again.");
+                        System.out.println(Print.BOLD + Print.RED + "INVALID INDEX, PLEASE TRY AGAIN.." + Print.RESET);
                     }
                 } else {
-                    System.out.println("INVALID INPUT, Please Enter a Number.");
+                    System.out.println(Print.BOLD + Print.RED + "INVALID INPUT, PLEASE ENTER A NUMBER.." + Print.RESET);
                     scanner.nextLine();
                 }
             }
@@ -193,7 +193,7 @@ public class GameView {
             
             // Show which card the bot selected
             System.out.println();
-            System.out.println(currentPlayer.getPlayerName() + " IS THINKING...");
+            System.out.println(Print.BOLD + currentPlayer.getPlayerName() + " IS THINKING.." + Print.RESET);
             System.out.println();
             try {
                 Thread.sleep(1000); // Add delay to simulate "thinking"
@@ -201,7 +201,7 @@ public class GameView {
                 // Ignore interruption
             }
             System.out.println();
-            System.out.println(currentPlayer.getPlayerName() + " PLAYS CARD:\n" + selectedCard);
+            System.out.println(Print.BOLD + currentPlayer.getPlayerName() + " PLAYS CARD ::\n" + selectedCard + Print.RESET);
             System.out.println();
             
             return selectedCard;
@@ -209,21 +209,20 @@ public class GameView {
         
         // Original human player logic
         while (true) {
-            System.out.println("\nYour Hand: ");
+            System.out.println(Print.BOLD + "\nYOUR HAND :: " + Print.RESET);
             System.out.println(GameUtils.handToString(currentPlayer.getHand()));
             System.out.println();
-            System.out.print("Enter the Index of the Card You Want to Play (1 to "
-                    + (currentPlayer.getHand().size()) + "): ");
+            System.out.print(Print.BOLD + "ENTER THE INDEX OF THE CARD YOU WANT TO PLAY (1 TO " + (currentPlayer.getHand().size()) + ") :: " + Print.RESET);
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
                 scanner.nextLine();
                 if (index >= 0 && (index-1) < currentPlayer.getHand().size()) {
                     return currentPlayer.getHand().remove(index-1);
                 } else {
-                    System.out.println("INVALID CARD INDEX. Please Try Again.");
+                    System.out.println(Print.BOLD + "INVALID CARD INDEX, PLEASE TRY AGAIN.." + Print.RESET);
                 }
             } else {
-                System.out.println("INVALID INPUT. Please Enter a Number.");
+                System.out.println(Print.BOLD + "INVALID INPUT, PLEASE ENTER A NUMBER.." + Print.RESET);
                 scanner.nextLine();
             }
         }
@@ -231,14 +230,14 @@ public class GameView {
 
     // Prompts the player to choose a card from a list of candidates.
     public Card getPlayerRemovalChoice(Player currentPlayer, List<Card> candidates, String type) {
-        System.out.println("\nEligible Cards to Take (" + type + "):");
+        System.out.println("\nELIGIBLE CARDS TO TAKE (" + type + ") ::");
         System.out.println(GameUtils.handToString(candidates));
         if (candidates.isEmpty()) {
             return null;
         }
         while (true) {
-            System.out.print("Enter the Index of the Card You Want to Take (1 to " + (candidates.size())
-                    + "), or -1 to Take NONE: ");
+            System.out.print("ENTER THE INDEX OF THE CARD YOU WANT TO TAKE (1 TO " + (candidates.size())
+                    + "), OR" + Print.RED + "[-1]" + Print.GREY + "TO TAKE NONE :: ");
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
                 scanner.nextLine();
@@ -247,10 +246,10 @@ public class GameView {
                 } else if (index >= 0 && (index-1) < candidates.size()) {
                     return candidates.get(index-1);
                 } else {
-                    System.out.println("INVALID INDEX. Please Try Again.");
+                    System.out.println("INVALID INDEX, PLEASE TRY AGAIN..");
                 }
             } else {
-                System.out.println("INVALID INPUT. Please Enter a Number.");
+                System.out.println("INVALID INPUT, PLEASE ENTER A NUMBER..");
                 scanner.nextLine();
             }
         }

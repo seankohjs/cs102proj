@@ -160,7 +160,7 @@ public class GameMenu {
                 System.out.println();
                 System.out.println(Print.BOLD + "■■■■■ PARADE GAME RULES ■■■■■" + Print.RESET);
                 System.out.println();
-                System.out.println("Section " + (currentSection + 1) + " of " + sections.length);
+                System.out.println("SECTION " + (currentSection + 1) + " OF " + sections.length);
                 System.out.println();
                 System.out.println("■■■■■");
     
@@ -171,10 +171,10 @@ public class GameMenu {
                 // Navigation options
                 System.out.println("■■■■■");
                 System.out.println();
-                System.out.println(Print.BOLD + "NAVIGATION: " + Print.RED + "[N]" + Print.RESET + "ext Section   ■   " + 
-                                                Print.BOLD + Print.RED + "[P]" + Print.RESET + "revious Section   ■   " + 
-                                                Print.BOLD + Print.RED + "[Q]" + Print.RESET + "uit to Menu");
-                System.out.print("Enter Your Choice: ");
+                System.out.println(Print.BOLD + "NAVIGATION: " + Print.RED + "[N]" + Print.RESET + "EXT SECTION   ■   " + 
+                                                Print.BOLD + Print.RED + "[P]" + Print.RESET + "REVIOUS SECTION   ■   " + 
+                                                Print.BOLD + Print.RED + "[Q]" + Print.RESET + "UIT TO MENU");
+                System.out.print("ENTER YOUR CHOICE :: ");
     
                 String input = scanner.nextLine().trim().toUpperCase();
     
@@ -184,8 +184,8 @@ public class GameMenu {
                             currentSection++;
                         } else {
                             System.out.println();
-                            System.out.println(Print.BOLD + "You Have Reached the End of the Game Rules.");
-                            System.out.print("Press" + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "to Return to the Game Menu... " + Print.RESET);
+                            System.out.println(Print.BOLD + "YOU HAVE REACHED THE END OF THE GAME RULES..");
+                            System.out.print("PRESS" + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "TO RETURN TO THE MAIN MENU.. " + Print.RESET);
                             scanner.nextLine();
                             viewingRules = false;
                         }
@@ -195,8 +195,8 @@ public class GameMenu {
                             currentSection--;
                         } else {
                             System.out.println();
-                            System.out.println("You Have Reached the Beginning of the Game Rules.");
-                            System.out.print("Press" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "to Continue... " + Print.RESET);
+                            System.out.println("YOU HAVE REACHED THE BEGINNING OF THE GAME RULES.");
+                            System.out.print("PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "TO CONTINUE.. " + Print.RESET);
                             scanner.nextLine();
                         }
                         break;
@@ -204,13 +204,13 @@ public class GameMenu {
                         viewingRules = false;
                         break;
                     default:
-                        System.out.print("INVALID OPTION! " + "Press" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "to Continue... " + Print.RESET);
+                        System.out.print("INVALID OPTION! " + "PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "TO CONTINUE.. " + Print.RESET);
                         scanner.nextLine();
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error Reading GAME RULES: " + e.getMessage());
-            System.out.print("Press" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + "to Return to the MENU... ");
+            System.out.println("ERROR READING GAME RULES: " + e.getMessage());
+            System.out.print("PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + "TO RETURN TO THE MAIN MENU.. ");
             scanner.nextLine();
         }
     }
