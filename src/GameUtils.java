@@ -64,9 +64,6 @@ public class GameUtils {
     return sb.toString().trim();
     }
 
-    
-
-
     // Converts a list of cards into a formatted string without indexes.
     public static String cardsToString(List<Card> cards) {
         if (cards.isEmpty()) return "";
@@ -101,8 +98,6 @@ public class GameUtils {
     
         return sb.toString().trim();
     }
-    
-
 
     // Prints a player's collection in a formatted manner.
     public static String formatPlayerCollection(Map<Color, List<Card>> collectionsByColor) {

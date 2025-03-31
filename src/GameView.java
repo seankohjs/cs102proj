@@ -30,7 +30,7 @@ public class GameView {
     public void displayTurnHeader(Player currentPlayer) {
         System.out.println();
         System.out.println("■■■■■");
-        System.out.println("It's " + currentPlayer.getPlayerName() + "'s Turn!");
+        System.out.println(Print.BOLD + "IT'S " + Print.ORANGE + currentPlayer.getPlayerName() + Print.GREY + "'S TURN!");
     }
 
     // Displays the current game state.
@@ -42,7 +42,7 @@ public class GameView {
         System.out.println(Print.BOLD + "■■■■■ GAME STATE ■■■■■" + Print.RESET);
         System.out.println(Print.BOLD + "Parade Line:" + Print.RESET);
         System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
-        System.out.println("Cards in Deck: " + deck.getCardCount());
+        System.out.println(Print.BOLD + "Cards in Deck: " + deck.getCardCount() + Print.RESET);
     }
 
     // Displays a message (a simple wrapper).
@@ -53,7 +53,7 @@ public class GameView {
     // Displays the current player's collection.
     public void displayPlayerCollections(Player player) {
         System.out.println();
-        System.out.println("■■■■■ " + player.getPlayerName() + "'s Collected Cards ■■■■■");
+        System.out.println(Print.BOLD + "■■■■■ " + player.getPlayerName() + "'S COLLECTED CARDS ■■■■■");
         Map<Color, List<Card>> collectionsByColor = new HashMap<>();
         for (Color color : Color.values()) {
             collectionsByColor.put(color, new ArrayList<>());

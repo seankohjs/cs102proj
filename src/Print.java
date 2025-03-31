@@ -12,4 +12,5 @@ public class Print {
     public static final String ORANGE = "\033[38;5;214m";
     public static final String PURPLE = "\u001B[35m";
     public static final String GREY = "\u001B[37m";
+    public static final String YELLOW = "\033[0;33m";
 }

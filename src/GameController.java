@@ -49,7 +49,7 @@ public class GameController {
 
     public void startGame() {
         while (true) {
-            view.clearScreen();
+            //view.clearScreen();
             Player currentPlayer = turnManager.getCurrentPlayer();
             view.displayTurnHeader(currentPlayer);
             view.displayGameState(deck, paradeLine, isLastRound);
@@ -60,8 +60,7 @@ public class GameController {
                 Card cardToPlay = view.getPlayerCardChoice(currentPlayer, paradeLine, players);
                 playTurn(cardToPlay);
             } else {
-                view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
-                                    Print.BOLD + " HAS NO CARDS TO PLAY! Passing Turn..." + Print.RESET);
+                view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + " HAS NO CARDS TO PLAY! Passing Turn.." + Print.RESET);
             }
 
             view.promptForNextTurn(currentPlayer);
@@ -85,52 +84,49 @@ public class GameController {
 
     public void playTurn(Card playedCard) {
         Player currentPlayer = turnManager.getCurrentPlayer();
-        view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
-                            Print.BOLD + " PLAYS:\n" + Print.RESET + playedCard);
+        view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + " PLAYS:\n\n" + Print.RESET + playedCard);
         paradeLine.addCardToLine(playedCard);
 
         List<Card> cardsToRemove = RemovalStrategy.determineRemovalChoice(playedCard, paradeLine.getParadeLineCards());
 
         if (!cardsToRemove.isEmpty()) {
-            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
-                                Print.BOLD + " takes the following Cards from the Parade.");
+            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + " Takes the Following Cards from the Parade..");
             view.displayMessage(GameUtils.cardsToString(cardsToRemove));
             paradeLine.removeCards(cardsToRemove);
             currentPlayer.addCollectedCards(cardsToRemove);
         } else {
-            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
-                                Print.BOLD + " takes NO Card from the Parade.");
+            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + " Takes NO Card from the Parade..");
         }
 
         if (!isLastRound) {
             Card drawnCard = deck.drawCard();
             if (drawnCard != null) {
                 currentPlayer.addToHand(drawnCard);
-                view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET + " Draws a Card.");
+                view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + " Draws a Card.." + Print.RESET);
             } else {
-                view.displayMessage(Print.BOLD + Print.RED + "Deck is EMPTY, NO Card Drawn." + Print.RESET);
+                view.displayMessage(Print.BOLD + Print.RED + "DECK IS EMPTY, NO CARD DRAWN.." + Print.RESET);
             }
-            view.displayMessage("\n" + Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET + "'s Current Hand: ");
+            view.displayMessage("\n" + Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + "'s Current Hand :: " + Print.RESET);
             view.displayMessage(GameUtils.handToString(currentPlayer.getHand()));
         } else {
-            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET + " DOES NOT Draw a Card in the Last Round.");
+            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + " DOES NOT Draw a Card in the Last Round.." + Print.RESET);
         }
         view.displayPlayerCollections(currentPlayer);
     }
 
     public void endGame() {
-        view.clearScreen();
-        view.displayMessage(Print.BOLD + Print.RED + "\nGAME OVER!" + Print.RESET);
-        view.displayMessage(Print.BOLD + "\n■■■■■ *** SCORING STAGE -" + Print.RED + " DISCARD " + Print.RESET + Print.BOLD + "2 Cards from Hand *** ■■■■■" + Print.RESET);
+        //view.clearScreen();
+        view.displayMessage(Print.BOLD + Print.RED + "\nGAME OVER" + Print.RESET);
+        view.displayMessage(Print.BOLD + "\n■■■■■ *** SCORING STAGE -" + Print.RED + " DISCARD " + Print.GREY + "2 Cards from Hand *** ■■■■■" + Print.RESET);
 
         for (Player player : players) {
             //view.clearScreen();
-            view.displayMessage("\n" + player.getPlayerName() + ", it's time to" + Print.RED + Print.BOLD + " DISCARD " + Print.RESET + "2 Cards from Your Hand.");
-            view.displayMessage(Print.BOLD + Print.GREEN + player.getPlayerName() + "'s " + Print.RESET + "Current Collection:");
+            view.displayMessage("\n" + player.getPlayerName() + ", IT'S TIME TO" + Print.RED + Print.BOLD + " DISCARD " + Print.GREY + "2 CARDS FROM YOUR HAND.." + Print.RESET);
+            view.displayMessage(Print.BOLD + Print.GREEN + player.getPlayerName() + "'s " + Print.GREY + "Current Collection :: " + Print.RESET);
             view.displayPlayerCollections(player);
             view.interactiveDiscardTwoCards(player);
             player.addHandToCollection();
-            view.displayMessage("\nUpdated Game State for " + player.getPlayerName() + ":");
+            view.displayMessage(Print.BOLD + "\nUpdated Game State for " + Print.GREEN + player.getPlayerName() + Print.GREY + " :: " + Print.RESET);
             view.displayPlayerCollections(player);
             view.promptForNextTurn(player);
         }
@@ -139,15 +135,15 @@ public class GameController {
         displayFinalScoreboard();
 
         // Wait for user acknowledgment before returning comenu
-        System.out.print("\n" + Print.BOLD + "GAME COMPLETE! Press [ENTER] to Return to the Main Menu.." + Print.RESET);
+        System.out.print(Print.BOLD + "\nGAME COMPLETE! Press" + Print.RED + " [ENTER] " + Print.GREY + "to Return to the Main Menu.." + Print.RESET);
         scanner.nextLine(); // Wait for user to press Enter
     }
 
     private void displayFinalScoreboard() {
         //view.clearScreen();
 
-        System.out.println("\n" + Print.BOLD + "■■■■■     FINAL RESULTS     ■■■■■" + Print.RESET);
-        System.out.println("\n■■■■■ *** Final Player Collections *** ■■■■■");
+        System.out.println(Print.BOLD + "\n■■■■■     FINAL RESULTS     ■■■■■");
+        System.out.println("\n■■■■■ *** Final Player Collections *** ■■■■■" + Print.RESET);
 
         for (Player player : players) {
             view.displayPlayerCollections(player);
@@ -159,7 +155,7 @@ public class GameController {
 
         System.out.println(Print.BOLD + "■■■■■     FINAL SCORES     ■■■■■" + Print.RESET);
         System.out.println();
-        System.out.println(Print.BOLD + Print.ORANGE + "PLAYER               SCORE" + Print.RESET);
+        System.out.println(Print.ORANGE + "PLAYER               SCORE" + Print.RESET);
         System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■");
 
         // Store scores for determining winner
@@ -179,7 +175,7 @@ public class GameController {
         int winnerScore = playerScores.get(winner);
 
         System.out.println();
-        System.out.println(Print.BOLD + Print.GREEN + "WINNER: " + winner.getPlayerName() + " WITH " + winnerScore + " POINTS!" + Print.RESET);
+        System.out.println(Print.BOLD + Print.YELLOW + "WINNER: " + winner.getPlayerName() + " WITH " + winnerScore + " POINTS!" + Print.RESET);
 
         // Display color majorities
         System.out.println();
@@ -197,7 +193,7 @@ public class GameController {
                 }
                 System.out.println();
             } else {
-                System.out.println(Card.getDisplayColor(color) + color + Print.RESET + ": No Majority");
+                System.out.println(Card.getDisplayColor(color) + color + Print.RESET + Print.BOLD + ": No Majority" + Print.RESET);
             }
         }
     }
