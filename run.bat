@@ -1,1 +1,1 @@
-java -cp out GameApp
+java -cp classes GameApp

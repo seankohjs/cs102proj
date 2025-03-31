@@ -1,17 +1,10 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.Map;
+import java.util.*;
 
 public class GameController {
     private Deck deck;
     private ParadeLine paradeLine;
     private List<Player> players;
     private TurnManager turnManager;
-    private ScoreCalculator scoreCalculator;
     private boolean isLastRound;
     private Scanner scanner;
     private int extraTurnCount = 0;
@@ -34,11 +27,10 @@ public class GameController {
         }
 
         this.turnManager = new TurnManager(players);
-        this.scoreCalculator = new ScoreCalculator();
         this.isLastRound = false;
         this.view = new GameView(scanner);
 
-        // Deal initial parade line (6 cards)
+        // Deal initial parade line of 6 cards
         for (int i = 0; i < 6; i++) {
             Card card = deck.drawCard();
             if (card != null) {
@@ -58,7 +50,7 @@ public class GameController {
 
     public void startGame() {
         while (true) {
-            view.clearScreen();
+            GameView.clearScreen();
             Player currentPlayer = turnManager.getCurrentPlayer();
             view.displayTurnHeader(currentPlayer);
             view.displayGameState(deck, paradeLine, isLastRound);
@@ -131,11 +123,11 @@ public class GameController {
 
         for (Player player : players) {
             view.clearScreen();
-            view.displayMessage("\n" + player.getPlayerName() + ", it's time to discard 2 cards from your hand.");
+            view.displayMessage("\n" + player.getPlayerName() + ", it's time to" + Print.RED + Print.BOLD + " DISCARD" + Print.RESET + "2 Cards from your Hand.");
             view.displayMessage(player.getPlayerName() + "'s Current Collection:");
             view.displayPlayerCollections(player);
             view.interactiveDiscardTwoCards(player);
-            view.displayMessage(player.getPlayerName() + " discards hand to: "
+            view.displayMessage(player.getPlayerName() + " DISCARD hand to: "
                     + GameUtils.handToString(player.getHand()));
             player.addHandToCollection();
             view.displayMessage("\nUpdated Game State for " + player.getPlayerName() + ":");
@@ -148,7 +140,7 @@ public class GameController {
 
         // Wait for user acknowledgment before returning to menu
         System.out
-                .println("\n" + Print.BOLD + "Game complete! Press [ENTER] to return to the main menu." + Print.RESET);
+                .println("\n" + Print.BOLD + "GAME COMPLETE! Press [ENTER] to Return to the Main Menu." + Print.RESET);
         scanner.nextLine(); // Wait for user to press Enter
     }
 
@@ -164,7 +156,7 @@ public class GameController {
         }
 
         // Calculate and display all scores
-        Map<Suit, List<Player>> suitMajorities = scoreCalculator.determineSuitMajorities(players);
+        Map<Color, List<Player>> colorMajorities = ScoreCalculator.determineColorMajorities(players);
 
         System.out.println(Print.BOLD + "■■■■■ FINAL SCORES ■■■■■" + Print.RESET);
         System.out.println("\nPlayer               Score");
@@ -174,7 +166,7 @@ public class GameController {
         Map<Player, Integer> playerScores = new HashMap<>();
 
         for (Player player : players) {
-            int score = scoreCalculator.calculatePlayerFinalScore(player, suitMajorities);
+            int score = ScoreCalculator.calculatePlayerFinalScore(player, colorMajorities);
             playerScores.put(player, score);
 
             // Format the score line with proper spacing
@@ -183,18 +175,21 @@ public class GameController {
         }
 
         // Determine and announce the winner
-        Player winner = scoreCalculator.determineWinner(players);
+        Player winner = ScoreCalculator.determineWinner(players);
         int winnerScore = playerScores.get(winner);
 
-        System.out.println("\n" + Print.BOLD + Print.GREEN + "WINNER: " +
-                winner.getPlayerName() + " with " + winnerScore + " points!" + Print.RESET);
+        System.out.println();
+        System.out.println(Print.BOLD + Print.GREEN + "WINNER: " +
+                winner.getPlayerName() + " WITH " + winnerScore + " POINTS!" + Print.RESET);
 
-        // Display suit majorities
-        System.out.println("\n" + Print.BOLD + "■■■■■ SUIT MAJORITIES ■■■■■" + Print.RESET);
-        for (Suit suit : Suit.values()) {
-            List<Player> majorityPlayers = suitMajorities.get(suit);
+        // Display color majorities
+        System.out.println();
+        System.out.println(Print.BOLD + "■■■■■ SUIT MAJORITIES ■■■■■" + Print.RESET);
+        System.out.println();
+        for (Color color : Color.values()) {
+            List<Player> majorityPlayers = colorMajorities.get(color);
             if (majorityPlayers != null && !majorityPlayers.isEmpty()) {
-                System.out.print(getSuitColor(suit) + suit + Print.RESET + ": ");
+                System.out.print(getColorColor(color) + color + Print.RESET + ": ");
                 for (int i = 0; i < majorityPlayers.size(); i++) {
                     System.out.print(majorityPlayers.get(i).getPlayerName());
                     if (i < majorityPlayers.size() - 1) {
@@ -203,14 +198,14 @@ public class GameController {
                 }
                 System.out.println();
             } else {
-                System.out.println(getSuitColor(suit) + suit + Print.RESET + ": No majority");
+                System.out.println(getColorColor(color) + color + Print.RESET + ": No Majority");
             }
         }
     }
 
-    // Helper method to get color for suit display
-    private String getSuitColor(Suit suit) {
-        switch (suit) {
+    // Helper method to get color for color display
+    private String getColorColor(Color color) {
+        switch (color) {
             case RED:
                 return Print.RED;
             case BLUE:
@@ -240,11 +235,11 @@ public class GameController {
 
     private boolean hasAnyoneCollectedSixColors() {
         for (Player player : players) {
-            Set<Suit> collectedSuits = new HashSet<>();
+            Set<Color> collectedColors = new HashSet<>();
             for (Card card : player.getCollectedCards()) {
-                collectedSuits.add(card.getSuit());
+                collectedColors.add(card.getColor());
             }
-            if (collectedSuits.size() >= 6) {
+            if (collectedColors.size() >= 6) {
                 return true;
             }
         }

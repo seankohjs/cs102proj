@@ -34,10 +34,10 @@ public class Player {
         collectedCards.addAll(cards);
     }
 
-    public int getCardCountInSuit(Suit suit) {
+    public int getColorCardCount(Color color) {
         int count = 0;
         for (Card card : collectedCards) {
-            if (card.getSuit() == suit) {
+            if (card.getColor() == color) {
                 count++;
             }
         }

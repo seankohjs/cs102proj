@@ -25,11 +25,11 @@ public class RemovalStrategy {
             }
         }
 
-        // Determine candidates based on suit and value
+        // Determine candidates based on color and value
         Iterator<Card> it = removalModeCards.iterator();
         while (it.hasNext()) {
             Card card = it.next();
-            if (!(card.getSuit() == playedCard.getSuit() || card.getValue() <= playedCard.getValue())) {
+            if (!(card.getColor() == playedCard.getColor() || card.getValue() <= playedCard.getValue())) {
                 it.remove();
             }
         }

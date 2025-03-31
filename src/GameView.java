@@ -12,7 +12,7 @@ public class GameView {
     }
 
     // Clears the console screen.
-    public void clearScreen() {
+    public static void clearScreen() {
         try {
             if (System.getProperty("os.name").startsWith("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -20,7 +20,7 @@ public class GameView {
                 new ProcessBuilder("clear").inheritIO().start().waitFor();
             }
         } catch (Exception e) {
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 100; i++) {
                 System.out.println();
             }
         }
@@ -54,15 +54,15 @@ public class GameView {
     public void displayPlayerCollections(Player player) {
         System.out.println();
         System.out.println("■■■■■ " + player.getPlayerName() + "'s Collected Cards ■■■■■");
-        Map<Suit, List<Card>> collectionsBySuit = new HashMap<>();
-        for (Suit suit : Suit.values()) {
-            collectionsBySuit.put(suit, new ArrayList<>());
+        Map<Color, List<Card>> collectionsByColor = new HashMap<>();
+        for (Color color : Color.values()) {
+            collectionsByColor.put(color, new ArrayList<>());
         }
         for (Card card : player.getCollectedCards()) {
-            collectionsBySuit.get(card.getSuit()).add(card);
+            collectionsByColor.get(card.getColor()).add(card);
         }
-        for (Suit suit : Suit.values()) {
-            List<Card> cards = collectionsBySuit.get(suit);
+        for (Color color : Color.values()) {
+            List<Card> cards = collectionsByColor.get(color);
             if (!cards.isEmpty()) {
                 System.out.println(GameUtils.cardsToString(cards));
             }
@@ -79,15 +79,15 @@ public class GameView {
         for (Player player : players) {
             if (player != currentPlayer) {
                 System.out.println(player.getPlayerName() + "'s Collected Cards:");
-                Map<Suit, List<Card>> collectionsBySuit = new HashMap<>();
-                for (Suit suit : Suit.values()) {
-                    collectionsBySuit.put(suit, new ArrayList<>());
+                Map<Color, List<Card>> collectionsByColor = new HashMap<>();
+                for (Color color : Color.values()) {
+                    collectionsByColor.put(color, new ArrayList<>());
                 }
                 for (Card card : player.getCollectedCards()) {
-                    collectionsBySuit.get(card.getSuit()).add(card);
+                    collectionsByColor.get(card.getColor()).add(card);
                 }
-                for (Suit suit : Suit.values()) {
-                    List<Card> cards = collectionsBySuit.get(suit);
+                for (Color color : Color.values()) {
+                    List<Card> cards = collectionsByColor.get(color);
                     if (!cards.isEmpty()) {
                         System.out.println(GameUtils.cardsToString(cards));
                     }
@@ -105,7 +105,7 @@ public class GameView {
         if (player.isBot()) {
             System.out.println("BOT Player " + player.getPlayerName() + " is Ready to Continue...");
             try {
-                Thread.sleep(5000); // 2 second delay so human players can read what happened
+                Thread.sleep(1000); // 2 second delay so human players can read what happened
             } catch (InterruptedException e) {
                 // Ignore interruption
             }
@@ -113,20 +113,20 @@ public class GameView {
         }
         
         // Original human player logic
-        System.out.print("Enter [Y] to Continue: ");
-        String input = scanner.nextLine();
-        while (!input.equalsIgnoreCase("y")) {
-            System.out.print("Please Enter [Y] to Continue: ");
-            input = scanner.nextLine();
-        }
-        try {
-            for (int i = 2; i > 0; i--) {
-                System.out.println("Next Turn In " + i + " Second" + (i > 1 ? "s" : "") + "...");
-                Thread.sleep(1000);
-            }
-        } catch (InterruptedException e) {
-            // Ignore interruption.
-        }
+        // System.out.print("Enter [Y] to Continue: ");
+        // String input = scanner.nextLine();
+        // while (!input.equalsIgnoreCase("y")) {
+        //     System.out.print("Please Enter [Y] to Continue: ");
+        //     input = scanner.nextLine();
+        // }
+        // try {
+        //     for (int i = 2; i > 0; i--) {
+        //         System.out.println("Next Turn In " + i + " Second" + (i > 1 ? "s" : "") + "...");
+        //         Thread.sleep(1000);
+        //     }
+        // } catch (InterruptedException e) {
+        //     // Ignore interruption.
+        // }
     }
 
     // Interactively prompts the user to discard cards until only 2 remain.
@@ -152,11 +152,14 @@ public class GameView {
             return;
         }
         while (player.getHand().size() > 2) {
-            System.out.println("\n" + player.getPlayerName() + ", Choose a Card to" + Print.RED + " Discard " + Print.RESET + "from your Hand: "
-                    + GameUtils.handToString(player.getHand()));
+            System.out.println();
+            System.out.println(player.getPlayerName() + ", Choose a Card to" + Print.RED + Print.BOLD + " DISCARD " + Print.RESET + "from your Hand: ");
+            System.out.println();
+            System.out.println(GameUtils.handToString(player.getHand()));
+            System.out.println();
             int index = -1;
             while (true) {
-                System.out.print("Enter the INDEX of the Card you Want to" + Print.RED + " Discard " + Print.RESET);
+                System.out.print("Enter the INDEX of the Card you Want to" + Print.RED + Print.BOLD + " DISCARD: " + Print.RESET);
                 if (scanner.hasNextInt()) {
                     index = scanner.nextInt();
                     scanner.nextLine();
@@ -171,7 +174,7 @@ public class GameView {
                 }
             }
             Card discarded = player.getHand().remove(index-1);
-            System.out.println("Discarded: " + discarded);
+            System.out.println("DISCARDED: \n" + discarded);
         }
     }
 
@@ -191,7 +194,7 @@ public class GameView {
             System.out.println(currentPlayer.getPlayerName() + " IS THINKING...");
             System.out.println();
             try {
-                Thread.sleep(5000); // Add delay to simulate "thinking"
+                Thread.sleep(1000); // Add delay to simulate "thinking"
             } catch (InterruptedException e) {
                 // Ignore interruption
             }

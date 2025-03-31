@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6,29 +5,29 @@ import java.util.Map;
 
 public class ScoreCalculator {
 
-    public Map<Suit, List<Player>> determineSuitMajorities(List<Player> players) {
-        Map<Suit, List<Player>> majorities = new HashMap<>();
+    // Determine which player has the majority for each color
+    public static Map<Color, List<Player>> determineColorMajorities(List<Player> players) {
+        Map<Color, List<Player>> majorities = new HashMap<>();
         boolean isTwoPlayerGame = (players.size() == 2);
-        
-        for (Suit suit : Suit.values()) {
-            List<Player> majorityPlayers = isTwoPlayerGame ? 
-                determineTwoPlayerMajority(players, suit) : 
-                determineMultiPlayerMajority(players, suit);
-            
-            majorities.put(suit, majorityPlayers);
+        for (Color color : Color.values()) {
+            List<Player> majorityPlayers = null;
+            if (isTwoPlayerGame) {
+                majorityPlayers = determineTwoPlayerMajority(players, color);
+            } else {
+                majorityPlayers = determineMultiPlayerMajority(players, color);
+            }
+            majorities.put(color, majorityPlayers);
         }
         return majorities;
     }
     
-    /**
-     * Determines suit majority for 2-player games (need 2+ more cards than opponent)
-     */
-    private List<Player> determineTwoPlayerMajority(List<Player> players, Suit suit) {
+    // Determines color majority for 2-player games (need 2+ more cards than opponent)
+    public static List<Player> determineTwoPlayerMajority(List<Player> players, Color color) {
         List<Player> majorityPlayers = new ArrayList<>();
         Player p1 = players.get(0);
         Player p2 = players.get(1);
-        int count1 = p1.getCardCountInSuit(suit);
-        int count2 = p2.getCardCountInSuit(suit);
+        int count1 = p1.getColorCardCount(color);
+        int count2 = p2.getColorCardCount(color);
         
         // A player must have at least 1 card and 2+ more cards than opponent
         if (count1 > 0 && count1 >= count2 + 2) {
@@ -40,16 +39,14 @@ public class ScoreCalculator {
         return majorityPlayers.isEmpty() ? null : majorityPlayers;
     }
     
-    /**
-     * Determines suit majority for games with 3+ players (standard rule)
-     */
-    private List<Player> determineMultiPlayerMajority(List<Player> players, Suit suit) {
-        int maxCount = -1;
+    // Determines color majority for games with 3+ players (Standard Rule)
+    public static List<Player> determineMultiPlayerMajority(List<Player> players, Color color) {
+        int maxCount = 0;
         List<Player> majorityPlayers = new ArrayList<>();
 
-        // First pass: find the maximum card count for this suit
+        // First pass: find the maximum card count for this color
         for (Player player : players) {
-            int count = player.getCardCountInSuit(suit);
+            int count = player.getColorCardCount(color);
             if (count > maxCount) {
                 maxCount = count;
             }
@@ -57,7 +54,7 @@ public class ScoreCalculator {
 
         // Second pass: collect all players with the maximum card count
         for (Player player : players) {
-            int count = player.getCardCountInSuit(suit);
+            int count = player.getColorCardCount(color);
             if (count == maxCount && count > 0) {
                 majorityPlayers.add(player);
             }
@@ -66,18 +63,18 @@ public class ScoreCalculator {
         return majorityPlayers.isEmpty() ? null : majorityPlayers;
     }
 
-    public int calculatePlayerFinalScore(Player player, Map<Suit, List<Player>> suitMajorities) {
+    public static int calculatePlayerFinalScore(Player player, Map<Color, List<Player>> colorMajorities) {
         int baseScore = 0;
         int majorityScore = 0;
-        for (Suit suit : Suit.values()) {
-            int suitCardCount = player.getCardCountInSuit(suit);
-            List<Player> majorityPlayers = suitMajorities.get(suit);
+        for (Color color : Color.values()) {
+            int colorCardCount = player.getColorCardCount(color);
+            List<Player> majorityPlayers = colorMajorities.get(color);
             
             if (majorityPlayers != null && majorityPlayers.contains(player)) {
-                majorityScore += suitCardCount;
+                majorityScore += colorCardCount;
             } else {
                 for (Card card : player.getCollectedCards()) {
-                    if (card.getSuit() == suit) {
+                    if (card.getColor() == color) {
                         baseScore += card.getValue();
                     }
                 }
@@ -86,14 +83,14 @@ public class ScoreCalculator {
         return baseScore + majorityScore;
     }
 
-    public Player determineWinner(List<Player> players) {
-        Map<Suit, List<Player>> suitMajorities = determineSuitMajorities(players);
+    public static Player determineWinner(List<Player> players) {
+        Map<Color, List<Player>> colorMajorities = determineColorMajorities(players);
         Player winner = null;
         int minScore = Integer.MAX_VALUE;
         List<Player> tiedPlayers = new ArrayList<>();
 
         for (Player player : players) {
-            int playerScore = calculatePlayerFinalScore(player, suitMajorities);
+            int playerScore = calculatePlayerFinalScore(player, colorMajorities);
             if (playerScore < minScore) {
                 minScore = playerScore;
                 winner = player;
@@ -110,7 +107,7 @@ public class ScoreCalculator {
         }
     }
 
-    private Player determineTiebreakerWinner(List<Player> tiedPlayers) {
+    public static Player determineTiebreakerWinner(List<Player> tiedPlayers) {
         Player tiebreakerWinner = null;
         int minCollectedCards = Integer.MAX_VALUE;
         for (Player player : tiedPlayers) {

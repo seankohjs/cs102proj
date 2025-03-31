@@ -24,7 +24,7 @@ Sequence of Play:
 -Removal Phase:
   -From the eligible cards, remove all cards that are either:
     -Equal in value to the card you played, or
-    -Of the same suit as the card you played.
+    -Of the same color as the card you played.
 
 Draw Phase:
 -If it is not the final round, after your turn you draw one card from the draw pile, and your hand is adjusted according to the game’s rules.

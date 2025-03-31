@@ -105,13 +105,13 @@ public class GameUtils {
 
 
     // Prints a player's collection in a formatted manner.
-    public static String formatPlayerCollection(Map<Suit, List<Card>> collectionsBySuit) {
+    public static String formatPlayerCollection(Map<Color, List<Card>> collectionsByColor) {
         StringBuilder sb = new StringBuilder("\u001B[0m\r");
-        for (Suit suit : Suit.values()) {
-            List<Card> cards = collectionsBySuit.get(suit);
+        for (Color color : Color.values()) {
+            List<Card> cards = collectionsByColor.get(color);
             if (cards != null && !cards.isEmpty()) {
-                sb.append(suit.toString().charAt(0))
-                        .append(suit.toString().substring(1).toLowerCase())
+                sb.append(color.toString().charAt(0))
+                        .append(color.toString().substring(1).toLowerCase())
                         .append(": ")
                         .append(cardsToString(cards))
                         .append("\n");
@@ -122,20 +122,20 @@ public class GameUtils {
 
     // A convenience method to build a player's collection as a map from a list of
     // cards.
-    public static Map<Suit, List<Card>> buildCollectionMap(List<Card> collectedCards) {
-        Map<Suit, List<Card>> collectionsBySuit = new HashMap<>();
-        for (Suit suit : Suit.values()) {
-            collectionsBySuit.put(suit, new ArrayList<>());
+    public static Map<Color, List<Card>> buildCollectionMap(List<Card> collectedCards) {
+        Map<Color, List<Card>> collectionsByColor = new HashMap<>();
+        for (Color color : Color.values()) {
+            collectionsByColor.put(color, new ArrayList<>());
         }
         for (Card card : collectedCards) {
-            collectionsBySuit.get(card.getSuit()).add(card);
+            collectionsByColor.get(card.getColor()).add(card);
         }
-        return collectionsBySuit;
+        return collectionsByColor;
     }
 
     // Returns a formatted string representing a player's collection.
     public static String formatPlayerCollection(List<Card> collectedCards) {
-        Map<Suit, List<Card>> collectionMap = buildCollectionMap(collectedCards);
+        Map<Color, List<Card>> collectionMap = buildCollectionMap(collectedCards);
         return formatPlayerCollection(collectionMap);
     }
 }

@@ -5,10 +5,10 @@ public class Deck {
 
     public Deck() {
         cards = new ArrayList<>();
-        Suit[] suits = Suit.values();
-        for (Suit suit : suits) {
+        Color[] colors = Color.values();
+        for (Color color : colors) {
             for (int value = 0; value <= 10; value++) {
-                cards.add(new Card(suit, value));
+                cards.add(new Card(color, value));
             }
         }
         shuffle();

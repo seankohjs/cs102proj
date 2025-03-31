@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BotPlayer extends Player {
     private int difficulty; // 1: Easy (random), 2: Medium, 3: Hard
