@@ -117,12 +117,12 @@ public class GameController {
     }
 
     private void endGame() {
-        view.clearScreen();
+        GameView.clearScreen();
         view.displayMessage("\nGame Over!");
         view.displayMessage("\n--- Discarding 2 Hand Cards for Scoring ---");
 
         for (Player player : players) {
-            view.clearScreen();
+            GameView.clearScreen();
             view.displayMessage("\n" + player.getPlayerName() + ", it's time to" + Print.RED + Print.BOLD + " DISCARD" + Print.RESET + "2 Cards from your Hand.");
             view.displayMessage(player.getPlayerName() + "'s Current Collection:");
             view.displayPlayerCollections(player);
@@ -145,7 +145,7 @@ public class GameController {
     }
 
     private void displayFinalScoreboard() {
-        view.clearScreen();
+        GameView.clearScreen();
 
         System.out.println("\n" + Print.BOLD + "■■■■■ FINAL RESULTS ■■■■■" + Print.RESET);
         System.out.println("\n--- Final Player Collections ---");
