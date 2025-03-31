@@ -5,6 +5,8 @@ public class GameApp {
         try (Scanner scanner = new Scanner(System.in)) {
             GameMenu menu = new GameMenu(scanner);
             menu.readOption();
+        } catch (NullPointerException e) {
+            System.exit(1);
         }
     }
 }

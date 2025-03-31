@@ -12,7 +12,7 @@ public class GameView {
     }
 
     // Clears the console screen.
-    public static void clearScreen() {
+    public void clearScreen() {
         try {
             if (System.getProperty("os.name").startsWith("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -36,7 +36,7 @@ public class GameView {
     // Displays the current game state.
     public void displayGameState(Deck deck, ParadeLine paradeLine, boolean isLastRound) {
         if (isLastRound) {
-            System.out.println("***** LAST ROUND *****");
+            System.out.println(Print.BOLD + Print.ORANGE + "■■■■■ ***** LAST ROUND ***** ■■■■■" + Print.RESET);
         }
         System.out.println();
         System.out.println(Print.BOLD + "■■■■■ GAME STATE ■■■■■" + Print.RESET);
@@ -113,20 +113,20 @@ public class GameView {
         }
         
         // Original human player logic
-        // System.out.print("Enter [Y] to Continue: ");
-        // String input = scanner.nextLine();
-        // while (!input.equalsIgnoreCase("y")) {
-        //     System.out.print("Please Enter [Y] to Continue: ");
-        //     input = scanner.nextLine();
-        // }
-        // try {
-        //     for (int i = 2; i > 0; i--) {
-        //         System.out.println("Next Turn In " + i + " Second" + (i > 1 ? "s" : "") + "...");
-        //         Thread.sleep(1000);
-        //     }
-        // } catch (InterruptedException e) {
-        //     // Ignore interruption.
-        // }
+        System.out.print("Enter [Y] to Continue: ");
+        String input = scanner.nextLine();
+        while (!input.equalsIgnoreCase("y")) {
+            System.out.print("Please Enter [Y] to Continue: ");
+            input = scanner.nextLine();
+        }
+        try {
+            for (int i = 2; i > 0; i--) {
+                System.out.println("Next Turn In " + i + " Second" + (i > 1 ? "s" : "") + "...");
+                Thread.sleep(5);
+            }
+        } catch (InterruptedException e) {
+            // Ignore interruption.
+        }
     }
 
     // Interactively prompts the user to discard cards until only 2 remain.
@@ -136,7 +136,7 @@ public class GameView {
             BotPlayer bot = (BotPlayer) player;
             // Bot logic for discarding cards
             while (player.getHand().size() > 2) {
-                System.out.println("\n" + player.getPlayerName() + " (Bot) is choosing a card to discard...");
+                System.out.println("\n" + player.getPlayerName() + " (BOT) is Choosing a Card to Discard...");
                 
                 try {
                     Thread.sleep(1000); // Simulate thinking
@@ -147,7 +147,8 @@ public class GameView {
                 // Use the bot's discard logic
                 Card discarded = bot.selectCardToDiscard();
                 player.getHand().remove(discarded);
-                System.out.println(player.getPlayerName() + " discarded: " + discarded);
+                System.out.println();
+                System.out.println(Print.BOLD + "■■■■■ " + player.getPlayerName() + " DISCARDED ■■■■■\n\n" + Print.RESET + discarded);
             }
             return;
         }
@@ -157,16 +158,16 @@ public class GameView {
             System.out.println();
             System.out.println(GameUtils.handToString(player.getHand()));
             System.out.println();
-            int index = -1;
+            int index = 0;
             while (true) {
                 System.out.print("Enter the INDEX of the Card you Want to" + Print.RED + Print.BOLD + " DISCARD: " + Print.RESET);
                 if (scanner.hasNextInt()) {
                     index = scanner.nextInt();
                     scanner.nextLine();
-                    if (index >= 0 && index < player.getHand().size()) {
+                    if (index >= 1 && index <= player.getHand().size()) {
                         break;
                     } else {
-                        System.out.println("INVALID INDEX, Try Again.");
+                        System.out.println("INVALID INDEX, Please Try Again.");
                     }
                 } else {
                     System.out.println("INVALID INPUT, Please Enter a Number.");
@@ -174,7 +175,8 @@ public class GameView {
                 }
             }
             Card discarded = player.getHand().remove(index-1);
-            System.out.println("DISCARDED: \n" + discarded);
+            System.out.println();
+            System.out.println(Print.BOLD + "■■■■■ " + player.getPlayerName() + " DISCARDED ■■■■■\n\n" + Print.RESET + discarded);
         }
     }
 
@@ -245,7 +247,7 @@ public class GameView {
                 } else if (index >= 0 && (index-1) < candidates.size()) {
                     return candidates.get(index-1);
                 } else {
-                    System.out.println("INVALID INDEX. Try Again.");
+                    System.out.println("INVALID INDEX. Please Try Again.");
                 }
             } else {
                 System.out.println("INVALID INPUT. Please Enter a Number.");

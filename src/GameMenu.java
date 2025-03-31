@@ -5,7 +5,7 @@ import java.io.*;
 
 public class GameMenu {
     private Scanner scanner;
-    // GameView view = new GameView(scanner);
+    GameView view = new GameView(scanner);
 
     public GameMenu(Scanner scanner) {
         this.scanner = scanner;
@@ -16,16 +16,16 @@ public class GameMenu {
         System.out.println();
         System.out.println("■■■■■ PARADE GAME MENU ■■■■■");
         System.out.println();
-        System.out.println("1. Play Game");
-        System.out.println("2. View Game Rules");
-        System.out.println("3. Quit Game");
+        System.out.println("1.. Play Game");
+        System.out.println("2.. View Game Rules");
+        System.out.println("3.. Quit Game");
         System.out.println();
         System.out.print("PLEASE ENTER YOUR CHOICE: ");
         System.out.print(Print.RESET);
     }
 
     public void readOption() {
-        GameView.clearScreen();
+        view.clearScreen();
         display();
         int choice = 0;
         boolean valid = false;
@@ -35,10 +35,10 @@ public class GameMenu {
                 if (choice >= 1 && choice <= 3) {
                     valid = true;
                 } else { 
-                    System.out.println("Please Enter '1', '2' or '3'.");
+                    System.out.println("Please Enter '1', '2' or '3'..");
                 }
             } catch (NumberFormatException e) {
-                System.out.println(Print.BOLD + "Please Enter '1', '2' or '3'." + Print.RESET);
+                System.out.println(Print.BOLD + "Please Enter '1', '2' or '3'.." + Print.RESET);
             }
         }
         switch (choice) {
@@ -49,7 +49,7 @@ public class GameMenu {
                 viewGameRules();
                 break;
             case 3:
-                System.out.println("EXITING Parade Game.");
+                System.out.println("EXITING Parade Game..");
                 System.exit(0);
                 break;
             default:
@@ -59,10 +59,10 @@ public class GameMenu {
     }
 
     public void startGame() {
-        System.out.print("Enter the Number of HUMAN Players (1 to 5): ");
+        System.out.print("Enter the Number of HUMAN Players (1 to 5) :: ");
         int numHumans = getValidInput(1, 5);
         
-        System.out.print("Enter the Number of BOT Players (0 to " + (6 - numHumans) + "): ");
+        System.out.print("Enter the Number of BOT Players (0 to " + (6 - numHumans) + ") :: ");
         int numBots = getValidInput(0, 6 - numHumans);
         
         List<String> playerNames = new ArrayList<>();
@@ -71,7 +71,7 @@ public class GameMenu {
         
         // Get human player names and add to list
         for (int i = 0; i < numHumans; i++) {
-            System.out.print("Enter Name for Player " + (i + 1) + ": ");
+            System.out.print("Enter Name for Player " + (i + 1) + " :: ");
             playerNames.add(scanner.nextLine());
             isBot.add(false);
             botDifficulties.add(0);
@@ -79,7 +79,7 @@ public class GameMenu {
         
         // Get bot names and difficulties and add to list
         for (int i = 0; i < numBots; i++) {
-            System.out.print("Enter Name for BOT " + (i + 1) + " (or press Enter for default name): ");
+            System.out.print(Print.BOLD + "Enter Name for BOT " + (i+1) + " (OR Press Enter for BOT " + (i+1) + ") :: " + Print.RESET);
             String botName = scanner.nextLine();
             if (botName.isEmpty()) {
                 botName = "BOT " + (i + 1);
@@ -87,7 +87,7 @@ public class GameMenu {
             playerNames.add(botName);
             isBot.add(true);
             
-            System.out.print("Select Difficulty for " + botName + " (1: Easy\n 2: Medium\n 3: Hard\n): ");
+            System.out.print(Print.BOLD + "Select Difficulty for " + Print.PURPLE + botName + Print.GREY + " [1] (Easy)  [2] (Medium)  [3] (Hard) :: ");
             int difficulty = getValidInput(1, 3);
             botDifficulties.add(difficulty);
         }
@@ -154,7 +154,7 @@ public class GameMenu {
             boolean viewingRules = true;
     
             while (viewingRules && currentSection < sections.length) {
-                GameView.clearScreen();
+                view.clearScreen();
     
                 // Display section header
                 System.out.println();

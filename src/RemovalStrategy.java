@@ -3,7 +3,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class RemovalStrategy {
-
     public static List<Card> determineRemovalChoice(Card playedCard, List<Card> paradeCards) {
         List<Card> removalModeCards = new ArrayList<>();
         if (paradeCards.size() <= 1) {
@@ -17,8 +16,7 @@ public class RemovalStrategy {
             return removalModeCards;
         }
 
-        // Cards in removal mode: those with a position number larger than
-        // playedCard.getValue()
+        // Cards in removal mode: those with a position number larger than playedCard.getValue()
         for (int i = 0; i < lineSizeBeforePlayed; i++) {
             if (lineSizeBeforePlayed - i > playedCard.getValue()) {
                 removalModeCards.add(lineBeforePlayed.get(i));

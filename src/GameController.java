@@ -10,12 +10,12 @@ public class GameController {
     private int extraTurnCount = 0;
     private GameView view;
 
-    public GameController(List<String> playerNames, List<Boolean> isBot,
-            List<Integer> botDifficulties, Scanner scanner) {
+    public GameController(List<String> playerNames, List<Boolean> isBot,List<Integer> botDifficulties, Scanner scanner) {
         this.deck = new Deck();
         this.paradeLine = new ParadeLine();
         this.players = new ArrayList<>();
         this.scanner = scanner;
+        this.view = new GameView(scanner);
 
         // Create the appropriate player types
         for (int i = 0; i < playerNames.size(); i++) {
@@ -28,7 +28,6 @@ public class GameController {
 
         this.turnManager = new TurnManager(players);
         this.isLastRound = false;
-        this.view = new GameView(scanner);
 
         // Deal initial parade line of 6 cards
         for (int i = 0; i < 6; i++) {
@@ -50,7 +49,7 @@ public class GameController {
 
     public void startGame() {
         while (true) {
-            GameView.clearScreen();
+            view.clearScreen();
             Player currentPlayer = turnManager.getCurrentPlayer();
             view.displayTurnHeader(currentPlayer);
             view.displayGameState(deck, paradeLine, isLastRound);
@@ -61,7 +60,8 @@ public class GameController {
                 Card cardToPlay = view.getPlayerCardChoice(currentPlayer, paradeLine, players);
                 playTurn(cardToPlay);
             } else {
-                view.displayMessage(currentPlayer.getPlayerName() + " has no cards to play! Passing turn.");
+                view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
+                                    Print.BOLD + " HAS NO CARDS TO PLAY! Passing Turn..." + Print.RESET);
             }
 
             view.promptForNextTurn(currentPlayer);
@@ -83,52 +83,52 @@ public class GameController {
         endGame();
     }
 
-    private void playTurn(Card playedCard) {
+    public void playTurn(Card playedCard) {
         Player currentPlayer = turnManager.getCurrentPlayer();
-        view.displayMessage(currentPlayer.getPlayerName() + " Plays:\n" + playedCard);
+        view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
+                            Print.BOLD + " PLAYS:\n" + Print.RESET + playedCard);
         paradeLine.addCardToLine(playedCard);
 
-        List<Card> cardsToRemove = RemovalStrategy.determineRemovalChoice(playedCard,
-                paradeLine.getParadeLineCards());
+        List<Card> cardsToRemove = RemovalStrategy.determineRemovalChoice(playedCard, paradeLine.getParadeLineCards());
 
         if (!cardsToRemove.isEmpty()) {
-            view.displayMessage(currentPlayer.getPlayerName() + " takes the following card from the parade.");
-            System.out.println(GameUtils.cardsToString(cardsToRemove));
+            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
+                                Print.BOLD + " takes the following Cards from the Parade.");
+            view.displayMessage(GameUtils.cardsToString(cardsToRemove));
             paradeLine.removeCards(cardsToRemove);
             currentPlayer.addCollectedCards(cardsToRemove);
         } else {
-            view.displayMessage(currentPlayer.getPlayerName() + " takes no card from the parade.");
+            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET +
+                                Print.BOLD + " takes NO Card from the Parade.");
         }
 
         if (!isLastRound) {
             Card drawnCard = deck.drawCard();
             if (drawnCard != null) {
                 currentPlayer.addToHand(drawnCard);
-                view.displayMessage(currentPlayer.getPlayerName() + " draws a card.");
+                view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET + " Draws a Card.");
             } else {
-                view.displayMessage("Deck is empty, no card drawn.");
+                view.displayMessage(Print.BOLD + Print.RED + "Deck is EMPTY, NO Card Drawn." + Print.RESET);
             }
-            view.displayMessage("\n" + currentPlayer.getPlayerName() + "'s Current Hand: "
-                    + GameUtils.handToString(currentPlayer.getHand()));
+            view.displayMessage("\n" + Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET + "'s Current Hand: ");
+            view.displayMessage(GameUtils.handToString(currentPlayer.getHand()));
         } else {
-            view.displayMessage(currentPlayer.getPlayerName() + " does not draw a card in last round.");
+            view.displayMessage(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.RESET + " DOES NOT Draw a Card in the Last Round.");
         }
         view.displayPlayerCollections(currentPlayer);
     }
 
-    private void endGame() {
-        GameView.clearScreen();
-        view.displayMessage("\nGame Over!");
-        view.displayMessage("\n--- Discarding 2 Hand Cards for Scoring ---");
+    public void endGame() {
+        view.clearScreen();
+        view.displayMessage(Print.BOLD + Print.RED + "\nGAME OVER!" + Print.RESET);
+        view.displayMessage(Print.BOLD + "\n■■■■■ *** SCORING STAGE -" + Print.RED + " DISCARD " + Print.RESET + Print.BOLD + "2 Cards from Hand *** ■■■■■" + Print.RESET);
 
         for (Player player : players) {
-            GameView.clearScreen();
-            view.displayMessage("\n" + player.getPlayerName() + ", it's time to" + Print.RED + Print.BOLD + " DISCARD" + Print.RESET + "2 Cards from your Hand.");
-            view.displayMessage(player.getPlayerName() + "'s Current Collection:");
+            //view.clearScreen();
+            view.displayMessage("\n" + player.getPlayerName() + ", it's time to" + Print.RED + Print.BOLD + " DISCARD " + Print.RESET + "2 Cards from Your Hand.");
+            view.displayMessage(Print.BOLD + Print.GREEN + player.getPlayerName() + "'s " + Print.RESET + "Current Collection:");
             view.displayPlayerCollections(player);
             view.interactiveDiscardTwoCards(player);
-            view.displayMessage(player.getPlayerName() + " DISCARD hand to: "
-                    + GameUtils.handToString(player.getHand()));
             player.addHandToCollection();
             view.displayMessage("\nUpdated Game State for " + player.getPlayerName() + ":");
             view.displayPlayerCollections(player);
@@ -138,17 +138,16 @@ public class GameController {
         // Show the final scoreboard with clear formatting
         displayFinalScoreboard();
 
-        // Wait for user acknowledgment before returning to menu
-        System.out
-                .println("\n" + Print.BOLD + "GAME COMPLETE! Press [ENTER] to Return to the Main Menu." + Print.RESET);
+        // Wait for user acknowledgment before returning comenu
+        System.out.print("\n" + Print.BOLD + "GAME COMPLETE! Press [ENTER] to Return to the Main Menu.." + Print.RESET);
         scanner.nextLine(); // Wait for user to press Enter
     }
 
     private void displayFinalScoreboard() {
-        GameView.clearScreen();
+        //view.clearScreen();
 
-        System.out.println("\n" + Print.BOLD + "■■■■■ FINAL RESULTS ■■■■■" + Print.RESET);
-        System.out.println("\n--- Final Player Collections ---");
+        System.out.println("\n" + Print.BOLD + "■■■■■     FINAL RESULTS     ■■■■■" + Print.RESET);
+        System.out.println("\n■■■■■ *** Final Player Collections *** ■■■■■");
 
         for (Player player : players) {
             view.displayPlayerCollections(player);
@@ -158,9 +157,10 @@ public class GameController {
         // Calculate and display all scores
         Map<Color, List<Player>> colorMajorities = ScoreCalculator.determineColorMajorities(players);
 
-        System.out.println(Print.BOLD + "■■■■■ FINAL SCORES ■■■■■" + Print.RESET);
-        System.out.println("\nPlayer               Score");
-        System.out.println("------------------------------");
+        System.out.println(Print.BOLD + "■■■■■     FINAL SCORES     ■■■■■" + Print.RESET);
+        System.out.println();
+        System.out.println(Print.BOLD + Print.ORANGE + "PLAYER               SCORE" + Print.RESET);
+        System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■");
 
         // Store scores for determining winner
         Map<Player, Integer> playerScores = new HashMap<>();
@@ -179,17 +179,16 @@ public class GameController {
         int winnerScore = playerScores.get(winner);
 
         System.out.println();
-        System.out.println(Print.BOLD + Print.GREEN + "WINNER: " +
-                winner.getPlayerName() + " WITH " + winnerScore + " POINTS!" + Print.RESET);
+        System.out.println(Print.BOLD + Print.GREEN + "WINNER: " + winner.getPlayerName() + " WITH " + winnerScore + " POINTS!" + Print.RESET);
 
         // Display color majorities
         System.out.println();
-        System.out.println(Print.BOLD + "■■■■■ SUIT MAJORITIES ■■■■■" + Print.RESET);
+        System.out.println(Print.BOLD + "■■■■■     SUIT MAJORITIES     ■■■■■" + Print.RESET);
         System.out.println();
         for (Color color : Color.values()) {
             List<Player> majorityPlayers = colorMajorities.get(color);
             if (majorityPlayers != null && !majorityPlayers.isEmpty()) {
-                System.out.print(getColorColor(color) + color + Print.RESET + ": ");
+                System.out.print(Card.getDisplayColor(color) + color + Print.RESET + ": ");
                 for (int i = 0; i < majorityPlayers.size(); i++) {
                     System.out.print(majorityPlayers.get(i).getPlayerName());
                     if (i < majorityPlayers.size() - 1) {
@@ -198,28 +197,8 @@ public class GameController {
                 }
                 System.out.println();
             } else {
-                System.out.println(getColorColor(color) + color + Print.RESET + ": No Majority");
+                System.out.println(Card.getDisplayColor(color) + color + Print.RESET + ": No Majority");
             }
-        }
-    }
-
-    // Helper method to get color for color display
-    private String getColorColor(Color color) {
-        switch (color) {
-            case RED:
-                return Print.RED;
-            case BLUE:
-                return Print.BLUE;
-            case GREEN:
-                return Print.GREEN;
-            case ORANGE:
-                return Print.ORANGE;
-            case PURPLE:
-                return Print.PURPLE;
-            case GREY:
-                return Print.GREY;
-            default:
-                return "";
         }
     }
 
@@ -249,11 +228,11 @@ public class GameController {
     private void startLastRound(boolean sixColors) {
         isLastRound = true;
         extraTurnCount = 0;
-        view.displayMessage("\n--- Last Round Started! ---");
+        view.displayMessage("\n■■■■■ *** LAST ROUND STARTED *** ■■■■■");
         if (sixColors) {
-            view.displayMessage("Triggered by a player collecting 6 colors.");
+            view.displayMessage("Triggered By a Player Collecting 6 Colors.");
         } else {
-            view.displayMessage("Triggered by deck exhaustion.");
+            view.displayMessage("Triggered By Deck Exhaustion.");
         }
     }
 }

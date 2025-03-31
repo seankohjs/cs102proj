@@ -61,7 +61,7 @@ public class Card {
     return top.toString() + "\n" + middle.toString() + "\n" + bottom.toString();
     }
 
-    private static String getDisplayColor(Color color) {
+    public static String getDisplayColor(Color color) {
         switch (color) {
             case RED:
                 return Print.RED;
