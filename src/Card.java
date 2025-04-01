@@ -1,16 +1,4 @@
 public class Card {
-
-    // CARD BOX DRAWING
-    public static final String HORIZONTAL = "\u2550"; // ═
-    public static final String VERTICAL = "\u2551";   // ║
-    public static final String TOP_LEFT = "\u2554";   // ╔
-    public static final String TOP_RIGHT = "\u2557";  // ╗
-    public static final String BOTTOM_LEFT = "\u255A"; // ╚
-    public static final String BOTTOM_RIGHT = "\u255D"; // ╝
-
-    // SEPARATOR BETWEEN SUIT AND VALUE
-    public static final String SEPARATOR = "\u25A0";
-
     private Color color;
     private int value;
 
@@ -39,25 +27,25 @@ public class Card {
     int width = 13;
 
     // Build top border
-    top.append(displayColor).append(TOP_LEFT);
+    top.append(displayColor).append(Print.TOP_LEFT);
     for (int i = 0; i < width - 4; i++) {
-        top.append(HORIZONTAL);
+        top.append(Print.HORIZONTAL);
     }
-    top.append(TOP_RIGHT).append(Print.RESET);
+    top.append(Print.TOP_RIGHT).append(Print.RESET);
 
     // Build middle border with card color and value
     String valueStr = (value < 10) ? " 0" + value : " " + value;
-    middle.append(displayColor).append(VERTICAL)
+    middle.append(displayColor).append(Print.VERTICAL)
           .append(" ").append(color.toString().substring(0, 2)).append(" ")
-          .append(SEPARATOR).append(valueStr).append(" ")
-          .append(VERTICAL).append(Print.RESET);
+          .append(Print.SEPARATOR).append(valueStr).append(" ")
+          .append(Print.VERTICAL).append(Print.RESET);
 
     // Build bottom border
-    bottom.append(displayColor).append(BOTTOM_LEFT);
+    bottom.append(displayColor).append(Print.BOTTOM_LEFT);
     for (int i = 0; i < width - 4; i++) {
-        bottom.append(HORIZONTAL);
+        bottom.append(Print.HORIZONTAL);
     }
-    bottom.append(BOTTOM_RIGHT).append(Print.RESET);
+    bottom.append(Print.BOTTOM_RIGHT).append(Print.RESET);
     return top.toString() + "\n" + middle.toString() + "\n" + bottom.toString();
     }
 

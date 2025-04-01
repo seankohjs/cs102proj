@@ -64,40 +64,41 @@ public class GameUtils {
     return sb.toString().trim();
     }
 
-    // Converts a list of cards into a formatted string without indexes.
     public static String cardsToString(List<Card> cards) {
         if (cards.isEmpty()) return "";
-    
-        // Ensure terminal is "primed" for ANSI sequences
-        StringBuilder sb = new StringBuilder("\u001B[0m\r");
-    
-        // Determine max lines in the card representation
+        final int CARDS_PER_ROW = 10;
+        int numCards = cards.size();
+        // Calculate the number of rows needed
+        int numRows = (numCards + CARDS_PER_ROW - 1) / CARDS_PER_ROW;
+        
+        // Determine how many lines each card has (assuming they are uniform)
         int maxLines = cards.get(0).toString().split("\n").length;
         
-        // Create a multi-line string representation
-        StringBuilder[] lines = new StringBuilder[maxLines];
-        for (int i = 0; i < maxLines; i++) {
-            lines[i] = new StringBuilder();
-        }
+        // Start building the final string (include ANSI reset sequence if needed)
+        StringBuilder sb = new StringBuilder("\u001B[0m\r");
     
-        // Populate lines
-        for (int i = 0; i < cards.size(); i++) {
-            String[] cardLines = cards.get(i).toString().split("\n");
-            for (int j = 0; j < maxLines; j++) {
-                lines[j].append(cardLines[j]);
-                if (i < cards.size() - 1) {
-                    lines[j].append("  "); // Space between cards
+        // Iterate over each row of cards
+        for (int row = 0; row < numRows; row++) {
+            // For each line in the card representation
+            for (int lineIndex = 0; lineIndex < maxLines; lineIndex++) {
+                // Iterate over each card in the current row
+                for (int col = 0; col < CARDS_PER_ROW; col++) {
+                    int index = row * CARDS_PER_ROW + col;
+                    if (index >= numCards) break; // No more cards
+                    String[] cardLines = cards.get(index).toString().split("\n");
+                    sb.append(cardLines[lineIndex]);
+                    // Add space between cards, if not the last card in the row
+                    if (col < CARDS_PER_ROW - 1 && index < numCards - 1) {
+                        sb.append("  ");
+                    }
                 }
+                sb.append("\n");
             }
+            sb.append("\n"); // Blank line to separate rows
         }
-    
-        // Combine lines
-        for (StringBuilder line : lines) {
-            sb.append(line).append("\n");
-        }
-    
+        
         return sb.toString().trim();
-    }
+    }    
 
     // Prints a player's collection in a formatted manner.
     public static String formatPlayerCollection(Map<Color, List<Card>> collectionsByColor) {
