@@ -171,7 +171,7 @@ public class GameController {
         }
 
         // Determine and announce the winner
-        List<Player> winner = scoreCalculator.determineWinner(players);
+        List<Player> winner = ScoreCalculator.determineWinner(players);
         for (Player player : winner) {
             int winnerScore = playerScores.get(player);
             System.out.println("\n" + Print.BOLD + Print.GREEN + "WINNER: " +

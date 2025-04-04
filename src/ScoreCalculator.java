@@ -83,8 +83,8 @@ public class ScoreCalculator {
         return baseScore + majorityScore;
     }
 
-    public List<Player> determineWinner(List<Player> players) {
-        Map<Suit, List<Player>> suitMajorities = determineSuitMajorities(players);
+    public static List<Player> determineWinner(List<Player> players) {
+        Map<Color, List<Player>> suitMajorities = determineColorMajorities(players);
         int minScore = Integer.MAX_VALUE;
         List<Player> tiedPlayers = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public class ScoreCalculator {
         }
     }
 
-    private List<Player> determineTiebreakerWinner(List<Player> tiedPlayers) {
+    private static List<Player> determineTiebreakerWinner(List<Player> tiedPlayers) {
         int minCollectedCards = Integer.MAX_VALUE;
         List<Player> tiedWinners = new ArrayList<>();
         
