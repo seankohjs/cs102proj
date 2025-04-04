@@ -29,7 +29,6 @@ public class Player {
         hand.add(card);
     }
 
-
     public void addCollectedCards(List<Card> cards) {
         collectedCards.addAll(cards);
     }
