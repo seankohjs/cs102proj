@@ -100,22 +100,6 @@ public class GameUtils {
         return sb.toString().trim();
     }    
 
-    // Prints a player's collection in a formatted manner.
-    public static String formatPlayerCollection(Map<Color, List<Card>> collectionsByColor) {
-        StringBuilder sb = new StringBuilder("\u001B[0m\r");
-        for (Color color : Color.values()) {
-            List<Card> cards = collectionsByColor.get(color);
-            if (cards != null && !cards.isEmpty()) {
-                sb.append(color.toString().charAt(0))
-                        .append(color.toString().substring(1).toLowerCase())
-                        .append(": ")
-                        .append(cardsToString(cards))
-                        .append("\n");
-            }
-        }
-        return sb.toString();
-    }
-
     // A convenience method to build a player's collection as a map from a list of
     // cards.
     public static Map<Color, List<Card>> buildCollectionMap(List<Card> collectedCards) {
@@ -129,9 +113,5 @@ public class GameUtils {
         return collectionsByColor;
     }
 
-    // Returns a formatted string representing a player's collection.
-    public static String formatPlayerCollection(List<Card> collectedCards) {
-        Map<Color, List<Card>> collectionMap = buildCollectionMap(collectedCards);
-        return formatPlayerCollection(collectionMap);
-    }
+ 
 }
