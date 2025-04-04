@@ -171,11 +171,12 @@ public class GameController {
         }
 
         // Determine and announce the winner
-        Player winner = ScoreCalculator.determineWinner(players);
-        int winnerScore = playerScores.get(winner);
-
-        System.out.println();
-        System.out.println(Print.BOLD + Print.YELLOW + "*** WINNER: " + winner.getPlayerName() + " WITH " + winnerScore + " POINTS! ***" + Print.RESET);
+        List<Player> winner = scoreCalculator.determineWinner(players);
+        for (Player player : winner) {
+            int winnerScore = playerScores.get(player);
+            System.out.println("\n" + Print.BOLD + Print.GREEN + "WINNER: " +
+                player.getPlayerName() + " with " + winnerScore + " points!" + Print.RESET);
+        }
 
         // Display color majorities
         System.out.println();
