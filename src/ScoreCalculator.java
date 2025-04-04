@@ -83,17 +83,15 @@ public class ScoreCalculator {
         return baseScore + majorityScore;
     }
 
-    public static Player determineWinner(List<Player> players) {
-        Map<Color, List<Player>> colorMajorities = determineColorMajorities(players);
-        Player winner = null;
+    public List<Player> determineWinner(List<Player> players) {
+        Map<Suit, List<Player>> suitMajorities = determineSuitMajorities(players);
         int minScore = Integer.MAX_VALUE;
         List<Player> tiedPlayers = new ArrayList<>();
 
         for (Player player : players) {
-            int playerScore = calculatePlayerFinalScore(player, colorMajorities);
+            int playerScore = calculatePlayerFinalScore(player, suitMajorities);
             if (playerScore < minScore) {
                 minScore = playerScore;
-                winner = player;
                 tiedPlayers.clear();
                 tiedPlayers.add(player);
             } else if (playerScore == minScore) {
@@ -101,23 +99,27 @@ public class ScoreCalculator {
             }
         }
         if (tiedPlayers.size() == 1) {
-            return winner;
+            return tiedPlayers;
         } else {
             return determineTiebreakerWinner(tiedPlayers);
         }
     }
 
-    public static Player determineTiebreakerWinner(List<Player> tiedPlayers) {
-        Player tiebreakerWinner = null;
+    private List<Player> determineTiebreakerWinner(List<Player> tiedPlayers) {
         int minCollectedCards = Integer.MAX_VALUE;
+        List<Player> tiedWinners = new ArrayList<>();
+        
         for (Player player : tiedPlayers) {
             int collectedCount = player.getCollectedCards().size();
             if (collectedCount < minCollectedCards) {
                 minCollectedCards = collectedCount;
-                tiebreakerWinner = player;
+                tiedWinners.clear();
+                tiedWinners.add(player);
+            } else if (collectedCount == minCollectedCards) {
+                tiedWinners.add(player);
             }
         }
-        return tiebreakerWinner;
+        return tiedWinners;
     }
 }
 
