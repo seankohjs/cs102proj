@@ -65,9 +65,16 @@ public class GameMenu {
     public void startGame() {
         System.out.print(Print.BOLD + Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS (1 TO 5) :: " + Print.RESET);
         int numHumans = getValidInput(1, 5);
+
+        int numBots;
+        if (numHumans == 1) {
+            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (1 TO " + (6 - numHumans) + ") :: " + Print.RESET);
+            numBots = getValidInput(1, 6 - numHumans);
+        } else {
+            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (0 TO " + (6 - numHumans) + ") :: " + Print.RESET);
+            numBots = getValidInput(0, 6 - numHumans);
+        }
         
-        System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (0 TO " + (6 - numHumans) + ") :: " + Print.RESET);
-        int numBots = getValidInput(0, 6 - numHumans);
         
         List<String> playerNames = new ArrayList<>();
         List<Boolean> isBot = new ArrayList<>();
@@ -76,7 +83,14 @@ public class GameMenu {
         // Get human player names and add to list
         for (int i = 0; i < numHumans; i++) {
             System.out.print(Print.BOLD + "ENTER NAME FOR PLAYER " + (i + 1) + " :: ");
-            playerNames.add(scanner.nextLine());
+            String playerName = scanner.nextLine();
+
+            while (playerNames.contains(playerName)) {
+                System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
+                System.out.print(Print.BOLD + Print.RESET + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + (i + 1) + " :: ");
+                playerName = scanner.nextLine();
+            }
+            playerNames.add(playerName);
             isBot.add(false);
             botDifficulties.add(0);
         }
@@ -87,6 +101,12 @@ public class GameMenu {
             String botName = scanner.nextLine();
             if (botName.isEmpty()) {
                 botName = "BOT " + (i + 1);
+            }
+
+            while (playerNames.contains(botName)) {
+                System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
+                System.out.print(Print.BOLD + Print.RESET + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
+                botName = scanner.nextLine();
             }
             playerNames.add(botName);
             isBot.add(true);
