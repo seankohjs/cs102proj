@@ -17,15 +17,15 @@ public class GameMenu {
 
     public void display() {
         System.out.print(Print.BOLD);
-        System.out.println();
+        System.out.println("");
         System.out.println("■■■■■ PARADE GAME MENU ■■■■■");
-        System.out.println();
+        System.out.println("");
         System.out.println("1 .. PLAY GAME");
         System.out.println("2 .. VIEW GAME RULES");
         System.out.println("3 .. QUIT GAME");
-        System.out.println();
+        System.out.println("");
         System.out.print("PLEASE ENTER YOUR CHOICE :: ");
-        System.out.print(Print.RESET);
+        System.out.print(Print.DEFAULT);
     }
 
     public void readOption() {
@@ -39,10 +39,10 @@ public class GameMenu {
                 if (choice >= 1 && choice <= 3) {
                     valid = true;
                 } else { 
-                    System.out.println(Print.BOLD + "PLEASE ENTER [1], [2] OR [3] .." + Print.RESET);
+                    System.out.println(Print.BOLD + "PLEASE ENTER [1], [2] OR [3] .." + Print.DEFAULT);
                 }
             } catch (NumberFormatException e) {
-                System.out.println(Print.BOLD + "PLEASE ENTER [1], [2] OR [3] .." + Print.RESET);
+                System.out.println(Print.BOLD + "PLEASE ENTER [1], [2] OR [3] .." + Print.DEFAULT);
             }
         }
         switch (choice) {
@@ -63,15 +63,15 @@ public class GameMenu {
     }
 
     public void startGame() {
-        System.out.print(Print.BOLD + Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS (1 TO 5) :: " + Print.RESET);
+        System.out.print(Print.BOLD + Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS (1 TO 5) :: " + Print.DEFAULT);
         int numHumans = getValidInput(1, 5);
 
         int numBots;
         if (numHumans == 1) {
-            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (1 TO " + (6 - numHumans) + ") :: " + Print.RESET);
+            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (1 TO " + (6 - numHumans) + ") :: " + Print.DEFAULT);
             numBots = getValidInput(1, 6 - numHumans);
         } else {
-            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (0 TO " + (6 - numHumans) + ") :: " + Print.RESET);
+            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (0 TO " + (6 - numHumans) + ") :: " + Print.DEFAULT);
             numBots = getValidInput(0, 6 - numHumans);
         }
         
@@ -87,7 +87,7 @@ public class GameMenu {
 
             while (playerNames.contains(playerName)) {
                 System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
-                System.out.print(Print.BOLD + Print.RESET + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + (i + 1) + " :: ");
+                System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + (i + 1) + " :: ");
                 playerName = scanner.nextLine();
             }
             playerNames.add(playerName);
@@ -97,7 +97,7 @@ public class GameMenu {
         
         // Get bot names and difficulties and add to list
         for (int i = 0; i < numBots; i++) {
-            System.out.print(Print.BOLD + "ENTER NAME FOR BOT " + (i+1) + " (OR PRESS ENTER FOR BOT " + (i+1) + ") :: " + Print.RESET);
+            System.out.print(Print.BOLD + "ENTER NAME FOR BOT " + (i+1) + " (OR PRESS ENTER FOR BOT " + (i+1) + ") :: " + Print.DEFAULT);
             String botName = scanner.nextLine();
             if (botName.isEmpty()) {
                 botName = "BOT " + (i + 1);
@@ -105,13 +105,13 @@ public class GameMenu {
 
             while (playerNames.contains(botName)) {
                 System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
-                System.out.print(Print.BOLD + Print.RESET + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
+                System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
                 botName = scanner.nextLine();
             }
             playerNames.add(botName);
             isBot.add(true);
             
-            System.out.print(Print.BOLD + "SELECT DIFFICULTY FOR " + Print.PURPLE + botName + Print.GREY + " [1] (EASY)  [2] (MEDIUM)  [3] (HARD) :: " + Print.RESET);
+            System.out.print(Print.BOLD + "SELECT DIFFICULTY FOR " + Print.PURPLE + botName + Print.GREY + " [1] (EASY)  [2] (MEDIUM)  [3] (HARD) :: " + Print.DEFAULT);
             int difficulty = getValidInput(1, 3);
             botDifficulties.add(difficulty);
         }
@@ -129,10 +129,10 @@ public class GameMenu {
                 if (value >= min && value <= max) {
                     return value;
                 } else {
-                    System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.RESET);
+                    System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
                 }
             } catch (NumberFormatException e) {
-                System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.RESET);
+                System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
             }
         }
     }
@@ -181,23 +181,23 @@ public class GameMenu {
                 view.clearScreen();
     
                 // Display section header
-                System.out.println();
-                System.out.println(Print.BOLD + "■■■■■ PARADE GAME RULES ■■■■■" + Print.RESET);
-                System.out.println();
+                System.out.println("");
+                System.out.println(Print.BOLD + "■■■■■ PARADE GAME RULES ■■■■■" + Print.DEFAULT);
+                System.out.println("");
                 System.out.println("SECTION " + (currentSection + 1) + " OF " + sections.length);
-                System.out.println();
+                System.out.println("");
                 System.out.println("■■■■■");
     
                 // Display current section content
                 System.out.println(sections[currentSection]);
-                System.out.println();
+                System.out.println("");
     
                 // Navigation options
                 System.out.println("■■■■■");
-                System.out.println();
-                System.out.println(Print.BOLD + "NAVIGATION: " + Print.RED + "[N]" + Print.RESET + "EXT SECTION   ■   " + 
-                                                Print.BOLD + Print.RED + "[P]" + Print.RESET + "REVIOUS SECTION   ■   " + 
-                                                Print.BOLD + Print.RED + "[Q]" + Print.RESET + "UIT TO MENU");
+                System.out.println("");
+                System.out.println(Print.BOLD + "NAVIGATION: " + Print.RED + "[N]" + Print.DEFAULT + "EXT SECTION   ■   " + 
+                                                Print.BOLD + Print.RED + "[P]" + Print.DEFAULT + "REVIOUS SECTION   ■   " + 
+                                                Print.BOLD + Print.RED + "[Q]" + Print.DEFAULT + "UIT TO MENU");
                 System.out.print("ENTER YOUR CHOICE :: ");
     
                 String input = scanner.nextLine().trim().toUpperCase();
@@ -207,9 +207,9 @@ public class GameMenu {
                         if (currentSection < sections.length - 1) {
                             currentSection++;
                         } else {
-                            System.out.println();
+                            System.out.println("");
                             System.out.println(Print.BOLD + "YOU HAVE REACHED THE END OF THE GAME RULES ..");
-                            System.out.print("PRESS" + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "TO RETURN TO THE MAIN MENU .. " + Print.RESET);
+                            System.out.print("PRESS" + Print.RED + " [ENTER] " + Print.DEFAULT + Print.BOLD + "TO RETURN TO THE MAIN MENU .. " + Print.DEFAULT);
                             scanner.nextLine();
                             viewingRules = false;
                         }
@@ -218,9 +218,9 @@ public class GameMenu {
                         if (currentSection > 0) {
                             currentSection--;
                         } else {
-                            System.out.println();
+                            System.out.println("");
                             System.out.println("YOU HAVE REACHED THE BEGINNING OF THE GAME RULES.");
-                            System.out.print("PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "TO CONTINUE .. " + Print.RESET);
+                            System.out.print("PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.DEFAULT + Print.BOLD + "TO CONTINUE .. " + Print.DEFAULT);
                             scanner.nextLine();
                         }
                         break;
@@ -228,13 +228,13 @@ public class GameMenu {
                         viewingRules = false;
                         break;
                     default:
-                        System.out.print("INVALID OPTION! " + "PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + Print.BOLD + "TO CONTINUE .. " + Print.RESET);
+                        System.out.print("INVALID OPTION! " + "PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.DEFAULT + Print.BOLD + "TO CONTINUE .. " + Print.DEFAULT);
                         scanner.nextLine();
                 }
             }
         } catch (IOException e) {
             System.out.println("ERROR READING GAME RULES: " + e.getMessage());
-            System.out.print("PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.RESET + "TO RETURN TO THE MAIN MENU .. ");
+            System.out.print("PRESS" + Print.BOLD + Print.RED + " [ENTER] " + Print.DEFAULT + "TO RETURN TO THE MAIN MENU .. ");
             scanner.nextLine();
         }
     }

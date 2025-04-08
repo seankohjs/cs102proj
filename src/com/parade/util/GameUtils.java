@@ -40,7 +40,7 @@ public class GameUtils {
         
         // Append left spaces, index, then right spaces
         indexLine.append(" ".repeat(leftPadding - 1))
-                 .append(Print.BOLD).append("[").append(indexStr).append("]").append(Print.RESET)
+                 .append(Print.BOLD).append("[").append(indexStr).append("]").append(Print.DEFAULT)
                  .append(" ".repeat(rightPadding - 1));
         
         // Add inter-card spacing (adjust if not the last card)
@@ -51,7 +51,7 @@ public class GameUtils {
         // Get the card's string representation split into lines
         String[] cardLines = card.toString().split("\n");
         for (int j = 0; j < maxLines; j++) {
-            lines[j].append(cardLines[j]).append(Print.RESET);
+            lines[j].append(cardLines[j]).append(Print.DEFAULT);
             if (i < hand.size() - 1) {
                 lines[j].append("  "); // space between cards
             }
