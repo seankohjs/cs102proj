@@ -1,9 +1,7 @@
 package com.parade.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import com.parade.model.*;
+import java.util.*;
+import com.parade.model.Card;
 
 public class RemovalStrategy {
     public static List<Card> determineRemovalChoice(Card playedCard, List<Card> paradeCards) {

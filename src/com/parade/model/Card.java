@@ -35,21 +35,21 @@ public class Card {
     for (int i = 0; i < width - 4; i++) {
         top.append(Print.HORIZONTAL);
     }
-    top.append(Print.TOP_RIGHT).append(Print.RESET);
+    top.append(Print.TOP_RIGHT).append(Print.DEFAULT);
 
     // Build middle border with card color and value
     String valueStr = (value < 10) ? " 0" + value : " " + value;
     middle.append(displayColor).append(Print.VERTICAL)
           .append(" ").append(color.toString().substring(0, 2)).append(" ")
           .append(Print.SEPARATOR).append(valueStr).append(" ")
-          .append(Print.VERTICAL).append(Print.RESET);
+          .append(Print.VERTICAL).append(Print.DEFAULT);
 
     // Build bottom border
     bottom.append(displayColor).append(Print.BOTTOM_LEFT);
     for (int i = 0; i < width - 4; i++) {
         bottom.append(Print.HORIZONTAL);
     }
-    bottom.append(Print.BOTTOM_RIGHT).append(Print.RESET);
+    bottom.append(Print.BOTTOM_RIGHT).append(Print.DEFAULT);
     return top.toString() + "\n" + middle.toString() + "\n" + bottom.toString();
     }
 
@@ -68,7 +68,7 @@ public class Card {
             case GREY:
                 return Print.GREY;
             default:
-                return Print.RESET;
+                return Print.DEFAULT;
         }
     }
 }

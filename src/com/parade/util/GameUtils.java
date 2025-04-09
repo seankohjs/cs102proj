@@ -1,10 +1,9 @@
+
 package com.parade.util;
 
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import com.parade.model.*;
+
 
 public class GameUtils {
 
@@ -40,7 +39,7 @@ public class GameUtils {
         
         // Append left spaces, index, then right spaces
         indexLine.append(" ".repeat(leftPadding - 1))
-                 .append(Print.BOLD).append("[").append(indexStr).append("]").append(Print.RESET)
+                 .append(Print.BOLD).append("[").append(indexStr).append("]").append(Print.DEFAULT)
                  .append(" ".repeat(rightPadding - 1));
         
         // Add inter-card spacing (adjust if not the last card)
@@ -51,7 +50,7 @@ public class GameUtils {
         // Get the card's string representation split into lines
         String[] cardLines = card.toString().split("\n");
         for (int j = 0; j < maxLines; j++) {
-            lines[j].append(cardLines[j]).append(Print.RESET);
+            lines[j].append(cardLines[j]).append(Print.DEFAULT);
             if (i < hand.size() - 1) {
                 lines[j].append("  "); // space between cards
             }
@@ -77,7 +76,7 @@ public class GameUtils {
         // Determine how many lines each card has (assuming they are uniform)
         int maxLines = cards.get(0).toString().split("\n").length;
         
-        // Start building the final string (include ANSI reset sequence if needed)
+        // Start building the final string (include ANSI DEFAULT sequence if needed)
         StringBuilder sb = new StringBuilder("\u001B[0m\r");
     
         // Iterate over each row of cards
@@ -116,5 +115,19 @@ public class GameUtils {
         return collectionsByColor;
     }
 
- 
+    public static int getValidInput(int min, int max, Scanner sc) {
+        int value = 0;
+        while (true) {
+            try {
+                value = Integer.parseInt(sc.nextLine());
+                if (value >= min && value <= max) {
+                    return value;
+                } else {
+                    System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
+                }
+            } catch (NumberFormatException e) {
+                System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
+            }
+        }
+    }
 }

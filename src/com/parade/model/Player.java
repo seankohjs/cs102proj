@@ -1,18 +1,17 @@
 package com.parade.model;
 
 import java.util.*;
+import com.parade.ai.BotPlayer;
 
 public class Player {
     private String playerName;
     private List<Card> hand;
     private List<Card> collectedCards;
-    protected boolean isBot;
 
     public Player(String playerName) {
         this.playerName = playerName;
         this.hand = new ArrayList<>();
         this.collectedCards = new ArrayList<>();
-        this.isBot=false;
     }
 
     public String getPlayerName() {
@@ -51,7 +50,7 @@ public class Player {
     }
     
     public boolean isBot() {
-        return isBot;
+        return this instanceof BotPlayer;
     }
 
 }

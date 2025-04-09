@@ -1,9 +1,7 @@
 package com.parade.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import com.parade.model.*;
 
 public class ScoreCalculator {
