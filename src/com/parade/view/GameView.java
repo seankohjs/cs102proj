@@ -1,12 +1,23 @@
 package com.parade.view;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.HashMap;
 import com.parade.model.*;
 import com.parade.util.*;
-import com.parade.controller.ScoreCalculator;
+import com.parade.ai.BotPlayer;
 
-public class GameView{
-    public static void clearScreen() {
+public class GameView {
+    private Scanner scanner;
+
+    public GameView(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    // Clears the console screen.
+    public void clearScreen() {
         try {
             if (System.getProperty("os.name").startsWith("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -20,70 +31,29 @@ public class GameView{
         }
     }
 
-    public static void displayFinalScoreboard(List<Player> players) {
-        clearScreen();
-
-        System.out.println(Print.BOLD + "\n■■■■■     FINAL RESULTS     ■■■■■");
-        System.out.println("\n■■■■■ *** FINAL PLAYER COLLECTIONS *** ■■■■■" + Print.DEFAULT);
-
-        for (Player player : players) {
-            displayPlayerCollections(player);
-            System.out.println(); // Add spacing between players
-        }
-
-        // Calculate and display all scores
-        Map<Color, List<Player>> colorMajorities = ScoreCalculator.determineColorMajorities(players);
-
-        System.out.println(Print.BOLD + "■■■■■     FINAL SCORES     ■■■■■" + Print.DEFAULT);
+    // Displays a header for the current turn.
+    public void displayTurnHeader(Player currentPlayer) {
         System.out.println();
-        System.out.println(Print.ORANGE + "PLAYER               SCORE" + Print.DEFAULT);
-        System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■");
+        System.out.println(Print.GREY + "■■■■■" + Print.DEFAULT);
+        System.out.println(Print.YELLOW + "IT'S " + Print.CYAN + currentPlayer.getPlayerName() + "'S" + Print.YELLOW + " TURN!" + Print.DEFAULT);
+    }
 
-        // Store scores for determining winner
-        Map<Player, Integer> playerScores = new HashMap<>();
-
-        for (Player player : players) {
-            int score = ScoreCalculator.calculatePlayerFinalScore(player, colorMajorities);
-            playerScores.put(player, score);
-
-            // Format the score line with proper spacing
-            String scoreLine = String.format("%-20s %d", player.getPlayerName(), score);
-            System.out.println(scoreLine);
+    // Displays the current game state.
+    public void displayGameState(Deck deck, ParadeLine paradeLine, boolean isLastRound) {
+        if (isLastRound) {
+            System.out.println("■■■■■" + Print.RED + " *** |||   LAST ROUND   ||| *** "  + Print.DEFAULT + "■■■■■");
         }
-
-        // Determine and announce the winner
-        List<Player> winner = ScoreCalculator.determineWinner(players);
-        for (Player player : winner) {
-            int winnerScore = playerScores.get(player);
-            System.out.println("\n" + Print.BOLD + Print.GREEN + "WINNER: " +
-                player.getPlayerName() + " with " + winnerScore + " points!" + Print.DEFAULT);
-        }
-
-        // Display color majorities
         System.out.println();
-        System.out.println(Print.BOLD + "■■■■■     SUIT MAJORITIES     ■■■■■" + Print.DEFAULT);
-        System.out.println();
-        for (Color color : Color.values()) {
-            List<Player> majorityPlayers = colorMajorities.get(color);
-            if (majorityPlayers != null && !majorityPlayers.isEmpty()) {
-                System.out.print(Card.getDisplayColor(color) + color + Print.DEFAULT + ": ");
-                for (int i = 0; i < majorityPlayers.size(); i++) {
-                    System.out.print(majorityPlayers.get(i).getPlayerName());
-                    if (i < majorityPlayers.size() - 1) {
-                        System.out.print(", ");
-                    }
-                }
-                System.out.println();
-            } else {
-                System.out.println(Card.getDisplayColor(color) + color + Print.DEFAULT + Print.BOLD + " :: NO MAJORITY" + Print.DEFAULT);
-            }
-        }
+        System.out.println("■■■■■" + Print.RED + " |||   GAME STATE   ||| " + Print.DEFAULT + "■■■■■");
+        System.out.println("■■■■■" + Print.GREEN + " >>>   PARADE LINE" + Print.DEFAULT);
+        System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
+        System.out.println("■■■■■" + Print.GREEN + " >>> CARDS IN DECK :: " + Print.ORANGE + "[ " + deck.getCardCount() + " ]" + Print.DEFAULT);
     }
 
     // Displays the current player's collection.
-    public static void displayPlayerCollections(Player player) {
+    public void displayPlayerCollections(Player player) {
         System.out.println();
-        System.out.println(Print.BOLD + "■■■■■ " + player.getPlayerName() + "'S COLLECTED CARDS ■■■■■" + Print.DEFAULT);
+        System.out.println("■■■■■ " + Print.CYAN + player.getPlayerName() + "'S" + Print.YELLOW + " COLLECTED CARDS" + Print.DEFAULT);
         Map<Color, List<Card>> collectionsByColor = new HashMap<>();
         for (Color color : Color.values()) {
             collectionsByColor.put(color, new ArrayList<>());
@@ -98,17 +68,19 @@ public class GameView{
             }
         }
         if (player.getCollectedCards().isEmpty()) {
-            System.out.println(Print.BOLD + "NO CARDS COLLECTED YET .." + Print.DEFAULT);
+            System.out.println(Print.YELLOW + "NO CARDS COLLECTED YET .." + Print.DEFAULT);
         }
     }
 
     // Displays other players' collections.
-    public static void displayOtherPlayersCollections(List<Player> players, Player currentPlayer) {
+    public void displayOtherPlayersCollections(List<Player> players, Player currentPlayer) {
         System.out.println();
-        System.out.println(Print.BOLD + "■■■■■ OTHER PLAYERS' COLLECTIONS ■■■■■" + Print.DEFAULT);
+        System.out.println("■■■■■" + Print.YELLOW + " OTHER PLAYERS' COLLECTIONS" + Print.DEFAULT);
         for (Player player : players) {
-            if (player != currentPlayer) {
-                System.out.println(Print.BOLD + player.getPlayerName() + "'S COLLECTED CARDS ::" + Print.DEFAULT);
+            if (player != currentPlayer && player.getCollectedCards().isEmpty()) {
+                System.out.println(Print.YELLOW + "NO CARDS COLLECTED YET .." + Print.DEFAULT);
+            } else if (player != currentPlayer) {
+                System.out.println(Print.CYAN + player.getPlayerName() + "'S" + Print.YELLOW + " COLLECTED CARDS ::" + Print.DEFAULT);
                 Map<Color, List<Card>> collectionsByColor = new HashMap<>();
                 for (Color color : Color.values()) {
                     collectionsByColor.put(color, new ArrayList<>());
@@ -127,23 +99,151 @@ public class GameView{
         }
     }
 
-    // Displays a header for the current turn.
-    public static void displayTurnHeader(Player currentPlayer) {
+    // Prompts the user to press 'y' to continue and shows a countdown.
+    public void promptForNextTurn(Player player) {
         System.out.println();
-        System.out.println("■■■■■");
-        System.out
-                .println(Print.BOLD + "IT'S " + Print.ORANGE + currentPlayer.getPlayerName() + Print.GREY + "'S TURN!");
+
+        // If player is a bot, automatically continue after a short delay
+        if (player.isBot()) {
+            System.out.println(
+                    "BOT PLAYER " + player.getPlayerName() + " IS READY TO CONTINUE .." + Print.DEFAULT);
+            try {
+                Thread.sleep(3000); // 3 second delay so human players can read what happened
+            } catch (InterruptedException e) {
+                // Ignore interruption
+            }
+            return;
+        }
+
+        // Original human player logic
+        System.out.print(Print.YELLOW + "ENTER" + Print.RED + "[Y]" + Print.YELLOW + "TO CONTINUE :: " + Print.DEFAULT);
+        String input = scanner.nextLine();
+        while (!input.equalsIgnoreCase("Y")) {
+            System.out.print("PLEASE ENTER" + Print.RED + "[Y]" + Print.YELLOW + "TO CONTINUE :: " + Print.DEFAULT);
+            input = scanner.nextLine();
+        }
+        try {
+            for (int i = 2; i > 0; i--) {
+                System.out.println(Print.PURPLE + "NEXT TURN IN " + i + " SECOND" + (i > 1 ? "S" : "") + " .." + Print.DEFAULT);
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            // Ignore interruption.
+        }
     }
 
-    // Displays the current game state.
-    public static void displayGameState(Deck deck, ParadeLine paradeLine, boolean isLastRound) {
-        if (isLastRound) {
-            System.out.println(Print.BOLD + Print.ORANGE + "■■■■■ ***** LAST ROUND ***** ■■■■■" + Print.DEFAULT);
+    // Interactively prompts the user to discard cards until only 2 remain.
+    public void interactiveDiscardTwoCards(Player player) {
+        // Check if the player is a bot
+        if (player.isBot()) {
+            BotPlayer bot = (BotPlayer) player;
+            // Bot logic for discarding cards
+            while (player.getHand().size() > 2) {
+                System.out.println(Print.CYAN + "\n" + player.getPlayerName() + Print.PURPLE + " (BOT) IS CHOOSING A CARD TO DISCARD .." + Print.DEFAULT);
+
+                try {
+                    Thread.sleep(1000); // Simulate thinking
+                } catch (InterruptedException e) {
+                    // Ignore interruption
+                }
+
+                // Use the bot's discard logic
+                Card discarded = bot.selectCardToDiscard();
+                player.getHand().remove(discarded);
+                System.out.println();
+                System.out.println("■■■■■ " + Print.CYAN + player.getPlayerName() + Print.RED + " DISCARDED ::\n\n" + Print.DEFAULT + discarded);
+            }
+            return;
         }
+        while (player.getHand().size() > 2) {
+            System.out.println();
+            System.out.println(Print.CYAN + player.getPlayerName() + Print.YELLOW + ", CHOOSE A CARD TO" + Print.RED + " DISCARD " + Print.YELLOW + "FROM YOUR HAND :: " + Print.DEFAULT);
+            System.out.println();
+            System.out.println(GameUtils.handToString(player.getHand()));
+            System.out.println();
+            int index = 0;
+            while (true) {
+                System.out.print(Print.YELLOW + "ENTER THE INDEX OF THE CARD YOU WANT TO" + Print.RED + " DISCARD :: " + Print.DEFAULT);
+                if (scanner.hasNextInt()) {
+                    index = scanner.nextInt();
+                    scanner.nextLine();
+                    if (index >= 1 && index <= player.getHand().size()) {
+                        break;
+                    } else {
+                        System.out.println(Print.RED + "INVALID INDEX, PLEASE TRY AGAIN .." + Print.DEFAULT);
+                    }
+                } else {
+                    System.out.println(Print.RED + "INVALID INPUT, PLEASE ENTER A NUMBER .." + Print.DEFAULT);
+                    scanner.nextLine();
+                }
+            }
+            Card discarded = player.getHand().remove(index - 1);
+            System.out.println();
+            System.out.println("■■■■■ " + Print.CYAN + player.getPlayerName() + Print.RED + " DISCARDED ::\n\n" + Print.DEFAULT + discarded);
+        }
+    }
+
+    // Prompts the player for a card choice from their hand.
+    public Card getPlayerCardChoice(Player currentPlayer, ParadeLine paradeLine, List<Player> allPlayers) {
+        // If player is a bot, use the bot's card selection logic
+        if (currentPlayer.isBot()) {
+            // Cast is safe because we checked isBot()
+            BotPlayer bot = (BotPlayer) currentPlayer;
+            Card selectedCard = bot.selectCard(paradeLine, allPlayers);
+
+            // Remove and return the selected card
+            currentPlayer.getHand().remove(selectedCard);
+
+            // Show which card the bot selected
+            System.out.println();
+            System.out.println(Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " IS THINKING .." + Print.DEFAULT);
+            System.out.println();
+            try {
+                Thread.sleep(1000); // Add delay to simulate "thinking"
+            } catch (InterruptedException e) {
+                // Ignore interruption
+            }
+            System.out.println();
+            System.out.println(Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " PLAYS CARD ::\n" + selectedCard + Print.DEFAULT);
+            System.out.println();
+
+            return selectedCard;
+        }
+
+        // Original human player logic
+        
+        System.out.println(Print.ORANGE + "\nYOUR HAND :: " + Print.DEFAULT);
+        System.out.println(GameUtils.handToString(currentPlayer.getHand()));
         System.out.println();
-        System.out.println(Print.BOLD + "■■■■■ GAME STATE ■■■■■" + Print.DEFAULT);
-        System.out.println(Print.BOLD + "PARADE LINE:" + Print.DEFAULT);
-        System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
-        System.out.println(Print.BOLD + "CARDS IN DECK: " + deck.getCardCount() + Print.DEFAULT);
+        while (true) {
+            System.out.print(Print.YELLOW + "ENTER THE INDEX OF THE CARD YOU WANT TO PLAY" + Print.RED + "(1 TO " + (currentPlayer.getHand().size()) + ")" + Print.YELLOW + " :: " + Print.DEFAULT);
+            try {
+                int index = Integer.parseInt(scanner.nextLine());
+
+                if (index < 1 || index > currentPlayer.getHand().size()) {
+                    System.out.println(Print.RED + "INVALID CARD INDEX! PLEASE ENTER A NUMBER BETWEEN 1 AND " + currentPlayer.getHand().size() + " .. " + Print.DEFAULT);
+                    continue;
+                }
+
+                System.out.println(Print.YELLOW + "YOU HAVE CHOSEN TO PLAY");
+                System.out.println("\n" + currentPlayer.getHand().get(index - 1) + "\n");
+
+                while (true) {
+                    System.out.println(Print.YELLOW + "PLEASE ENTER" + Print.RED + " [Y] " + Print.YELLOW + "TO CONFIRM OR" +
+                                                                       Print.RED + " [N] " + Print.YELLOW + "TO CHOOSE AGAIN :: " + Print.DEFAULT);
+                    String confirm = scanner.nextLine();
+                    if (confirm.equalsIgnoreCase("Y")) {
+                        return currentPlayer.getHand().remove(index - 1);
+                    } else if (confirm.equalsIgnoreCase("N")) {
+                        break;
+                    } else {
+                        System.out.println(Print.RED + "INVALID INPUT! \n" + Print.DEFAULT);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(Print.RED + "INVALID INPUT, PLEASE ENTER A NUMBER .. \n" + Print.DEFAULT);
+                continue;
+            }
+        }
     }
 }
