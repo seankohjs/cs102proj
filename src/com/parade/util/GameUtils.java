@@ -123,10 +123,10 @@ public class GameUtils {
                 if (value >= min && value <= max) {
                     return value;
                 } else {
-                    System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
+                    System.out.print(Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
                 }
             } catch (NumberFormatException e) {
-                System.out.print(Print.BOLD + Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
+                System.out.print(Print.RED + "PLEASE ENTER A NUMBER BETWEEN " + min + " AND " + max + " :: " + Print.DEFAULT);
             }
         }
     }

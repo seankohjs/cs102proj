@@ -27,20 +27,23 @@ public class GameController {
     }
 
     private static void gameInit(){
-        // create new deck
+        // Create new deck
         deck = new Deck();
         paradeLine = new ParadeLine();
         isLastRound = false;
 
-        System.out.print(Print.BOLD + Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS (1 TO 5) :: " + Print.DEFAULT);
+        System.out.print(Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS" + Print.GREEN + " (1 TO 5) " + Print.YELLOW + ":: " + Print.DEFAULT);
+        
         int numHumans = GameUtils.getValidInput(1, 5, sc);
 
         int numBots;
         if (numHumans == 1) {
-            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (1 TO " + (6 - numHumans) + ") :: " + Print.DEFAULT);
+            System.out.print(Print.YELLOW + "ENTER THE NUMBER OF BOT PLAYERS" +
+                             Print.GREEN + " (1 TO " + (6 - numHumans) + ") " + Print.YELLOW + ":: " + Print.DEFAULT);
             numBots = GameUtils.getValidInput(1, 6 - numHumans, sc);
         } else {
-            System.out.print(Print.BOLD + "ENTER THE NUMBER OF BOT PLAYERS (0 TO " + (6 - numHumans) + ") :: " + Print.DEFAULT);
+            System.out.print(Print.YELLOW + "ENTER THE NUMBER OF BOT PLAYERS" + 
+                             Print.GREEN + " (0 TO " + (6 - numHumans) + ") " + Print.YELLOW + ":: " + Print.DEFAULT);
             numBots = GameUtils.getValidInput(0, 6 - numHumans, sc);
         }
 
@@ -48,37 +51,56 @@ public class GameController {
 
         // Get human player names and add to list
         for (int i = 0; i < numHumans; i++) {
-            System.out.print(Print.BOLD + "ENTER NAME FOR PLAYER " + (i + 1) + " :: ");
+            System.out.print(Print.YELLOW + "ENTER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
             String playerName = sc.nextLine();
 
-            while (playerNames.contains(playerName)) {
-                System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
-                System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + (i + 1) + " :: ");
-                playerName = sc.nextLine();
+            while (true) {
+                if (playerNames.contains(playerName)) {
+                    System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
+                    System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
+                    playerName = sc.nextLine();
+                    continue;
+                } else if (playerName.isEmpty()) {
+                    System.out.print(Print.YELLOW + "PLEASE ENTER A NON-EMPTY NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
+                    playerName = sc.nextLine();
+                    continue;
+                }
+                playerNames.add(playerName.toUpperCase());
+                players.add(new Player(playerName.toUpperCase()));
+                break;
             }
-            playerNames.add(playerName);
-            players.add(new Player(playerName));
         }
 
         // Get bot names and difficulties and add to list
         for (int i = 0; i < numBots; i++) {
-            System.out.print(Print.BOLD + "ENTER NAME FOR BOT " + (i+1) + " (OR PRESS ENTER FOR BOT " + (i+1) + ") :: " + Print.DEFAULT);
+            System.out.print(Print.YELLOW + "ENTER NAME FOR BOT " + Print.GREEN + (i+1) + Print.CYAN + " (OR PRESS ENTER FOR BOT " + (i+1) + ")" + Print.YELLOW +  " :: " + Print.DEFAULT);
             String botName = sc.nextLine();
             if (botName.isEmpty()) {
                 botName = "BOT " + (i + 1);
             }
 
-            while (playerNames.contains(botName)) {
-                System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
-                System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
-                botName = sc.nextLine();
+            while (true) {
+                if (playerNames.contains(botName)) {
+                    System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
+                    System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR BOT " + Print.GREEN + (i+1) + Print.CYAN + " (OR PRESS ENTER FOR BOT " + (i+1) + ")" + Print.YELLOW +  " :: " + Print.DEFAULT);
+                    botName = sc.nextLine();
+                    if (botName.isEmpty()) {
+                        botName = "BOT " + (i + 1);
+                    }
+                    continue;
+                }
+                playerNames.add(botName.toUpperCase());
+                System.out.print(Print.YELLOW + "SELECT DIFFICULTY FOR" + Print.CYAN + " * " + botName + " * "
+                                                                         + Print.YELLOW + "   ■   "
+                                                                         + Print.GREEN + " [1] (EASY)"
+                                                                         + Print.ORANGE + " [2] (MEDIUM)"
+                                                                         + Print.RED + " [3] (HARD)"
+                                                                         + Print.YELLOW + " :: " + Print.DEFAULT);
+                int difficulty = GameUtils.getValidInput(1, 3, sc);
+                playerNames.add(botName.toUpperCase());
+                players.add(new BotPlayer(botName.toUpperCase(), difficulty));
+                break;
             }
-            
-            System.out.print(Print.BOLD + "SELECT DIFFICULTY FOR " + Print.PURPLE + botName + Print.GREY + " [1] (EASY)  [2] (MEDIUM)  [3] (HARD) :: " + Print.DEFAULT);
-            int difficulty = GameUtils.getValidInput(1, 3, sc);
-
-            playerNames.add(botName);
-            players.add(new BotPlayer(botName, difficulty));
         }
 
         // Deal initial parade line of 6 cards
@@ -88,6 +110,7 @@ public class GameController {
                 paradeLine.addCardToLine(card);
             }
         }
+
         // Deal 5 cards to each player
         for (Player player : players) {
             for (int i = 0; i < 5; i++) {
@@ -113,7 +136,7 @@ public class GameController {
                 Card cardToPlay = turnManager.getPlayerCardChoice(currentPlayer, paradeLine, players);
                 turnManager.playTurn(cardToPlay, paradeLine, deck, isLastRound);
             } else {
-                System.out.println(Print.BOLD + Print.GREEN + currentPlayer.getPlayerName() + Print.GREY + " HAS NO CARDS TO PLAY! PASSING TURN .." + Print.DEFAULT);
+                System.out.println(Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " HAS NO CARDS TO PLAY! PASSING TURN .." + Print.DEFAULT);
             }
 
             turnManager.promptForNextTurn(currentPlayer);
@@ -142,17 +165,17 @@ public class GameController {
 
     private static void endGame() {
         GameView.clearScreen();
-        System.out.println(Print.BOLD + Print.RED + "\nGAME OVER" + Print.DEFAULT);
-        System.out.println(Print.BOLD + "\n■■■■■ *** SCORING STAGE -" + Print.RED + " DISCARD " + Print.GREY + "2 CARDS FROM HAND *** ■■■■■" + Print.DEFAULT);
+        System.out.println(Print.RED + "\n|||   GAME OVER   |||" + Print.DEFAULT);
+        System.out.println("\n■■■■■" + Print.ORANGE + "*** SCORING STAGE -" + Print.RED + " DISCARD " + Print.ORANGE + "2 CARDS FROM HAND ***" + Print.DEFAULT + "■■■■■");
 
         for (Player player : players) {
             GameView.clearScreen();
-            System.out.println("\n" + player.getPlayerName() + ", IT'S TIME TO" + Print.RED + Print.BOLD + " DISCARD " + Print.GREY + "2 CARDS FROM YOUR HAND .." + Print.DEFAULT);
-            System.out.println(Print.BOLD + Print.GREEN + player.getPlayerName() + "'S " + Print.GREY + "CURRENT COLLECTION :: " + Print.DEFAULT);
+            System.out.println("\n" + Print.CYAN + player.getPlayerName() + Print.YELLOW + ", IT'S TIME TO" + Print.RED + " DISCARD " + Print.YELLOW + "2 CARDS FROM YOUR HAND .." + Print.DEFAULT);
+            System.out.println(Print.CYAN + player.getPlayerName() + "'S " + Print.YELLOW + "CURRENT COLLECTION :: " + Print.DEFAULT);
             GameView.displayPlayerCollections(player);
             turnManager.interactiveDiscardTwoCards(player);
             player.addHandToCollection();
-            System.out.println(Print.BOLD + "\nUPDATED GAME STATE FOR " + Print.GREEN + player.getPlayerName() + Print.GREY + " :: " + Print.DEFAULT);
+            System.out.println(Print.ORANGE + "\nUPDATED GAME STATE FOR " + Print.CYAN + player.getPlayerName() + Print.ORANGE + " :: " + Print.DEFAULT);
             GameView.displayPlayerCollections(player);
             turnManager.promptForNextTurn(player);
         }
@@ -161,7 +184,7 @@ public class GameController {
         GameView.displayFinalScoreboard(players);
 
         // Wait for user acknowledgment before returning
-        System.out.print(Print.BOLD + "\nGAME COMPLETE! PRESS" + Print.RED + " [ENTER] " + Print.GREY + "TO RETURN TO THE MAIN MENU .." + Print.DEFAULT);
+        System.out.print(Print.ORANGE + "\nGAME COMPLETE! PRESS" + Print.RED + " [ENTER] " + Print.ORANGE + "TO RETURN TO THE MAIN MENU .." + Print.DEFAULT);
         sc.nextLine(); // Wait for user to press Enter
     }
 
@@ -191,11 +214,11 @@ public class GameController {
     private static void startLastRound(boolean sixColors) {
         isLastRound = true;
         extraTurnCount = 0;
-        System.out.println(Print.BOLD + Print.YELLOW + "\n■■■■■ *** LAST ROUND STARTED *** ■■■■■" + Print.DEFAULT);
+        System.out.println("\n■■■■■" + Print.RED + "*** LAST ROUND STARTED ***" + Print.DEFAULT + "■■■■■");
         if (sixColors) {
-            System.out.println(Print.BOLD + "TRIGGERED BY A PLAYER COLLECTING 6 COLORS .." + Print.DEFAULT);
+            System.out.println(Print.YELLOW + "TRIGGERED BY A PLAYER COLLECTING 6 COLORS .." + Print.DEFAULT);
         } else {
-            System.out.println(Print.BOLD + "TRIGGERED BY DECK EXHAUSTION .." + Print.DEFAULT);
+            System.out.println(Print.YELLOW + "TRIGGERED BY DECK EXHAUSTION .." + Print.DEFAULT);
         }
     }
 }
