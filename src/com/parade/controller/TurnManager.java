@@ -42,12 +42,12 @@ public class TurnManager {
         }
 
         // Original human player logic
-        System.out.print(Print.YELLOW + "ENTER" + Print.RED + " [Y] " + Print.YELLOW + "TO CONTINUE :: " + Print.DEFAULT);
-        String input = scanner.nextLine();
-        while (!input.equalsIgnoreCase("Y")) {
-            System.out.print(Print.YELLOW + "ENTER" + Print.RED + " [Y] " + Print.YELLOW + "TO CONTINUE :: " + Print.DEFAULT);
-            input = scanner.nextLine();
-        }
+        System.out.print(Print.YELLOW + "PRESS ENTER TO CONTINUE :: " + Print.DEFAULT);
+        scanner.nextLine();
+        // while (!input.equalsIgnoreCase("Y")) {
+        //     System.out.print(Print.YELLOW + "ENTER" + Print.RED + " [Y] " + Print.YELLOW + "TO CONTINUE :: " + Print.DEFAULT);
+        //     input = scanner.nextLine();
+        // }
         try {
             for (int i = 2; i > 0; i--) {
                 System.out.print(Print.PURPLE + "\nNEXT TURN IN " + i + " SECOND" + (i > 1 ? "S" : "") + " .. " + Print.DEFAULT);

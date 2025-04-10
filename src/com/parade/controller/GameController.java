@@ -10,8 +10,6 @@ import com.parade.ai.BotPlayer;
 public class GameController {
     private static int extraTurnCount = 0;
     private static boolean isLastRound = false;
-
-
     public static Scanner sc = new Scanner(System.in);
     private static Deck deck = null;
     private static List<Player> players = new ArrayList<Player>();
