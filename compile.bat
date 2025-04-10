@@ -1,1 +1,1 @@
-javac -d classes -cp src src/GameApp.java
+javac -d classes -cp src src/com/parade/GameApp.java

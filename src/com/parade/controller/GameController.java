@@ -54,53 +54,38 @@ public class GameController {
             System.out.print(Print.YELLOW + "ENTER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
             String playerName = sc.nextLine();
 
-            while (true) {
-                if (playerNames.contains(playerName)) {
-                    System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
-                    System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
-                    playerName = sc.nextLine();
-                    continue;
-                } else if (playerName.isEmpty()) {
+            while (playerNames.contains(playerName)) {
+                if (playerName.strip().isEmpty()) {
                     System.out.print(Print.YELLOW + "PLEASE ENTER A NON-EMPTY NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
                     playerName = sc.nextLine();
                     continue;
                 }
-                playerNames.add(playerName.toUpperCase());
-                players.add(new Player(playerName.toUpperCase()));
-                break;
+                System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
+                System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
+                playerName = sc.nextLine();
             }
+
+                            
+            playerNames.add(playerName.toUpperCase());
+            players.add(new Player(playerName.toUpperCase()));
         }
 
         // Get bot names and difficulties and add to list
         for (int i = 0; i < numBots; i++) {
             System.out.print(Print.YELLOW + "ENTER NAME FOR BOT " + Print.GREEN + (i+1) + Print.CYAN + " (OR PRESS ENTER FOR BOT " + (i+1) + ")" + Print.YELLOW +  " :: " + Print.DEFAULT);
             String botName = sc.nextLine();
-            if (botName.isEmpty()) {
+            if (botName.strip().isEmpty()) {
                 botName = "BOT " + (i + 1);
             }
 
-            while (true) {
-                if (playerNames.contains(botName)) {
-                    System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
-                    System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR BOT " + Print.GREEN + (i+1) + Print.CYAN + " (OR PRESS ENTER FOR BOT " + (i+1) + ")" + Print.YELLOW +  " :: " + Print.DEFAULT);
-                    botName = sc.nextLine();
-                    if (botName.isEmpty()) {
-                        botName = "BOT " + (i + 1);
-                    }
-                    continue;
-                }
-                playerNames.add(botName.toUpperCase());
-                System.out.print(Print.YELLOW + "SELECT DIFFICULTY FOR" + Print.CYAN + " * " + botName + " * "
-                                                                         + Print.YELLOW + "   ■   "
-                                                                         + Print.GREEN + " [1] (EASY)"
-                                                                         + Print.ORANGE + " [2] (MEDIUM)"
-                                                                         + Print.RED + " [3] (HARD)"
-                                                                         + Print.YELLOW + " :: " + Print.DEFAULT);
-                int difficulty = GameUtils.getValidInput(1, 3, sc);
-                playerNames.add(botName.toUpperCase());
-                players.add(new BotPlayer(botName.toUpperCase(), difficulty));
-                break;
+            while (playerNames.contains(botName)) {
+                System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
+                System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
+                botName = sc.nextLine();
             }
+            int difficulty = GameUtils.getValidInput(1, 3, sc);
+            playerNames.add(botName.toUpperCase());
+            players.add(new BotPlayer(botName.toUpperCase(), difficulty));
         }
 
         // Deal initial parade line of 6 cards
