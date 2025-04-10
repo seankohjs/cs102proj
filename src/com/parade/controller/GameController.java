@@ -19,7 +19,7 @@ public class GameController {
     private static TurnManager turnManager = new TurnManager(players, sc);
 
     public static void initialize(){
-        GameMenu.display();
+        GameMenu.displayMenu();
         boolean start = GameMenu.readOptions(sc);
         while(start){
             start = startGame();

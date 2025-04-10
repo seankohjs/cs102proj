@@ -8,7 +8,7 @@ import com.parade.util.Print;
 
 public class GameMenu {
 
-    public static void display(){
+    public static void displayMenu(){
         GameView.clearScreen();
         System.out.print(Print.BOLD);
         System.out.println();
