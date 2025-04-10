@@ -81,9 +81,16 @@ public class GameController {
             while (playerNames.contains(botName)) {
                 System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
                 System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
-                botName = sc.nextLine().strip();
+                botName = sc.nextLine();
             }
-            int difficulty = GameUtils.getValidInput(1, 3, sc);
+            
+            // Display difficulty options
+            System.out.println(Print.YELLOW + "SELECT DIFFICULTY FOR " + Print.CYAN + botName.toUpperCase() + Print.YELLOW + ":");
+            System.out.println(Print.GREEN + "1" + Print.DEFAULT + " - EASY (RANDOM DECISIONS)");
+            System.out.println(Print.RED + "2" + Print.DEFAULT + " - HARD (STRATEGIC DECISIONS)");
+            System.out.print(Print.YELLOW + "ENTER DIFFICULTY " + Print.GREEN + "(1-2)" + Print.YELLOW + " :: " + Print.DEFAULT);
+            
+            int difficulty = GameUtils.getValidInput(1, 2, sc);
             playerNames.add(botName.toUpperCase());
             players.add(new BotPlayer(botName.toUpperCase(), difficulty));
         }

@@ -5,7 +5,7 @@ import com.parade.model.*;
 import com.parade.controller.RemovalStrategy;
 
 public class BotPlayer extends Player {
-    private int difficulty; // 1: Easy (random), 2: Medium, 3: Hard
+    private int difficulty; // 1: Easy (random), 2: Hard
     private Random random;
 
     public BotPlayer(String playerName, int difficulty) {
@@ -21,10 +21,8 @@ public class BotPlayer extends Player {
 
         // Return different card based on difficulty
         switch (difficulty) {
-            case 3:
-                return makeHardDecision(paradeLine, players);
             case 2:
-                return makeMediumDecision(paradeLine);
+                return makeHardDecision(paradeLine, players);
             case 1:
             default:
                 return makeEasyDecision();
@@ -37,7 +35,7 @@ public class BotPlayer extends Player {
         return getHand().get(cardIndex);
     }
 
-    private Card makeMediumDecision(ParadeLine paradeLine) {
+    private Card makeHardDecision(ParadeLine paradeLine, List<Player> players) {
         // Simple strategy: play the card that will remove the fewest cards
         Card bestCard = null;
         int minCardsRemoved = Integer.MAX_VALUE;
@@ -51,47 +49,42 @@ public class BotPlayer extends Player {
                 bestCard = card;
             }
         }
-        return bestCard != null ? bestCard : makeEasyDecision();
-    }
 
-    private Card makeHardDecision(ParadeLine paradeLine, List<Player> players) {
-        // Advanced strategy: consider other players' collections
-        // This is a placeholder - you would implement advanced logic here
-        return makeMediumDecision(paradeLine);
+        return bestCard != null ? bestCard : makeEasyDecision();
     }
 
     public Card selectCardToDiscard() {
         List<Card> hand = getHand();
-        if (hand.isEmpty()) return null;
-        
+        if (hand.isEmpty())
+            return null;
+
         switch (difficulty) {
-            case 2: // Medium difficulty
-            case 3: // Hard difficulty 
+            case 2: // Hard difficulty
                 return discardHighestValueCard();
             case 1: // Easy difficulty
             default:
                 return discardRandomCard();
         }
     }
-    
+
     private Card discardRandomCard() {
         // Random card selection - same as makeEasyDecision()
         int cardIndex = random.nextInt(getHand().size());
         return getHand().get(cardIndex);
     }
-    
+
     private Card discardHighestValueCard() {
         // Find and return the highest value card
         Card highestCard = null;
         int highestValue = -1;
-        
+
         for (Card card : getHand()) {
             if (card.getValue() > highestValue) {
                 highestValue = card.getValue();
                 highestCard = card;
             }
         }
-        
+
         return highestCard != null ? highestCard : discardRandomCard();
     }
 }
