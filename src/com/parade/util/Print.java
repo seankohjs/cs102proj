@@ -1,7 +1,6 @@
 package com.parade.util;
 
 public class Print {
-    
     public static final String BOLD = "\u001B[1m";
     public static final String DEFAULT = "\u001B[39m";
     // public static final String RESET = "\u001B[0m";

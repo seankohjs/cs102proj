@@ -153,7 +153,7 @@ public class GameController {
         return false;
     }
 
-    private static void endGame() {
+    public static void endGame() {
         GameView.clearScreen();
         System.out.println(Print.RED + "\n|||   GAME OVER   |||" + Print.DEFAULT);
         System.out.println("\n■■■■■" + Print.ORANGE + "*** SCORING STAGE -" + Print.RED + " DISCARD " + Print.ORANGE + "2 CARDS FROM HAND ***" + Print.DEFAULT + "■■■■■");
@@ -178,7 +178,7 @@ public class GameController {
         sc.nextLine(); // Wait for user to press Enter
     }
 
-    private static void checkGameEndConditions() {
+    public static void checkGameEndConditions() {
         if (!isLastRound) {
             if (hasAnyoneCollectedSixColors()) {
                 startLastRound(true);
@@ -188,7 +188,7 @@ public class GameController {
         }
     }
 
-    private static boolean hasAnyoneCollectedSixColors() {
+    public static boolean hasAnyoneCollectedSixColors() {
         for (Player player : players) {
             Set<Color> collectedColors = new HashSet<>();
             for (Card card : player.getCollectedCards()) {
@@ -201,7 +201,7 @@ public class GameController {
         return false;
     }
 
-    private static void startLastRound(boolean sixColors) {
+    public static void startLastRound(boolean sixColors) {
         isLastRound = true;
         extraTurnCount = 0;
         System.out.println("\n■■■■■" + Print.RED + "*** LAST ROUND STARTED ***" + Print.DEFAULT + "■■■■■");

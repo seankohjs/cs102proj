@@ -9,61 +9,61 @@ public class GameUtils {
 
     // Converts a list of cards (hand) into a formatted string with indexes.
     public static String handToString(List<Card> hand) {
-    if (hand.isEmpty()) return "[]";
+        if (hand.isEmpty()) return "[]";
 
-    // "Prime" the terminal for ANSI codes
-    StringBuilder sb = new StringBuilder("\u001B[0m\r");
-    
-    // Determine the number of lines in a card representation (e.g., top, middle, bottom)
-    int maxLines = hand.get(0).toString().split("\n").length;
-    
-    // Create a StringBuilder for the index header
-    StringBuilder indexLine = new StringBuilder();
-    
-    // Create a StringBuilder array for each card line
-    StringBuilder[] lines = new StringBuilder[maxLines];
-    for (int i = 0; i < maxLines; i++) {
-        lines[i] = new StringBuilder();
-    }
-    
-    // Process each card in the hand
-    for (int i = 0; i < hand.size(); i++) {
-        Card card = hand.get(i);
-        // Determine the card width: 10 if value==10, otherwise 9
-        int cardWidth = 11;
-        // Convert the index (starting at 1) to string
-        String indexStr = String.valueOf(i + 1);
-        // Compute left/right padding to center the index over the card width
-        int leftPadding = (cardWidth - indexStr.length()) / 2;
-        int rightPadding = cardWidth - indexStr.length() - leftPadding;
+        // "Prime" the terminal for ANSI codes
+        StringBuilder sb = new StringBuilder("\u001B[0m\r");
         
-        // Append left spaces, index, then right spaces
-        indexLine.append(" ".repeat(leftPadding - 1))
-                 .append(Print.BOLD).append("[").append(indexStr).append("]").append(Print.DEFAULT)
-                 .append(" ".repeat(rightPadding - 1));
+        // Determine the number of lines in a card representation (e.g., top, middle, bottom)
+        int maxLines = hand.get(0).toString().split("\n").length;
         
-        // Add inter-card spacing (adjust if not the last card)
-        if (i < hand.size() - 1) {
-            indexLine.append("  ");
+        // Create a StringBuilder for the index header
+        StringBuilder indexLine = new StringBuilder();
+        
+        // Create a StringBuilder array for each card line
+        StringBuilder[] lines = new StringBuilder[maxLines];
+        for (int i = 0; i < maxLines; i++) {
+            lines[i] = new StringBuilder();
         }
         
-        // Get the card's string representation split into lines
-        String[] cardLines = card.toString().split("\n");
-        for (int j = 0; j < maxLines; j++) {
-            lines[j].append(cardLines[j]).append(Print.DEFAULT);
+        // Process each card in the hand
+        for (int i = 0; i < hand.size(); i++) {
+            Card card = hand.get(i);
+            // Determine the card width: 10 if value==10, otherwise 9
+            int cardWidth = 11;
+            // Convert the index (starting at 1) to string
+            String indexStr = String.valueOf(i + 1);
+            // Compute left/right padding to center the index over the card width
+            int leftPadding = (cardWidth - indexStr.length()) / 2;
+            int rightPadding = cardWidth - indexStr.length() - leftPadding;
+            
+            // Append left spaces, index, then right spaces
+            indexLine.append(" ".repeat(leftPadding - 1))
+                    .append(Print.BOLD).append("[").append(indexStr).append("]").append(Print.DEFAULT)
+                    .append(" ".repeat(rightPadding - 1));
+            
+            // Add inter-card spacing (adjust if not the last card)
             if (i < hand.size() - 1) {
-                lines[j].append("  "); // space between cards
+                indexLine.append("  ");
+            }
+            
+            // Get the card's string representation split into lines
+            String[] cardLines = card.toString().split("\n");
+            for (int j = 0; j < maxLines; j++) {
+                lines[j].append(cardLines[j]).append(Print.DEFAULT);
+                if (i < hand.size() - 1) {
+                    lines[j].append("  "); // space between cards
+                }
             }
         }
-    }
-    
-    // Append the index line first, then the card lines
-    sb.append(indexLine).append("\n");
-    for (StringBuilder line : lines) {
-        sb.append(line).append("\n");
-    }
-    
-    return sb.toString().trim();
+        
+        // Append the index line first, then the card lines
+        sb.append(indexLine).append("\n");
+        for (StringBuilder line : lines) {
+            sb.append(line).append("\n");
+        }
+        
+        return sb.toString().trim();
     }
 
     public static String cardsToString(List<Card> cards) {
