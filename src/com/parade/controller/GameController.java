@@ -52,17 +52,17 @@ public class GameController {
         // Get human player names and add to list
         for (int i = 0; i < numHumans; i++) {
             System.out.print(Print.YELLOW + "ENTER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
-            String playerName = sc.nextLine();
+            String playerName = sc.nextLine().strip();
 
             while (playerNames.contains(playerName)) {
-                if (playerName.strip().isEmpty()) {
+                if (playerName.isEmpty()) {
                     System.out.print(Print.YELLOW + "PLEASE ENTER A NON-EMPTY NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
-                    playerName = sc.nextLine();
+                    playerName = sc.nextLine().strip();
                     continue;
                 }
                 System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
                 System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
-                playerName = sc.nextLine();
+                playerName = sc.nextLine().strip();
             }
 
                             
@@ -73,15 +73,15 @@ public class GameController {
         // Get bot names and difficulties and add to list
         for (int i = 0; i < numBots; i++) {
             System.out.print(Print.YELLOW + "ENTER NAME FOR BOT " + Print.GREEN + (i+1) + Print.CYAN + " (OR PRESS ENTER FOR BOT " + (i+1) + ")" + Print.YELLOW +  " :: " + Print.DEFAULT);
-            String botName = sc.nextLine();
-            if (botName.strip().isEmpty()) {
+            String botName = sc.nextLine().strip();
+            if (botName.isEmpty()) {
                 botName = "BOT " + (i + 1);
             }
 
             while (playerNames.contains(botName)) {
                 System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
                 System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
-                botName = sc.nextLine();
+                botName = sc.nextLine().strip();
             }
             int difficulty = GameUtils.getValidInput(1, 3, sc);
             playerNames.add(botName.toUpperCase());
