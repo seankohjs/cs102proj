@@ -1,1 +1,1 @@
-java -cp classes GameApp
+java -cp classes com.parade.GameApp
