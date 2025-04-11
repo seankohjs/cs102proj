@@ -22,8 +22,8 @@ public class GameView{
 
     public static void displayFinalScoreboard(List<Player> players) {
         clearScreen();
-        System.out.println("■■■■■" + Print.RED + " *** |||   FINAL RESULTS   ||| *** "  + Print.DEFAULT + "■■■■■");
-        System.out.println("■■■■■" + Print.YELLOW + "FINAL PLAYER COLLECTIONS" + Print.DEFAULT);
+        System.out.println("■■■■■" + Print.RED + " *** |||   FINAL RESULTS   ||| *** \n"  + Print.DEFAULT);
+        System.out.println("■■■■■" + Print.ORANGE + " FINAL PLAYER COLLECTIONS\n" + Print.DEFAULT);
 
         for (Player player : players) {
             displayPlayerCollections(player);
@@ -33,9 +33,9 @@ public class GameView{
         // Calculate and display all scores
         Map<Color, List<Player>> colorMajorities = ScoreCalculator.determineColorMajorities(players);
 
-        System.out.println("■■■■■" + Print.RED + " *** |||   FINAL SCORES   ||| *** "  + Print.DEFAULT + "■■■■■");
+        System.out.println("■■■■■" + Print.RED + " *** |||   FINAL SCORES   ||| *** "  + Print.DEFAULT);
         System.out.println();
-        System.out.println(Print.PURPLE + "PLAYER               SCORE" + Print.DEFAULT);
+        System.out.println(Print.ORANGE + "PLAYER               SCORE" + Print.DEFAULT);
         System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■");
 
         // Store scores for determining winner
@@ -46,7 +46,7 @@ public class GameView{
             playerScores.put(player, score);
 
             // Format the score line with proper spacing
-            String scoreLine = String.format("%-20s %d", player.getPlayerName(), score);
+            String scoreLine = String.format(Print.CYAN + "%-20s %d", player.getPlayerName(), score);
             System.out.println(scoreLine);
         }
 
@@ -54,12 +54,12 @@ public class GameView{
         List<Player> winner = ScoreCalculator.determineWinner(players);
         for (Player player : winner) {
             int winnerScore = playerScores.get(player);
-            System.out.println("\n" + Print.YELLOW + "WINNER: " + Print.CYAN + player.getPlayerName() + Print.YELLOW + " WITH " + winnerScore + " POINTS!" + Print.DEFAULT);
+            System.out.println("\n■■■■■" + Print.RED + ">>>   ***   WINNER :: " + Print.CYAN + player.getPlayerName() + Print.RED + " WITH " + winnerScore + " POINTS!   ***   <<<" + Print.DEFAULT);
         }
 
         // Display color majorities
         System.out.println();
-        System.out.println("■■■■■" + " |||   SUIT MAJORITIES   ||| " + "■■■■■" + Print.DEFAULT);
+        System.out.println("■■■■■" + Print.ORANGE + " |||   SUIT MAJORITIES   ||| " + Print.DEFAULT);
         System.out.println();
         for (Color color : Color.values()) {
             List<Player> majorityPlayers = colorMajorities.get(color);
@@ -80,7 +80,6 @@ public class GameView{
 
     // Displays the current player's collection.
     public static void displayPlayerCollections(Player player) {
-        System.out.println();
         System.out.println("■■■■■ " + Print.CYAN + player.getPlayerName() + "'S" + Print.YELLOW + " COLLECTED CARDS\n" + Print.DEFAULT);
         Map<Color, List<Card>> collectionsByColor = new HashMap<>();
         for (Color color : Color.values()) {
@@ -96,7 +95,7 @@ public class GameView{
             }
         }
         if (player.getCollectedCards().isEmpty()) {
-            System.out.println(Print.YELLOW + "NO CARDS COLLECTED YET .." + Print.DEFAULT);
+            System.out.println(Print.DEFAULT + "NO CARDS COLLECTED YET ..\n" + Print.DEFAULT);
         }
     }
 
@@ -120,6 +119,9 @@ public class GameView{
                         System.out.println(GameUtils.cardsToString(cards));
                     }
                 }
+                if (player.getCollectedCards().isEmpty()) {
+                    System.out.println(Print.DEFAULT + "NO CARDS COLLECTED YET ..\n" + Print.DEFAULT);
+                }
             }
         }
     }
@@ -127,19 +129,21 @@ public class GameView{
     // Displays a header for the current turn.
     public static void displayTurnHeader(Player currentPlayer) {
         System.out.println();
-        System.out.println(Print.GREY + "■■■■■" + Print.DEFAULT);
-        System.out.println(Print.YELLOW + "IT'S " + Print.CYAN + currentPlayer.getPlayerName() + "'S" + Print.YELLOW + " TURN!" + Print.DEFAULT);
+        System.out.println("■■■■■" + Print.YELLOW + " IT'S " + Print.CYAN + currentPlayer.getPlayerName() + "'S" + Print.YELLOW + " TURN!" + Print.DEFAULT);
     }
 
     // Displays the current game state.
     public static void displayGameState(Deck deck, ParadeLine paradeLine, boolean isLastRound) {
         if (isLastRound) {
-            System.out.println("■■■■■" + Print.RED + " *** |||   LAST ROUND   ||| *** "  + Print.DEFAULT + "■■■■■");
+            System.out.println();
+            System.out.println("■■■■■" + Print.RED + " *** |||   LAST ROUND   ||| ***"  + Print.DEFAULT);
         }
         System.out.println();
-        System.out.println("■■■■■" + Print.RED + " |||   GAME STATE   ||| " + Print.DEFAULT + "■■■■■");
-        System.out.println("■■■■■" + Print.GREEN + " >>>   PARADE LINE" + Print.DEFAULT);
+        System.out.println("■■■■■" + Print.RED + " |||   GAME STATE   ||| \n" + Print.DEFAULT);
+        System.out.println("■■■■■" + Print.GREEN + " >>>   PARADE LINE\n" + Print.DEFAULT);
         System.out.println(GameUtils.cardsToString(paradeLine.getParadeLineCards()));
-        System.out.println("■■■■■" + Print.GREEN + " >>> CARDS IN DECK :: " + Print.ORANGE + "[ " + deck.getCardCount() + " ]" + Print.DEFAULT);
+        System.out.println();
+        System.out.println("■■■■■" + Print.GREEN + " >>>   CARDS IN DECK   >>> " + Print.ORANGE + "[ " + deck.getCardCount() + " ]" + Print.DEFAULT);
+        System.out.println();
     }
 }

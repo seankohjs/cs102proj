@@ -28,13 +28,14 @@ public class TurnManager {
 
     // Prompts the user to press 'y' to continue and shows a countdown.
     public void promptForNextTurn(Player player) {
-        System.out.println();
 
         // If player is a bot, automatically continue after a short delay
         if (player.isBot()) {
+            System.out.println();
             System.out.print(Print.PURPLE + "BOT PLAYER " + Print.CYAN + player.getPlayerName() + Print.PURPLE + " IS READY TO CONTINUE .. " + Print.DEFAULT);
+            System.out.println();
             try {
-                Thread.sleep(3000); // 2 second delay so human players can read what happened
+                Thread.sleep(3000); // 3 second delay so human players can read what happened
             } catch (InterruptedException e) {
                 // Ignore interruption
             }
@@ -42,6 +43,7 @@ public class TurnManager {
         }
 
         // Original human player logic
+        System.out.println();
         System.out.print(Print.YELLOW + "PRESS ENTER TO CONTINUE :: " + Print.DEFAULT);
         scanner.nextLine();
         // while (!input.equalsIgnoreCase("Y")) {
@@ -49,8 +51,9 @@ public class TurnManager {
         //     input = scanner.nextLine();
         // }
         try {
-            for (int i = 2; i > 0; i--) {
+            for (int i = 3; i > 0; i--) {
                 System.out.print(Print.PURPLE + "\nNEXT TURN IN " + i + " SECOND" + (i > 1 ? "S" : "") + " .. " + Print.DEFAULT);
+                System.out.println();
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
@@ -91,7 +94,7 @@ public class TurnManager {
             boolean discarded = false;
 
             while (!discarded) {
-                System.out.print(Print.YELLOW + "\n\nENTER THE INDEX OF THE CARD YOU WANT TO" + Print.RED + " DISCARD" + Print.YELLOW + " :: " + Print.DEFAULT);
+                System.out.print(Print.YELLOW + "\nENTER THE INDEX OF THE CARD YOU WANT TO" + Print.RED + " DISCARD" + Print.YELLOW + " :: " + Print.DEFAULT);
                 try {
                     index = Integer.parseInt(scanner.nextLine());
                     if (index < 1 || index > player.getHand().size()) {
@@ -139,23 +142,31 @@ public class TurnManager {
             currentPlayer.getHand().remove(selectedCard);
 
             // Show which card the bot selected
-            System.out.print("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " IS THINKING .. " + Print.DEFAULT);
+            System.out.println();
+            System.out.println(Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " IS THINKING .. " + Print.DEFAULT);
             try {
                 Thread.sleep(3000); // Add delay to simulate "thinking"
             } catch (InterruptedException e) {
                 // Ignore interruption
             }
-            System.out.println(Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " PLAYS CARD ::\n" + selectedCard + Print.DEFAULT);
+            System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " PLAYS CARD ::\n\n" + selectedCard + Print.DEFAULT);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                // Ignore Exception
+            }
 
             return selectedCard;
         }
 
         // Original human player logic
-        System.out.println(Print.YELLOW + "YOUR HAND ::\n" + Print.DEFAULT);
+        System.out.println();
+        System.out.println("■■■■■" + Print.YELLOW + " YOUR HAND ::\n" + Print.DEFAULT);
         System.out.println(GameUtils.handToString(currentPlayer.getHand()));
+        System.out.println();
 
         while (true) {
-            System.out.print(Print.YELLOW + "\nENTER THE INDEX OF THE CARD YOU WANT TO PLAY" + Print.GREEN + " (1 TO " + (currentPlayer.getHand().size()) + ")" + Print.YELLOW + " :: " + Print.DEFAULT);
+            System.out.print(Print.YELLOW + "ENTER THE INDEX OF THE CARD YOU WANT TO PLAY" + Print.GREEN + " (1 TO " + (currentPlayer.getHand().size()) + ")" + Print.YELLOW + " :: " + Print.DEFAULT);
             try {
                 int index = Integer.parseInt(scanner.nextLine());
                 if (index < 1 || index > currentPlayer.getHand().size()) {
@@ -195,26 +206,29 @@ public class TurnManager {
         List<Card> cardsToRemove = RemovalStrategy.determineRemovalChoice(playedCard, paradeLine.getParadeLineCards());
 
         if (!cardsToRemove.isEmpty()) {
-            System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.YELLOW + " TAKES THE FOLLOWING CARDS FROM THE PARADE ..\n");
+            System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.YELLOW + " TAKES THE FOLLOWING CARDS FROM THE PARADE ..\n" + Print.DEFAULT);
             System.out.println(GameUtils.cardsToString(cardsToRemove));
             paradeLine.removeCards(cardsToRemove);
             currentPlayer.addCollectedCards(cardsToRemove);
         } else {
-            System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.YELLOW + " TAKES NO CARD FROM THE PARADE ..");
+            System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.DEFAULT + " TAKES NO CARD FROM THE PARADE ..");
         }
 
         if (!isLastRound) {
             Card drawnCard = deck.drawCard();
             if (drawnCard != null) {
                 currentPlayer.addToHand(drawnCard);
-                System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.YELLOW + " DRAWS A CARD .." + Print.DEFAULT);
+                System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.DEFAULT + " DRAWS A CARD ..\n");
             } else {
                 System.out.println(Print.RED + "DECK IS EMPTY, NO CARD DRAWN ..\n" + Print.DEFAULT);
             }
-            System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + "'S" + Print.YELLOW + " CURRENT HAND :: \n" + Print.DEFAULT);
-            System.out.println(GameUtils.handToString(currentPlayer.getHand()));
+            if (!currentPlayer.isBot()) {
+                System.out.println(Print.CYAN + currentPlayer.getPlayerName() + "'S" + Print.YELLOW + " CURRENT HAND :: \n" + Print.DEFAULT);
+                System.out.println(GameUtils.handToString(currentPlayer.getHand()));
+                System.out.println();
+            }
         } else {
-            System.out.println(Print.CYAN + currentPlayer.getPlayerName() + Print.YELLOW + " DOES NOT DRAW A CARD IN THE LAST ROUND .." + Print.DEFAULT);
+            System.out.println("\n" + Print.CYAN + currentPlayer.getPlayerName() + Print.DEFAULT + " DOES NOT DRAW A CARD IN THE LAST ROUND ..\n");
         }
         GameView.displayPlayerCollections(currentPlayer);
     }

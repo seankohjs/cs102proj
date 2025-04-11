@@ -12,7 +12,7 @@ public class GameMenu {
         GameView.clearScreen();
         System.out.print(Print.BOLD);
         System.out.println();
-        System.out.println("■■■■■" + Print.RED + " |||   PARADE GAME MENU   ||| " + Print.DEFAULT + "■■■■■");
+        System.out.println("■■■■■" + Print.RED + " |||   PARADE GAME MENU   ||| " + Print.DEFAULT);
         System.out.println();
         System.out.println("1 .. " + Print.GREEN + "PLAY GAME" + Print.DEFAULT);
         System.out.println("2 .. " + Print.GREEN + "VIEW GAME RULES" + Print.DEFAULT);
@@ -30,10 +30,10 @@ public class GameMenu {
                 if (choice >= 1 && choice <= 3) {
                     valid = true;
                 } else { 
-                    System.out.print(Print.RED + "PLEASE ENTER [1], [2] OR [3] .. " + Print.DEFAULT);
+                    System.out.print(Print.RED + "PLEASE ENTER [1], [2] OR [3] .. \n" + Print.DEFAULT);
                 }
             } catch (NumberFormatException e) {
-                System.out.print(Print.RED + "PLEASE ENTER [1], [2] OR [3] .. " + Print.DEFAULT);
+                System.out.print(Print.RED + "PLEASE ENTER [1], [2] OR [3] .. \n" + Print.DEFAULT);
             }
         }
 
@@ -100,7 +100,7 @@ public class GameMenu {
     
                 // Display section header
                 System.out.println();
-                System.out.println("■■■■■" + Print.RED + " PARADE GAME RULES " + Print.DEFAULT + "■■■■■");
+                System.out.println("■■■■■" + Print.RED + " PARADE GAME RULES " + Print.DEFAULT);
                 System.out.println();
                 System.out.println(Print.YELLOW + "SECTION " + (currentSection + 1) + " OF " + sections.length + Print.DEFAULT);
                 System.out.println();

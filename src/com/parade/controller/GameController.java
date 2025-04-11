@@ -31,6 +31,7 @@ public class GameController {
         isLastRound = false;
         
         // Get number of human and bot players
+        System.out.println();
         System.out.print(Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS" + Print.GREEN + " (1 TO 5) " + Print.YELLOW + ":: " + Print.DEFAULT);
         int numHumans = GameUtils.getValidInput(1, 5, sc);
         int numBots;
@@ -49,46 +50,46 @@ public class GameController {
         // Get human player names and add them to the list of player names
         for (int i = 0; i < numHumans; i++) {
             System.out.print(Print.YELLOW + "ENTER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
-            String playerName = sc.nextLine().strip();
+            String playerName = sc.nextLine().strip().toUpperCase();
 
             while (playerNames.contains(playerName)) {
                 if (playerName.isEmpty()) {
                     System.out.print(Print.YELLOW + "PLEASE ENTER A NON-EMPTY NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
-                    playerName = sc.nextLine().strip();
+                    playerName = sc.nextLine().strip().toUpperCase();
                     continue;
                 }
                 System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
                 System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
-                playerName = sc.nextLine().strip();
+                playerName = sc.nextLine().strip().toUpperCase();
             }
 
-            playerNames.add(playerName.toUpperCase());
-            players.add(new Player(playerName.toUpperCase()));
+            playerNames.add(playerName);
+            players.add(new Player(playerName));
         }
 
         // Get bot names and difficulties and add them to the list of player names
         for (int i = 0; i < numBots; i++) {
             System.out.print(Print.YELLOW + "ENTER NAME FOR BOT " + Print.GREEN + (i+1) + Print.CYAN + " (OR PRESS ENTER FOR BOT " + (i+1) + ")" + Print.YELLOW +  " :: " + Print.DEFAULT);
-            String botName = sc.nextLine().strip();
+            String botName = sc.nextLine().strip().toUpperCase();
             if (botName.isEmpty()) {
                 botName = "BOT " + (i + 1);
             }
 
             while (playerNames.contains(botName)) {
-                System.out.print(Print.BOLD + Print.RED + "NAME ALREADY EXISTS! ");
-                System.out.print(Print.BOLD + Print.DEFAULT + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: ");
-                botName = sc.nextLine();
+                System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
+                System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: " + Print.DEFAULT);
+                botName = sc.nextLine().toUpperCase();
             }
             
             // Display difficulty options for each bot
-            System.out.println(Print.YELLOW + "SELECT DIFFICULTY FOR " + Print.CYAN + botName.toUpperCase() + Print.YELLOW + ":");
-            System.out.println(Print.GREEN + "1" + Print.DEFAULT + " - EASY (RANDOM DECISIONS)");
-            System.out.println(Print.RED + "2" + Print.DEFAULT + " - HARD (STRATEGIC DECISIONS)");
-            System.out.print(Print.YELLOW + "ENTER DIFFICULTY " + Print.GREEN + "(1-2)" + Print.YELLOW + " :: " + Print.DEFAULT);
+            System.out.println(Print.YELLOW + "SELECT DIFFICULTY FOR " + Print.CYAN + botName.toUpperCase() + Print.YELLOW + " :: ");
+            System.out.println(Print.GREEN + "\n1   ■   EASY   (RANDOM DECISIONS)" + Print.DEFAULT);
+            System.out.println(Print.RED + "\n2   ■   HARD   (STRATEGIC DECISIONS)" + Print.DEFAULT);
+            System.out.print(Print.YELLOW + "\nENTER DIFFICULTY " + Print.GREEN + "(1 OR 2)" + Print.YELLOW + " :: " + Print.DEFAULT);
             
             int difficulty = GameUtils.getValidInput(1, 2, sc);
-            playerNames.add(botName.toUpperCase());
-            players.add(new BotPlayer(botName.toUpperCase(), difficulty));
+            playerNames.add(botName);
+            players.add(new BotPlayer(botName, difficulty));
         }
 
         // Deal initial parade line of 6 cards
@@ -163,16 +164,16 @@ public class GameController {
     public static void endGame() {
         GameView.clearScreen();
         System.out.println(Print.RED + "\n|||   GAME OVER   |||" + Print.DEFAULT);
-        System.out.println("\n■■■■■" + Print.ORANGE + "*** SCORING STAGE -" + Print.RED + " DISCARD " + Print.ORANGE + "2 CARDS FROM HAND ***" + Print.DEFAULT + "■■■■■");
+        System.out.println("\n■■■■■" + Print.ORANGE + "*** SCORING STAGE -" + Print.RED + " DISCARD " + Print.ORANGE + "2 CARDS FROM HAND ***" + Print.DEFAULT);
 
         for (Player player : players) {
             GameView.clearScreen();
-            System.out.println("\n" + Print.CYAN + player.getPlayerName() + Print.YELLOW + ", IT'S TIME TO" + Print.RED + " DISCARD " + Print.YELLOW + "2 CARDS FROM YOUR HAND .." + Print.DEFAULT);
-            System.out.println(Print.CYAN + player.getPlayerName() + "'S " + Print.YELLOW + "CURRENT COLLECTION :: " + Print.DEFAULT);
+            System.out.println("\n" + Print.CYAN + player.getPlayerName() + Print.YELLOW + ", IT'S TIME TO" + Print.RED + " DISCARD 2 CARDS " + Print.YELLOW + "FROM YOUR HAND .." + Print.DEFAULT);
+            System.out.println("\n" + Print.CYAN + player.getPlayerName() + "'S " + Print.YELLOW + "CURRENT COLLECTION :: \n" + Print.DEFAULT);
             GameView.displayPlayerCollections(player);
             turnManager.interactiveDiscardTwoCards(player);
             player.addHandToCollection();
-            System.out.println(Print.ORANGE + "\nUPDATED GAME STATE FOR " + Print.CYAN + player.getPlayerName() + Print.ORANGE + " :: " + Print.DEFAULT);
+            System.out.println(Print.ORANGE + "\nUPDATED GAME STATE FOR " + Print.CYAN + player.getPlayerName() + Print.ORANGE + " :: \n" + Print.DEFAULT);
             GameView.displayPlayerCollections(player);
             turnManager.promptForNextTurn(player);
         }
@@ -181,7 +182,7 @@ public class GameController {
         GameView.displayFinalScoreboard(players);
 
         // Wait for user acknowledgment before returning
-        System.out.print(Print.ORANGE + "\nGAME COMPLETE! PRESS" + Print.RED + " [ENTER] " + Print.ORANGE + "TO RETURN TO THE MAIN MENU .." + Print.DEFAULT);
+        System.out.print(Print.ORANGE + "\nGAME COMPLETE! PRESS" + Print.RED + " [ENTER] " + Print.ORANGE + "TO RETURN TO THE MAIN MENU .. " + Print.DEFAULT);
         sc.nextLine(); // Wait for user to press Enter
     }
     // Check if current round meets game end conditions, where either a player has collected six colors or the deck is empty
@@ -211,7 +212,8 @@ public class GameController {
     public static void startLastRound(boolean sixColors) {
         isLastRound = true;
         extraTurnCount = 0;
-        System.out.println("\n■■■■■" + Print.RED + " ***   LAST ROUND STARTED   *** " + Print.DEFAULT + "■■■■■");
+        System.out.println();
+        System.out.println("\n■■■■■" + Print.RED + " ***   LAST ROUND STARTED   *** \n" + Print.DEFAULT);
         if (sixColors) {
             System.out.println(Print.YELLOW + "TRIGGERED BY A PLAYER COLLECTING 6 COLORS .." + Print.DEFAULT);
         } else {

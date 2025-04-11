@@ -68,7 +68,7 @@ public class GameUtils {
 
     public static String cardsToString(List<Card> cards) {
         if (cards.isEmpty()) return "";
-        final int CARDS_PER_ROW = 10;
+        final int CARDS_PER_ROW = 6;
         int numCards = cards.size();
         // Calculate the number of rows needed
         int numRows = (numCards + CARDS_PER_ROW - 1) / CARDS_PER_ROW;
