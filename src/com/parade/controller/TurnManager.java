@@ -81,30 +81,49 @@ public class TurnManager {
             }
             return;
         }
+
         while (player.getHand().size() > 2) {
             System.out.println();
             System.out.println(Print.CYAN + player.getPlayerName() + Print.YELLOW + ", CHOOSE A CARD TO" + Print.RED + " DISCARD " + Print.YELLOW + "FROM YOUR HAND :: " + Print.DEFAULT);
             System.out.println();
             System.out.println(GameUtils.handToString(player.getHand()));
             int index = 0;
-            while (true) {
+            boolean discarded = false;
+
+            while (!discarded) {
                 System.out.print(Print.YELLOW + "\n\nENTER THE INDEX OF THE CARD YOU WANT TO" + Print.RED + " DISCARD" + Print.YELLOW + " :: " + Print.DEFAULT);
-                if (scanner.hasNextInt()) {
-                    index = scanner.nextInt();
-                    scanner.nextLine();
-                    if (index >= 1 && index <= player.getHand().size()) {
-                        break;
-                    } else {
-                        System.out.println(Print.RED + "INVALID INDEX, PLEASE TRY AGAIN .." + Print.DEFAULT);
+                try {
+                    index = Integer.parseInt(scanner.nextLine());
+                    if (index < 1 || index > player.getHand().size()) {
+                        System.out.println(Print.RED + "INVALID CARD INDEX! PLEASE ENTER A NUMBER BETWEEN 1 AND " + player.getHand().size() + " .. " + Print.DEFAULT);
+                        continue;
                     }
-                } else {
+
+                    System.out.println(Print.YELLOW + "\nYOU HAVE CHOSEN TO DISCARD ::" + Print.DEFAULT);
+                    System.out.println("\n" + player.getHand().get(index - 1));
+
+                    while (true) {
+                        System.out.print(Print.YELLOW + "\nPLEASE ENTER" + Print.RED + " [Y] " + Print.YELLOW + "TO CONFIRM OR" +
+                                                                           Print.RED + " [N] " + Print.YELLOW + "TO CHOOSE AGAIN :: " + Print.DEFAULT);
+                        String confirm = scanner.nextLine();
+                        if (confirm.equalsIgnoreCase("Y")) {
+                            discarded = true;
+                            Card discardedCard = player.getHand().remove(index - 1);
+                            System.out.println();
+                            System.out.println("■■■■■ " + Print.CYAN + player.getPlayerName() + " DISCARDED\n\n" + Print.DEFAULT + discardedCard);
+                            break;
+                        } else if (confirm.equalsIgnoreCase("N")) {
+                            break;
+                        } else {
+                            System.out.println(Print.RED + "INVALID INPUT!" + Print.DEFAULT);
+                        }
+                    }
+                } catch (NumberFormatException e) {
                     System.out.println(Print.RED + "INVALID INPUT, PLEASE ENTER A NUMBER .." + Print.DEFAULT);
-                    scanner.nextLine();
+                    continue;
                 }
             }
-            Card discarded = player.getHand().remove(index - 1);
-            System.out.println();
-            System.out.println("■■■■■ " + Print.CYAN + player.getPlayerName() + " DISCARDED\n\n" + Print.DEFAULT + discarded);
+            
         }
     }
 
@@ -139,13 +158,12 @@ public class TurnManager {
             System.out.print(Print.YELLOW + "\nENTER THE INDEX OF THE CARD YOU WANT TO PLAY" + Print.GREEN + " (1 TO " + (currentPlayer.getHand().size()) + ")" + Print.YELLOW + " :: " + Print.DEFAULT);
             try {
                 int index = Integer.parseInt(scanner.nextLine());
-
                 if (index < 1 || index > currentPlayer.getHand().size()) {
                     System.out.println(Print.RED + "INVALID CARD INDEX! PLEASE ENTER A NUMBER BETWEEN 1 AND " + currentPlayer.getHand().size() + " .. " + Print.DEFAULT);
                     continue;
                 }
 
-                System.out.println(Print.YELLOW + "\nYOU HAVE CHOSEN TO PLAY" + Print.DEFAULT);
+                System.out.println(Print.YELLOW + "\nYOU HAVE CHOSEN TO PLAY ::" + Print.DEFAULT);
                 System.out.println("\n" + currentPlayer.getHand().get(index - 1));
 
                 while (true) {

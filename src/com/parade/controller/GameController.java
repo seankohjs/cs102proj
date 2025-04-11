@@ -25,15 +25,14 @@ public class GameController {
     }
 
     private static void gameInit(){
-        // Create new deck
+        // Create new deck and parade line
         deck = new Deck();
         paradeLine = new ParadeLine();
         isLastRound = false;
-
-        System.out.print(Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS" + Print.GREEN + " (1 TO 5) " + Print.YELLOW + ":: " + Print.DEFAULT);
         
+        // Get number of human and bot players
+        System.out.print(Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS" + Print.GREEN + " (1 TO 5) " + Print.YELLOW + ":: " + Print.DEFAULT);
         int numHumans = GameUtils.getValidInput(1, 5, sc);
-
         int numBots;
         if (numHumans == 1) {
             System.out.print(Print.YELLOW + "ENTER THE NUMBER OF BOT PLAYERS" +
@@ -47,7 +46,7 @@ public class GameController {
 
         List<String> playerNames = new ArrayList<String>();
 
-        // Get human player names and add to list
+        // Get human player names and add them to the list of player names
         for (int i = 0; i < numHumans; i++) {
             System.out.print(Print.YELLOW + "ENTER NAME FOR PLAYER " + Print.GREEN + (i + 1) + Print.YELLOW + " :: " + Print.DEFAULT);
             String playerName = sc.nextLine().strip();
@@ -63,12 +62,11 @@ public class GameController {
                 playerName = sc.nextLine().strip();
             }
 
-                            
             playerNames.add(playerName.toUpperCase());
             players.add(new Player(playerName.toUpperCase()));
         }
 
-        // Get bot names and difficulties and add to list
+        // Get bot names and difficulties and add them to the list of player names
         for (int i = 0; i < numBots; i++) {
             System.out.print(Print.YELLOW + "ENTER NAME FOR BOT " + Print.GREEN + (i+1) + Print.CYAN + " (OR PRESS ENTER FOR BOT " + (i+1) + ")" + Print.YELLOW +  " :: " + Print.DEFAULT);
             String botName = sc.nextLine().strip();
@@ -82,7 +80,7 @@ public class GameController {
                 botName = sc.nextLine();
             }
             
-            // Display difficulty options
+            // Display difficulty options for each bot
             System.out.println(Print.YELLOW + "SELECT DIFFICULTY FOR " + Print.CYAN + botName.toUpperCase() + Print.YELLOW + ":");
             System.out.println(Print.GREEN + "1" + Print.DEFAULT + " - EASY (RANDOM DECISIONS)");
             System.out.println(Print.RED + "2" + Print.DEFAULT + " - HARD (STRATEGIC DECISIONS)");
@@ -111,10 +109,13 @@ public class GameController {
             }
         }
     }
-
+    
+    // Main game controller loop
     public static boolean startGame() {
         gameInit();
         while (true) {
+
+            // Display game status information for each round
             GameView.clearScreen();
             Player currentPlayer = turnManager.getCurrentPlayer();
             GameView.displayTurnHeader(currentPlayer);
@@ -122,6 +123,7 @@ public class GameController {
             GameView.displayPlayerCollections(currentPlayer);
             GameView.displayOtherPlayersCollections(players, currentPlayer);
 
+            // Get each player's choice of card to play for each round
             if (!currentPlayer.getHand().isEmpty()) {
                 Card cardToPlay = turnManager.getPlayerCardChoice(currentPlayer, paradeLine, players);
                 turnManager.playTurn(cardToPlay, paradeLine, deck, isLastRound);
@@ -129,8 +131,10 @@ public class GameController {
                 System.out.println(Print.CYAN + currentPlayer.getPlayerName() + Print.PURPLE + " HAS NO CARDS TO PLAY! PASSING TURN .." + Print.DEFAULT);
             }
 
+            // Get user to continue to next round
             turnManager.promptForNextTurn(currentPlayer);
 
+            // Check if current round is the last round and passes the turn to the next player
             if (!isLastRound) {
                 checkGameEndConditions();
                 turnManager.nextPlayer();
@@ -147,12 +151,15 @@ public class GameController {
         // Call endGame() after exiting the main game loop
         endGame();
 
+        // Clear variables for next game
         deck = null;
         players.clear();
         paradeLine = null;
+
         return false;
     }
 
+    // Final game stage to determine winner
     public static void endGame() {
         GameView.clearScreen();
         System.out.println(Print.RED + "\n|||   GAME OVER   |||" + Print.DEFAULT);
@@ -177,7 +184,7 @@ public class GameController {
         System.out.print(Print.ORANGE + "\nGAME COMPLETE! PRESS" + Print.RED + " [ENTER] " + Print.ORANGE + "TO RETURN TO THE MAIN MENU .." + Print.DEFAULT);
         sc.nextLine(); // Wait for user to press Enter
     }
-
+    // Check if current round meets game end conditions, where either a player has collected six colors or the deck is empty
     public static void checkGameEndConditions() {
         if (!isLastRound) {
             if (hasAnyoneCollectedSixColors()) {
@@ -187,7 +194,7 @@ public class GameController {
             }
         }
     }
-
+    // Check whether any player has collected all six colors
     public static boolean hasAnyoneCollectedSixColors() {
         for (Player player : players) {
             Set<Color> collectedColors = new HashSet<>();
@@ -200,11 +207,11 @@ public class GameController {
         }
         return false;
     }
-
+    // Start last round of the game
     public static void startLastRound(boolean sixColors) {
         isLastRound = true;
         extraTurnCount = 0;
-        System.out.println("\n■■■■■" + Print.RED + "*** LAST ROUND STARTED ***" + Print.DEFAULT + "■■■■■");
+        System.out.println("\n■■■■■" + Print.RED + " ***   LAST ROUND STARTED   *** " + Print.DEFAULT + "■■■■■");
         if (sixColors) {
             System.out.println(Print.YELLOW + "TRIGGERED BY A PLAYER COLLECTING 6 COLORS .." + Print.DEFAULT);
         } else {

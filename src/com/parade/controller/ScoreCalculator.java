@@ -63,7 +63,7 @@ public class ScoreCalculator {
 
         return majorityPlayers.isEmpty() ? null : majorityPlayers;
     }
-
+    // Calculate final score for player
     public static int calculatePlayerFinalScore(Player player, Map<Color, List<Player>> colorMajorities) {
         int baseScore = 0;
         int majorityScore = 0;

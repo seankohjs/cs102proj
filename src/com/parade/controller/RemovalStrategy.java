@@ -5,14 +5,16 @@ import com.parade.model.Card;
 
 public class RemovalStrategy {
     public static List<Card> determineRemovalChoice(Card playedCard, List<Card> paradeCards) {
+        // Return an empty list if parade line has no cards
         List<Card> removalModeCards = new ArrayList<>();
-        if (paradeCards.size() <= 1) {
+        if (paradeCards.size() == 0) {
             return removalModeCards;
         }
-
+        // Get size of parade line before latest card played
         List<Card> lineBeforePlayed = paradeCards.subList(0, paradeCards.size() - 1);
         int lineSizeBeforePlayed = lineBeforePlayed.size();
-
+        
+        // Return an empty list if 
         if (lineSizeBeforePlayed <= playedCard.getValue()) {
             return removalModeCards;
         }
@@ -24,7 +26,7 @@ public class RemovalStrategy {
             }
         }
 
-        // Determine candidates based on color and value
+        // Determine which cards to remove based on color and value
         Iterator<Card> it = removalModeCards.iterator();
         while (it.hasNext()) {
             Card card = it.next();
