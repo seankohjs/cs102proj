@@ -15,7 +15,7 @@ public class TurnManager {
     public TurnManager(List<Player> players, Scanner scanner) {
         this.players = players;
         this.scanner = scanner;
-        currentPlayerIndex = 0;
+        currentPlayerIndex = 2;
     }
 
     public Player getCurrentPlayer() {
