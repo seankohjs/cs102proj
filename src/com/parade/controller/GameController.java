@@ -77,14 +77,15 @@ public class GameController {
             System.out.print(Print.YELLOW + "ENTER NAME FOR BOT " + Print.GREEN + (i + 1) + Print.CYAN
                     + " (OR PRESS ENTER FOR BOT " + (i + 1) + ")" + Print.YELLOW + " :: " + Print.DEFAULT);
             String botName = sc.nextLine().strip().toUpperCase();
-            if (botName.isEmpty()) {
-                botName = "BOT " + (i + 1);
-            }
-
-            while (true) {
-                if (playerNames.contains(botName)) {
+            
+            while (true) { 
+                if (botName.isEmpty()) {
+                    botName = "BOT " + (i + 1);
+                    break;
+                } else if (playerNames.contains(botName)) {
                     System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
                     System.out.print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: " + Print.DEFAULT);
+                    continue;
                 } else {
                     botName = sc.nextLine().strip().toUpperCase();
 
@@ -98,6 +99,7 @@ public class GameController {
 
                     playerNames.add(botName);
                     players.add(new BotPlayer(botName, difficulty));
+                    break;
                 }
             }
         }
