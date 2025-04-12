@@ -31,8 +31,7 @@ public class GameController {
 
         // Get number of human and bot players
         System.out.println();
-        System.out.print(Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS" + Print.GREEN + " (1 TO 6) " + Print.YELLOW
-                + ":: " + Print.DEFAULT);
+        System.out.print(Print.YELLOW + "ENTER THE NUMBER OF HUMAN PLAYERS" + Print.GREEN + " (1 TO 6) " + Print.YELLOW + ":: " + Print.DEFAULT);
         int numHumans = GameUtils.getValidInput(1, 6, sc);
         int numBots = 0;
 
@@ -40,9 +39,7 @@ public class GameController {
             // Only ask for bots if there's room for them
             int maxBots = 6 - numHumans;
             int minBots = (numHumans == 1) ? 1 : 0; // At least 1 bot required for single human player
-
-            System.out.print(Print.YELLOW + "ENTER THE NUMBER OF BOT PLAYERS" +
-                    Print.GREEN + " (" + minBots + " TO " + maxBots + ") " + Print.YELLOW + ":: " + Print.DEFAULT);
+            System.out.print(Print.YELLOW + "ENTER THE NUMBER OF BOT PLAYERS" + Print.GREEN + " (" + minBots + " TO " + maxBots + ") " + Print.YELLOW + ":: " + Print.DEFAULT);
             numBots = GameUtils.getValidInput(minBots, maxBots, sc);
         } else {
             // If 6 human players, no room for bots
@@ -87,7 +84,7 @@ public class GameController {
                 System.out.println(Print.RED + "NAME ALREADY EXISTS!" + Print.DEFAULT);
                 System.out
                         .print(Print.YELLOW + "PLEASE ENTER ANOTHER NAME FOR BOT " + (i + 1) + " :: " + Print.DEFAULT);
-                botName = sc.nextLine().toUpperCase();
+                botName = sc.nextLine().strip().toUpperCase();
             }
 
             // Display difficulty options for each bot
