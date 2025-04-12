@@ -125,18 +125,15 @@ public class GameMenu {
                         if (currentSection < sections.length - 1) {
                             currentSection++;
                         } else {
-                            System.out.println();
                             System.out.println(Print.RED + "YOU HAVE REACHED THE END OF THE GAME RULES .." + Print.DEFAULT);
-                            System.out.print(Print.YELLOW + "PRESS" + Print.RED + " [ENTER] " + Print.YELLOW + "TO RETURN TO THE MAIN MENU .. " + Print.DEFAULT);
+                            System.out.print(Print.YELLOW + "PRESS" + Print.RED + " [ENTER] " + Print.YELLOW + "TO CONTINUE .. " + Print.DEFAULT);
                             sc.nextLine();
-                            viewingRules = true;
                         }
                         break;
                     case "P":
                         if (currentSection > 0) {
                             currentSection--;
                         } else {
-                            System.out.println();
                             System.out.println(Print.RED + "YOU HAVE REACHED THE BEGINNING OF THE GAME RULES." + Print.DEFAULT);
                             System.out.print(Print.YELLOW + "PRESS" + Print.RED + " [ENTER] " + Print.YELLOW + "TO CONTINUE .. " + Print.DEFAULT);
                             sc.nextLine();
@@ -147,7 +144,7 @@ public class GameMenu {
                         break;
                     default:
                         System.out.print(Print.RED + "INVALID OPTION! " + Print.DEFAULT);
-                        System.out.println(Print.YELLOW + "PRESS" + Print.RED + " [ENTER] " + Print.YELLOW + "TO CONTINUE .. " + Print.DEFAULT);
+                        System.out.print(Print.YELLOW + "PRESS" + Print.RED + " [ENTER] " + Print.YELLOW + "TO CONTINUE .. " + Print.DEFAULT);
                         sc.nextLine();
                 }
             }

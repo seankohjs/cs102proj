@@ -6,7 +6,7 @@ A Java implementation of the strategic card game **Parade**, where players aim t
 
 ## Overview
 
-Parade is a card game for 2-6 players where each participant takes turns playing cards into a parade line. When cards are played, they may cause other cards to be collected based on their position, color, and value. The goal is to finish the game with the lowest score.
+Parade is a card game for 2 to 6 players where each participant takes turns playing cards into a parade line. When cards are played, they may cause other cards to be collected based on their position, color, and value. The goal is to finish the game with the lowest score.
 
 ---
 
@@ -20,31 +20,30 @@ Parade is a card game for 2-6 players where each participant takes turns playing
 #### Windows:
 1. **Clone or download** the repository.
 2. Open a **command prompt** in the project directory.
-3. Run the start.bat
+3. Run the start.bat file by typing "./start.bat" and pressing Enter.
 
 #### Mac/Linux:
 1. **Clone or download** the repository.
 2. Open a **terminal** in the project directory.
-3. Compile the code.
-4. Run the start.bat
+4. Run the start.bat file by typing "./start.bat" and pressing Enter.
 
 ---
 
 ## How to Play
 
 ### Main Menu
-- **1:** Start a new game
-- **2:** View game rules
+- **1:** Start a New Game
+- **2:** View Game Rules
 - **3:** Quit
 
 ### Game Setup
-- Enter number of **human players** (1-6)
-- Enter number of **AI players** (0-5; at least 1 if playing solo; skip if 6 human players)
+- Enter number of **Human Players** (1 - 6)
+- Enter number of **AI Players** (0 - 5; at least 1 if playing solo; skip if 6 Human Players)
 - **Name** your players and select difficulty for AI players
 
 ### Gameplay
-- **Turn-based play:** On your turn, select a card from your hand to add to the parade.
-- **Card mechanics:** Cards are removed from the parade based on the played card's value and color.
+- **Turn-Based Play:** On your turn, select a card from your hand to add to the end of the parade (rightmost end)
+- **Card Mechanics:** Cards are removed from the parade based on the played card's value and color.
 - **Scoring:** Collected cards go into your collection and count toward your score.
 - **Victory Condition:** The player with the **lowest score** at the end wins.
 
@@ -56,7 +55,7 @@ Parade is a card game for 2-6 players where each participant takes turns playing
 
 ## Game Features
 
-- **Player Support:** 2-6 players (combination of human and AI).
+- **Player Support:** 2 - 6 players (combination of human and AI).
 - **AI Difficulty:** Two difficulty levels:
   - **Easy/Random**
   - **Hard/Strategic**
