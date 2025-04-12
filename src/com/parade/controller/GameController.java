@@ -100,21 +100,46 @@ public class GameController {
             players.add(new BotPlayer(botName, difficulty));
         }
 
-        // Deal initial parade line of 6 cards
-        for (int i = 0; i < 6; i++) {
-            Card card = deck.drawCard();
-            if (card != null) {
-                paradeLine.addCardToLine(card);
-            }
-        }
-
+        // Deal initial parade line
+        paradeLine.addCardToLine(new Card(Color.PURPLE, 0));
+        paradeLine.addCardToLine(new Card(Color.BLUE, 1));
+        paradeLine.addCardToLine(new Card(Color.GREEN, 2));
+        paradeLine.addCardToLine(new Card(Color.GREY, 3));
+        paradeLine.addCardToLine(new Card(Color.ORANGE, 4));
+        paradeLine.addCardToLine(new Card(Color.RED, 5));
+        paradeLine.addCardToLine(new Card(Color.RED, 6));
+        paradeLine.addCardToLine(new Card(Color.RED, 7));
+        paradeLine.addCardToLine(new Card(Color.RED, 8));
+        paradeLine.addCardToLine(new Card(Color.RED, 9));
+        paradeLine.addCardToLine(new Card(Color.RED, 10));
+        paradeLine.addCardToLine(new Card(Color.BLUE, 10));
+        
         // Deal 5 cards to each player
-        for (Player player : players) {
-            for (int i = 0; i < 5; i++) {
-                Card card = deck.drawCard();
-                if (card != null) {
-                    player.addToHand(card);
-                }
+        for (int i = 0; i < players.size(); i++) {
+            if (i == 0) {
+                players.get(i).addToHand(new Card(Color.GREY, 0));
+                players.get(i).addToHand(new Card(Color.GREY, 1));
+                players.get(i).addToHand(new Card(Color.GREY, 6));
+                players.get(i).addToHand(new Card(Color.GREY, 10));
+                players.get(i).addToHand(new Card(Color.GREY, 7));
+            } else if (i == 1) {
+                players.get(i).addToHand(new Card(Color.GREEN, 0));
+                players.get(i).addToHand(new Card(Color.GREEN, 1));
+                players.get(i).addToHand(new Card(Color.GREEN, 6));
+                players.get(i).addToHand(new Card(Color.GREEN, 10));
+                players.get(i).addToHand(new Card(Color.GREEN, 7));
+            } else if (i == 2) {
+                players.get(i).addToHand(new Card(Color.BLUE, 5));
+                players.get(i).addToHand(new Card(Color.GREEN, 5));
+                players.get(i).addToHand(new Card(Color.GREY, 5));
+                players.get(i).addToHand(new Card(Color.ORANGE, 5));
+                players.get(i).addToHand(new Card(Color.PURPLE, 5));
+            } else if (i == 3) {
+                players.get(i).addToHand(new Card(Color.PURPLE, 0));
+                players.get(i).addToHand(new Card(Color.PURPLE, 1));
+                players.get(i).addToHand(new Card(Color.PURPLE, 6));
+                players.get(i).addToHand(new Card(Color.PURPLE, 10));
+                players.get(i).addToHand(new Card(Color.PURPLE, 7));
             }
         }
     }
