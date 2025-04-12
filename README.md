@@ -13,20 +13,20 @@ Parade is a card game for 2-6 players where each participant takes turns playing
 ## Setup and Installation
 
 ### Requirements
-- **Java Runtime Environment (JRE) 8 or higher**
+- **Java Runtime Environment (JRE) 21 or higher**
 
 ### Running the Game
 
 #### Windows:
 1. **Clone or download** the repository.
 2. Open a **command prompt** in the project directory.
-3. Run the startup script.
+3. Run the start.bat
 
 #### Mac/Linux:
 1. **Clone or download** the repository.
 2. Open a **terminal** in the project directory.
 3. Compile the code.
-4. Run the startup script.
+4. Run the start.bat
 
 ---
 
@@ -38,8 +38,8 @@ Parade is a card game for 2-6 players where each participant takes turns playing
 - **3:** Quit
 
 ### Game Setup
-- Enter number of **human players** (1-5)
-- Enter number of **AI players** (0-5; at least 1 if playing solo)
+- Enter number of **human players** (1-6)
+- Enter number of **AI players** (0-5; at least 1 if playing solo; skip if 6 human players)
 - **Name** your players and select difficulty for AI players
 
 ### Gameplay
@@ -56,7 +56,7 @@ Parade is a card game for 2-6 players where each participant takes turns playing
 
 ## Game Features
 
-- **Player Support:** 1-6 players (combination of human and AI).
+- **Player Support:** 2-6 players (combination of human and AI).
 - **AI Difficulty:** Two difficulty levels:
   - **Easy/Random**
   - **Hard/Strategic**
