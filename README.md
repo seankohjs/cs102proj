@@ -25,7 +25,7 @@ Parade is a card game for 2 to 6 players where each participant takes turns play
 #### Mac/Linux:
 1. **Clone or download** the repository.
 2. Open a **terminal** in the project directory.
-4. Run the start.bat file by typing "./start.bat" and pressing Enter.
+3. Run the start.bat file by typing "./start.bat" and pressing Enter.
 
 ---
 
