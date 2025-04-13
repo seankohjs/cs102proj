@@ -29,7 +29,6 @@ public class GameUtils {
         // Process each card in the hand
         for (int i = 0; i < hand.size(); i++) {
             Card card = hand.get(i);
-            // Determine the card width: 10 if value==10, otherwise 9
             int cardWidth = 11;
             // Convert the index (starting at 1) to string
             String indexStr = String.valueOf(i + 1);
