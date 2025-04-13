@@ -38,10 +38,11 @@ public class Card {
     top.append(Print.TOP_RIGHT).append(Print.DEFAULT);
 
     // Build middle border with card color and value
-    String valueStr = (value < 10) ? " 0" + value : " " + value;
+    String valueStr = (value < 10) ? "0" + value : "" + value;
     middle.append(displayColor).append(Print.VERTICAL)
-          .append(" ").append(color.toString().substring(0, 2)).append(" ")
-          .append(Print.SEPARATOR).append(valueStr).append(" ")
+          .append(" ").append(valueStr)
+          .append(" ").append(Print.SEPARATOR)
+          .append(" ").append(valueStr).append(" ")
           .append(Print.VERTICAL).append(Print.DEFAULT);
 
     // Build bottom border
